@@ -1,436 +1,278 @@
-<?
-/********************************************
-* THIS FILE CONTAINS THE FUNCTIONS THAT ARE *
-* FOR CONTROLLING CARD DATA IN THE DATABASE *
-*    (it shouldn't need changed at all)     *
-********************************************/
+<?php
+/**
+  @file
+  @section LICENSE
+   This program is licensed under the GNU Affero General Public License. See the LICENSE file for details
+  @section DESCRIPTION
+  Functions related to cards. Some of this functionality should be moved to Card.php to make it more portable
+*/
 
-function show_card($id){
-	require('connect.php');
+/**
+  Create a log entry
+  @param user the user's id that has triggered the log entry
+  @param card the card's id that's affected by the event
+  @param action the action that was performend (string)
+*/
+function log_entry( $user, $card, $action ) {
+	global $dbh;
+	global $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	$query = $dbh -> prepare( 'INSERT INTO '.$prefix.'history (
+		user, card, action ) VALUES ( ?, ?, ? )' );
+	$query -> execute( array(
+		intval( $user ),
+		intval( $card ),
+		$action ) );
+}
 
-	$result = mysql_query("SELECT * FROM " . $db['prefix'] . "cards WHERE id='$id'");
-	$row = mysql_fetch_array($result);
+/** A class for holding comments. Each comment may have a parent, siblings and/or children. A comment gains a child if someone writes an answer to that comment. This answer is considered a child. Therefore discussions spread out like a tree */
+class CommentItem {
+	public $parent = 0; ///< ID of parent. default: 0 = no parent
+	public $children = array(); ///< All direct answers to this comment
+	public $elder = null; ///< the ID of the next older answer to the same parent.
+	public $younger = null; ///< the ID of the next newer answer to the same parent
 
-	//add card page to the 'visited' variable
-	if($_SESSION['visited'] <> null){
-		$_SESSION['visited'] .= $_GET['id'] . "|";}
+	public $id, $date, $name, $mail, $text;
+}
 
-	//make newline characters into html-compatible "<br>"
-	foreach($row as $key => $value){
-		$row[$key] = str_replace("\n","<br>",$row[$key]);}
+/**
+  Get various information about a card and display it
+  @param card_id The id of the card that should be displayed
+*/
+function show_card( $card_id ) {
+	global $dbh;
+	global $smarty;
+	global $cfg;
+	$card_id = intval( $card_id );
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	$query = $dbh -> prepare( 'SELECT * FROM '.$prefix
+		.'cards WHERE id = ? LIMIT 1' );
 
-	$file = file("card.phtml");
-	foreach($file as $line){
-		preg_match_all("|{{[^{}]+}}|",$line,$fields);
-		foreach($fields[0] as $f){
-			$fieldname = str_replace("{{","",str_replace("}}","",$f));
+	$query -> execute( array( $card_id ) );
 
-			switch($fieldname){ //HERE'S WHERE SPECIAL REPLACES GO
-				case "SUBTITLE":
-					$replace = "Card Statistics, Information and History";
-					break;
-				case "ADMIN": //this controls display of admin elements
-					if($_SESSION['role'] == 5){ //admin
-						$replace = "block";}
-					else{
-						$replace = "none";}
-					break;
-				case "LEAD_DEVELOPER": //this controls display of lead dev elements
-					if($_SESSION['role'] > 3){ //lead dev or admin
-						$replace = "block";}
-					else{
-						$replace = "none";}
-					break;
-				case "DEVELOPER": //this controls display of developer elements
-					if($_SESSION['role'] > 2){ //dev or up
-						$replace = "block";}
-					else{
-						$replace = "none";}
-					break;
-				case "HISTORY":
-					show_history($id);
-					$replace = null;
-					break;
-				case "COMMENTS":
-					show_comments($id);
-					$replace = "";
-					break;
-				case "ALL_FIELDS":
-					$replace = "<table class='noborder'>\n";
-					$data = get_game_data_fields();
-					foreach($data as $d){
-						$replace .= "<tr><td>" . $d . ":</td><td class='$d'>" . $row[$d] . "</td></tr>\n";}
-					$replace .= "</table>";
-					break;
-				case "IMAGE_FILENAME":
-					$filename = $row["image"];
-					$replace = $filename;
-					if(!file_exists($filename)){
-						$replace = "cards/not_found.png";}
-					break;
-				default:
-					$replace = $row[$fieldname]; //normally, just replace with the field in the data
-					break;
-			}
-			$line = str_replace($f,$replace,$line);
+	if( $card = $query -> fetchObject( 'Card' ) ) {
+		$smarty -> assign( 'card', $card );
+		$smarty -> display( 'card.tpl' );
+	} else error( 'The requested card ('.$card_id.') could not be found!',
+		'notice' );
+
+
+	/* show the ancestry */
+	$query = $dbh -> prepare( 'SELECT id, name, status FROM '.$prefix.'cards
+		WHERE id = ?' );
+	
+	$query -> execute( array( $card -> ancestor ) );
+	$ancestor = $query -> fetchObject( 'Card' ); //may be false if no ancestor exists. This is not a bug!
+
+	$query = $dbh -> prepare( 'SELECT id, name, status FROM '.$prefix.'cards
+		WHERE ancestor = ?' );
+	$query -> execute( array( $card_id ) );
+	$descendants = $query -> fetchAll( PDO::FETCH_CLASS, 'Card' );
+
+	$smarty -> assign( 'ancestor', $ancestor );
+	$smarty -> assign( 'descendants', $descendants );
+	$smarty -> display( 'ancestry.tpl' );
+
+
+	/* now show the comments */
+	$query = $dbh -> prepare( 'SELECT c.id, c.date, c.parent, u.name, u.mail,
+		c.text FROM '.$prefix.'comments c LEFT JOIN '.$prefix.'users u
+		ON c.user = u.uid WHERE card = ?' );
+	$query -> execute( array( $card_id ) );
+
+	$comments = array(); //mapping: id -> CommentItem
+
+	/* push all comments into the $comments array and clarify
+	   relationships between comments */
+	while( $item = $query -> fetchObject( 'CommentItem' ) ) { //auto-assign parent
+		$id = $item ->id; //just a shortcut
+		$comments[ $id ] = $item;
+
+		if( $item -> parent == 0 ) {
+			continue; //root comment
 		}
-		echo $line;
-	}
-}
 
-/** SHOW THE NEW CARD FORM */
-function show_new_card_form() {
-	require("connect.php");
-	//define the variables
-	$role = $_SESSION['role'];
-	$filename = str_replace(' ', '', $row['cardname']) . ".png";
-	$main_tables = file('card_definition.txt');
-
-	//output the form;
-	echo "<form action='index.php?act=insert_card' method='post'>";
-
-	//non-game-specific outputs
-	echo "<table>";
-	foreach( $main_tables as $table ) {
-		if($table[0]<>'#'){//edit out comments
-			$fieldname = substr($table, 0, strpos($table, " "));
-			$fieldtype = trim(substr($table, strpos($table, " ")));
-			if($fieldname == 'id'){}
-			elseif($fieldname == 'revision'){}
-			elseif($fieldname == 'date'){}
-			elseif($fieldname == 'author'){
-				if($role == 5) { //admins only
-					$disabled = '';}
-				else {
-					$disabled = 'disabled="disabled"';}
-				tablerow("Author:","<input type='text' name='$fieldname' value='" . $_SESSION['username'] . "' $disabled>");}
-			elseif($fieldname == 'status'){}
-			elseif($fieldname == 'image'){}
-			else{}
+		/* tell parent about its child */
+		$siblings = & $comments[ $item -> parent ] -> children;
+		array_push( $siblings,  $id );
+		$num_siblings = count( $siblings );
+		if( $num_siblings > 1 ) { //we have brothers and sisters!
+			$elder = $siblings[ $num_siblings - 2 ];
+			$comments[ $elder ] -> younger = $id; //tell the elder of the younger
+			$item -> elder = $siblings[ $num_siblings - 2 ]; //and the younger of the elder
 		}
-	}
-	echo "</table><br>\n";
+			
 
-	//game-specific outputs
-	echo "<table>";
-	foreach( $main_tables as $table ) {
-		if($table[0]<>'#'){//edit out comments
-			$fieldname = substr($table, 0, strpos($table, " "));
-			$fieldtype = trim(substr($table, strpos($table, " ")));
-			// SKIP THE CARDSCAPE PREDEFINED VALUES
-			if($fieldname == 'id'){}
-			elseif($fieldname == 'revision'){}
-			elseif($fieldname == 'date'){}
-			elseif($fieldname == 'author'){}
-			elseif($fieldname == 'status'){}
-			elseif($fieldname == 'image'){}
-			// NOW HANDLE EACH DATA TYPE
-			elseif(!(strpos($fieldtype, "INT") === false)){
-				tablerow($fieldname,"<input class='fieldtype_int' type='text' maxlength='10' name='$fieldname'>");
-			}
-			elseif(!(strpos($fieldtype, "TEXT") === false)){
-				tablerow($fieldname,textarea($fieldname, '', 4));
-			}
-			elseif(!(strpos($fieldtype, "VARCHAR") === false)){
-				tablerow($fieldname,"<input type=\"text\" name=\"$fieldname\">");
-			}
-			elseif(!(strpos($fieldtype, "ENUM") === false)){
-				$list = enum_array($fieldtype); //this function is in util/util.php
-				$select = "<select name='$fieldname'>";
-				foreach($list as $l){
-					$l = str_replace("'","",$l);
-					$select .= "<option value='$l'>" . $l . "</option>";
-				}
-				$select .= "</select>";
-				tablerow($fieldname, $select);
-			}
-			else{
-				tablerow($fieldname . " (Datatype NYI)", $row["$fieldname"] . " - " . $fieldtype);
-			}
-		}
 	}
-	echo "</table><input type='submit' value='Submit New Card'></form>";
-	
+
+	$smarty -> assign( 'comments', $comments );
+	$smarty -> display( 'comments.tpl' );
+
+
+	/* now show the history */
+	$query = $dbh -> prepare(
+		'SELECT u.name, h.action, h.date FROM '.$prefix.'history h
+		LEFT JOIN '.$prefix.'users u ON h.user = u.uid WHERE h.card = ?' );
+	$query -> execute( array( $card_id ) );
+
+	$hist_entries = $query -> fetchAll( PDO::FETCH_ASSOC );
+	$smarty -> assign( 'hist_entries', $hist_entries );
+	$smarty -> display( 'card_history.tpl' );
 }
 
-/* INSERT A CARD INTO THE DATABASE */
-function insert_card(){
-	require('connect.php');
-	require('generate_card_queries.php');
+function new_card_submit( $ancestor = 0 ) {
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	//echo '<pre>'; print_r( $_POST ); echo '</pre>';
 
-	//if not logged in, don't allow
-	if($_SESSION['role']==null){
-		die('<span class="error">You do not have permission to create new cards. <a href="login.php">Login</a></span>');}
+	$query = $dbh -> prepare( 'INSERT INTO '.$prefix.'cards( ancestor,
+		name, author, status, faction, type, subtype, cost, threshold,
+		attack, defense, rules, flavor, image) VALUES( :ancestor, :name,
+		:author, :status, :faction, :type, :subtype, :cost, :threshold,
+		:attack, :defense, :rules, :flavor, :image )'
+		);
 
-	//add slashes to everything
-	foreach ($_POST as $key => $value) {
-		$_POST[$key] = addslashes($_POST[$key]);}
+	//TODO shouldn't this be unified?
+	$values = array(
+		':ancestor' => intval( $ancestor ),
+		':name' => $_POST[ 'cardname' ],
+		':author' => $_SESSION[ 'uid' ],
+		':faction' => $_POST[ 'faction' ],
+		':type' => $_POST[ 'cardtype' ],
+		':subtype' => $_POST[ 'subtype' ],
+		':cost' => $_POST[ 'cost' ],
+		':threshold' => $_POST[ 'threshold' ],
+		':attack' => $_POST[ 'attack' ],
+		':defense' => $_POST[ 'defense' ],
+		':rules' => $_POST[ 'rules' ],
+		':flavor' => $_POST[ 'flavor' ],
+		':image' => $_POST[ 'imgdesc' ] );
+	$values[ ':status' ] = (isset( $_POST[ 'concept' ] ) )? 'concept':'new';
+		
+	if( $query -> execute( $values ) ) {
+		$newestID = $dbh -> lastInsertId();//TODO race condition?
+		//this returns one number too high. What's going on?
 
-	//rejects cards with no name
-	if($_POST['cardname'] == ''){die('Cannot add a card with no name.');}
+		log_entry( $_SESSION[ 'uid' ], $newestID, 'Creation ('.
+			$values[ ':status' ].')' );
 
-	//workaround for a no-author submitted bug
-	if($_POST['author'] == null){
-		$_POST['author'] = $_SESSION['username'];
+		//create initial comment
+		comment_reply_submit( 0, $newestID );
+
+		error( 'Card successfully created!', 'notice' );
+
+	} else {
+		print_r( $query -> errorInfo() );
 	}
-	
-	//rejects cards with a name that already exists in the database
-	$result = mysql_query("SELECT * FROM " . $db['prefix'] . "cards WHERE cardname='". $_POST['cardname'] . "';");
-	$row = mysql_fetch_array($result);
-	if($row['cardname'] == $_POST['cardname']){
-		die('A card with the suggested name already exists.');}
-	
-	//build the INSERT
-	$sql = generate_card_insert_query($_POST);
-	
-	//perform the INSERT
-	mysql_query($sql) or die('Error: ' . mysql_error());
-	
-	//get the new id #
-	$id = get_id_from_cardname($_POST['cardname']);
-
-	//COPY NEW CARD TO HISTORY DB
-	copy_card_to_history($id);
-
-	//add notification to activity table
-	$msg = get_card_name($id) . " added by " . $_POST['author'] . ".";
-	post_activity($_POST['author'], "new", $id, $msg);
-
-	header("Location: index.php?act=show_card&id=$id");
 }
 
-/* SHOWS THE EDIT FORM for card. Depending on the card status, not all fields will be changeable. */
-function show_edit_card_form($id) {
+/* Get the card's id of a card's comment. Each comment is associated with a card.
+   @param comment The id of the comment
+*/
+function get_card_id_of_comment( $comment ) {
+	global $dbh, $cfg;
 
-	//blocks people without permission
-	if($_SESSION['role'] < 3){die('You do not have permission to edit existing cards. Login as a developer or an admin if you want to edit cards.');}
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
 
-	//this handles no card in url
-	if($id==null){die("<span class='error'>No card specified.</span>");}
-
-	//fetch card data
-	require('connect.php');	
-	$result = mysql_query("SELECT * FROM " . $db['prefix'] . "cards WHERE id='$id'");
-	$row = mysql_fetch_array($result);
-
-	//this handles an invalid card id
-	if($row == null){die("<span class='error'>Invalid card id in url.</span>");}
-
-	//define the variables	
-	$role = $_SESSION['role'];
-	$filename = str_replace(' ', '', $row['cardname']) . ".png";
-	$main_tables = file('card_definition.txt');
-	
-	//IMAGE OUTPUT
-	echo '<div style="position:absolute; right:51%">';
-	echo '<div id="preview-container" style="height:430px; width:310px; border: 1px solid black;"><img src="' . $row['image'] . '" style="width:100%"></img></div>';
-	echo '<form action="index.php?act=upload_image" method="post" enctype="multipart/form-data" target="upload_target">';
-	echo '<input name="file" type="file"><br>';
-	echo '<div id="preview-action-container" style="width:310px;">';
-	echo '<input type="submit" name="submitBtn" value="Upload">';
-	echo '<input type="button" name="saveBtn" onClick="saveUploadedImage()" value="Save">';
-	echo '</div></form>';
-	echo '<div id="preview-message"></div>';
-	echo '<iframe id="upload_target" name="upload_target" onLoad="stopUpload()" style="position:absolute;width:0;height:0;border:none;"></iframe>';
-	echo '</div>';
-
-	//TABLE OUTPUT
-
-	//output the form;
-	echo "<form action='index.php?act=update_card&id=" . $row['id'] . "' method='post'>";
-
-	//non-game-specific outputs
-	echo "<table style='position:relative; left:51%'>";
-	foreach( $main_tables as $table ) {
-		if($table[0]<>'#'){//edit out comments
-			$fieldname = substr($table, 0, strpos($table, " "));
-			$fieldtype = trim(substr($table, strpos($table, " ")));
-			if($fieldname == 'id'){
-				tablerow("Version:", $row['id'] . ":" . $row['revision']);}
-			elseif($fieldname == 'revision'){}
-			elseif($fieldname == 'date'){
-				tablerow("Date Submitted:", $row["$fieldname"]);}
-			elseif($fieldname == 'author'){
-				if($role == 5) { //admins can change the listed author
-					tablerow("Author:","<input type='text' name='$fieldname' value='" . $row["$fieldname"] . "'>");}
-				else {
-					tablerow("Author:", $row["$fieldname"]);}}
-			elseif($fieldname == 'status'){ 
-				if($role == 5){ //admins can change the status to whatever
-					$list = enum_array($fieldtype); //this function is in util/util.php
-					$select = "<select name='$fieldname'>";
-					foreach($list as $l){
-						$l = str_replace("'","",$l);
-						$isselected = '';
-						if($row["$fieldname"] == $l){
-							$isselected = "selected='selected'";}
-						$select .= "<option value='$l' $isselected>" . $l . "</option>";
-					}
-					$select .= "</select>";
-					tablerow("Status:", $select);}
-				elseif(($role > 2) && ($row['status'] == 'concept')){ //devs and up can advance the status of a concept card
-					$nextstatus = "discuss";
-					$select = "<input type='checkbox' name='status' value='$nextstatus'> Advance status to $nextstatus?<br>";
-					tablerow("Status:", $select . "<input type='checkbox' name='status' value='rejected'> Set this card as rejected?");}
-				elseif($role > 3){ //lead devs and up can advance the status of any card
-					if($row['status'] == "discuss"){
-						$nextstatus = "playtest";}
-					elseif($row['status'] == "playtest"){
-						$nextstatus = "approved";}
-					elseif($row['status'] == "approved"){
-						$nextstatus = "official";}
-					elseif($row['status'] == "rejected"){
-						$nextstatus = "playtest";}
-					elseif($row['status'] == "restricted"){
-						$nextstatus = "playtest";}
-					if($nextstatus <> null){$select = "<input type='checkbox' name='status' value='$nextstatus'> Advance status to $nextstatus?<br>";}
-					if($row['status'] == 'official'){$demote = "<input type='checkbox' name='status' value='restricted'> Set this card as restricted?<br>";}
-					tablerow("Status:", $select . $demote . "<input type='checkbox' name='status' value='rejected'> Set this card as rejected?");}
-				else{ //everyone else just sees the status
-					tablerow("Status:", $row["$fieldname"]);}}
-			elseif($fieldname == 'image'){
-				tablerow("Image Path:", "<input id='image' readonly='true' type=\"text\" name=\"$fieldname\" value=\"" . $row[$fieldname] . "\">");}
-			else{}
-		}
+	$query = $dbh -> prepare( 'SELECT card FROM '.$prefix.'comments
+		WHERE id = ?' );
+	$query -> execute( array( $comment ) );
+	if( !$card_id = $query -> fetchColumn() ) {
+		error( 'Comment does not have a card associated with it!' );
 	}
-	echo "</table><br>\n";
-
-	//game-specific outputs (THESE CAN'T BE CHANGED IF THE CARD IS OFFICIAL)
-	if($row['status'] <> "official"){
-		echo "<table style='position:relative; left:51%'>";
-		foreach( $main_tables as $table ) {
-			if($table[0]<>'#'){//edit out comments
-				$fieldname = substr($table, 0, strpos($table, " "));
-				$fieldtype = trim(substr($table, strpos($table, " ")));
-				// SKIP THE CARDSCAPE PREDEFINED VALUES
-				if($fieldname == 'id'){}
-				elseif($fieldname == 'revision'){}
-				elseif($fieldname == 'date'){}
-				elseif($fieldname == 'author'){}
-				elseif($fieldname == 'status'){}
-				elseif($fieldname == 'image'){}
-				// NOW HANDLE EACH DATA TYPE
-				elseif(!(strpos($fieldtype, "INT") === false)){
-					tablerow($fieldname,"<input class='fieldtype_int' type='text' maxlength='10' name='$fieldname' value='" . $row["$fieldname"] . "'>");
-				}
-				elseif(!(strpos($fieldtype, "TEXT") === false)){
-					tablerow($fieldname,textarea($fieldname, $row["$fieldname"], 4));
-				}
-				elseif(!(strpos($fieldtype, "VARCHAR") === false)){
-					tablerow($fieldname,"<input type=\"text\" name=\"$fieldname\" value=\"" . $row["$fieldname"] . "\">");
-				}
-				elseif(!(strpos($fieldtype, "ENUM") === false)){
-					$list = enum_array($fieldtype); //this function is in util/util.php
-					$select = "<select name='$fieldname'>";
-					foreach($list as $l){
-						$l = str_replace("'","",$l);
-						$isselected = '';
-						if($row["$fieldname"] == $l){
-							$isselected = "selected='selected'";}
-						$select .= "<option value='$l' $isselected>" . $l . "</option>";
-					}
-					$select .= "</select>";
-					tablerow($fieldname, $select);
-				}
-				else{
-					tablerow($fieldname . " (Datatype NYI)", $row["$fieldname"] . " - " . $fieldtype);
-				}
-			}
-		}
-		echo "</table>";
-	}
-	echo "<input type='submit' value='Apply Changes' style='position: relative; left:50%'></form>";
+	return intval( $card_id );
 }
 
-/* UPDATES CARD INFO IN THE DATABASE */
-function update_card($id){
-	require('connect.php');
-	require('generate_card_queries.php');
+/**
+  Show a comment form. This includes a linear history of the last comments in the current lineage
+ */
+function comment_reply( $comment ) {
+	//print_r( $_SESSION );
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
 
-	//if not logged in, or logged in as only a user, don't allow
-	if(($_SESSION['role']==null) || ($_SESSION['role']=='user')){
-	  die('You do not have permission to edit cards. <a href="login.php">Login</a>');
+	//save comment as long as it's a string
+	$smarty -> assign( 'reply_to', $comment );
+
+	//and make it an int for the SQL functions
+	$comment = intval( $comment );
+
+	/* first of all, display card again */
+	$card_id = get_card_id_of_comment( $comment );
+
+	$query = $dbh -> prepare( 'SELECT * FROM '.$prefix
+		.'cards WHERE id = ? LIMIT 1' );
+	$query -> execute( array( $card_id ) );
+
+	if( $card = $query -> fetchObject( 'Card' ) ) {
+		$smarty -> assign( 'card', $card );
+		$smarty -> display( 'card.tpl' );
+	} else error( 'The associated card could not be found!', 'notice' );
+
+
+	/* and now get the lineage of the $comment */
+	$query = $dbh -> prepare( 'SELECT u.name, c.date, c.text, c.parent FROM
+		'.$prefix.'comments c LEFT JOIN '.$prefix.'users u
+		ON c.user = u.uid WHERE c.id = ?  LIMIT 1' );
+
+
+	$comments = array(); //get lineage of this comment
+	while( $query -> execute( array ( $comment ) ) ) {
+		$old_comment = $query -> fetch( PDO::FETCH_ASSOC );
+		array_push( $comments, $old_comment );
+		if( count( $comments ) > 4 ) break; //move to config?
+		$comment = $old_comment['parent'];
 	}
-	
-	//get the old revision number
-	$query = "SELECT * FROM " . $db['prefix'] . "cards WHERE id=$id";
-	$row = mysql_fetch_array(mysql_query($query));
-	$_POST['revision'] = $row['revision'];
-	
-	//update the revision number
-	if($_POST['status']=='official'){
-		$_POST['revision'] = ceil($_POST['revision']);}
-	elseif(($_POST['status'] == null) && ($row['status'] == 'official')){} //this line is a bug workaround
-	else{
-		$_POST['revision'] = $_POST['revision'] + '.01';}
-	
-	//don't allow change of name to nothing
-	if(trim($_POST['cardname']) == ''){
-		$_POST['cardname'] = $row['cardname'];}
-	
-	//add slashes to everything so it doesn't break the query
-	foreach ($_POST as $key => $value) {
-		$_POST[$key] = addslashes($_POST[$key]);}
+	//echo '<pre>'; print_r( $query -> errorInfo() ); echo '</pre>';
 
-	//fix return of null values
-        foreach ($_POST as &$val){
-		if($val == null){
-			$val = " ";}
+	$smarty -> assign( 'comments', $comments );
+	$smarty -> display( 'commentform.tpl' );
+
+}
+
+/** Insert new comment.
+  @param comment The text of the comment
+  @param card_id The id of the card that's commented on
+*/
+function comment_reply_submit( $comment, $card_id = null ) {
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	$comment = intval( $comment );
+	if( !$card_id ) $card_id = get_card_id_of_comment( $comment );
+
+	$query = $dbh -> prepare( 'INSERT INTO '.$prefix.'comments(
+		user, card, parent, text ) VALUES(
+		:user, :card, :parent, :text )' );
+	$params = array(
+		':user' => $_SESSION[ 'uid' ],
+		':card' => $card_id,
+		':parent' => $comment,
+		':text' => $_POST[ 'reply_text' ] );
+	if( !$query -> execute( $params ) ) {
+		error( 'Your comment could not be added' );
+	}
+	error( 'Comment successfully added!', 'notice' );
+	show_card( $card_id );
+}
+
+/** Show a form for a new revision of a card
+  @param card_id the id of the card that will be revised
+*/
+function revise_card( $card_id ) {
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+
+	$query = $dbh -> prepare( 'SELECT * FROM '.$prefix.'cards
+		WHERE id = ?' );
+	$query -> execute( array( intval( $card_id ) ) );
+	if( !$card = $query -> fetchObject( 'Card' ) ) {
+		error( 'Invalid card id!' );
 	}
 
-	//UPDATE THE CARD
-	$query = generate_card_update_query($id, $_POST);
-	if(mysql_query($query)){
-		//echo "Card updated successfully!";
-		}
-	else { die("There was an error. Card could not be updated.");}
-	
-	//COPY NEW VERSION TO HISTORY DB
-	copy_card_to_history($id);
-	
-	//add a comment to the card saying that it was edited
-	$user = $_SESSION['username'];
-	$sql = "INSERT INTO " . $db['prefix'] . "comments ( card, user, text, date )
-	VALUES ( '$id', 'cardscape', 'Card updated by $user." . date(" (H:i:s d M y)",time()) . "', CURRENT_TIMESTAMP )";
-	mysql_query($sql);
-	
-	//add notification to activity table
-	$msg = get_card_name($id) . " edited by " . $_SESSION['username'] . ".";
-	post_activity($_SESSION['username'], "edit", $id, $msg);
-
-	//redirect back to the card page
-	header( "Location: index.php?act=show_card&id=$id" );
+	$smarty -> assign( 'card', $card );
+	$smarty -> assign( 'typeoptions', getCardTypes() );
+	$smarty -> assign( 'factionsoptions', getFactions() );
+	$smarty -> display( 'new_card.tpl' );
 }
-
-/* DELETES CARD WITH SELECTED ID */
-//TODO: DELETE ALL COMMENTS AND HISTORY ASSOCIATED WITH THAT CARD TOO
-function delete_card($id){
-	require('connect.php');
-	if($_SESSION['role']<>5){ //only admins can delete cards
-		die("You do not have permission to delete cards.");}
-	$query = "DELETE FROM " . $db['prefix'] . "cards WHERE id = '" . $_GET['id'] . "'";
-	mysql_query($query) or die(mysql_error());
-	//echo "Card deleted.";
-
-	//add notification to activity table
-	$msg = get_card_name($id) . "deleted by" . $_SESSION['username'] . ".";
-	post_activity($_SESSION['username'], "delete", $id, $msg);
-
-	header("Location: index.php?act=browse");
-}
-
-/* COPIES CARD BY ID TO HISTORY DB */
-function copy_card_to_history($id){
-	require("connect.php");
-	require_once("generate_card_queries.php");
-	$result = mysql_query("SELECT * FROM " . $db['prefix'] . "cards WHERE id='$id'");
-	$row = mysql_fetch_array($result);
-	$sql = generate_history_insert_query($row);
-	mysql_query($sql) or die(mysql_error());
-	
-}
-
-
-
 
 ?>

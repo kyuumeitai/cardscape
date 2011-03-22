@@ -1,113 +1,239 @@
-<?
-//get the dependencies
-require("card_functions.php");			//this holds all actions/functions pertaining to cards
-require("comment_functions.php");		//this holds all actions/functions pertaining to comments
-require("user_functions.php");			//this holds all actions/functions pertaining to users
-require("history_functions.php");		//this holds all actions/functions pertaining to history
-require("image_functions.php");			//this holds all actions/functions pertaining to image management
-require("search_functions.php");		//this holds all actions/functions pertaining to browsing the database
-require("activity_functions.php");		//this holds all actions/functions pertaining to activity notifications
-require("util/cardscape_functions.php");	//this holds various miscellaneous functions pertaining to cardscape
-require("connect.php");				//this connects to the database and the user session
+<?php
+/**
+ @file
+ @section LICENSE
+   This program is licensed under the GNU Affero General Public License. See the LICENSE file for details
+ @section DESCRIPTION
+ index.php - all the things that need to be done each time.
+*/
 
-//build the action array
-$action = array(
+//TODO make sure all templates escape HTML
+error_reporting( E_ALL );
+
+require( 'util.php' );
+require( 'SmartInit.php' );
+require( 'config.php' );
+require( 'Card.php' );
+
+session_start();
+
+/* start smarty */
+$smarty = new SmartInit();
+$smarty -> assign( 'cfg', $cfg );
+$smarty -> assign(
+	'role', 
+	( isset( $_SESSION[ 'role' ]) )? $_SESSION[ 'role' ] : 'guest' );
+
+$smarty -> display( 'header.tpl' );
+
+/**
+Utility function to show an error message in HTML
+@param message The message to show to the user
+@param type the type (also CSS class) of the error box. If type is 'error' execution is halted after display of the error message
+*/
+function error( $message, $type = 'error' ) {
+	global $smarty;
+	$smarty -> assign( 'error', $message );
+	$smarty -> assign( 'type', $type );
+	$smarty -> display( 'error.tpl' );
+	if( $type == 'error' ) die();
+}
+
+/**
+  Error handler. Will later be modified to write error messages into a database so that the admin will be able to see what happend
+@param errno Error number
+@param errstr error message
+@param errfile file in which the error occurred
+@param errline line in which the error occurred
+@param context state of environment variables when things went wrong
+ */
+function errorHandler( $errno, $errstr, $errfile, $errline, $context ) {
+	error( $errstr . '<br />location: ' . $errfile . ':' . $errline );
+}
+
+/* non-critical error handler & session */
+set_error_handler( 'errorHandler' );
+
+
+/* start DB */
+$db_cfg = $cfg[ 'database' ];
+
+try {
+	$dbh = new PDO( $db_cfg[ 'pdo_params' ],
+	                $db_cfg[ 'user' ],
+	                $db_cfg[ 'pass' ] );
+} catch( PDOException $e ) {
+	error( 'Database connection could not be established!' );
+}
+
+/** check if a user is allowed to perform a certain action.
+  @param role the minimum role required to perform the action
+  @param critical If true, abort PHP processing if user is not authorized. Otherwise return true or false */
+function check_permission( $role = 'user', $critical = true ) {
+	if( !isset( $_SESSION[ 'role' ] ) ) {
+		error( 'You need to be logged in!' );
+	}
+
+	$priv = false;
+	switch( $_SESSION[ 'role' ] ) {
+		case 'admin':     $priv |= $role == 'admin';
+		case 'gamemaker': $priv |= $role == 'gamemaker';
+		case 'moderator': $priv |= $role == 'moderator';
+		case 'user':      $priv |= $role == 'user';
+	}
+
+	if( $priv ) return true;
+	elseif( $critical ) error( 'You are not authorized to do this!' );
+	return false;
+}
+
+/* the actions */
+$actions = array(
 		/* CARD FUNCTIONS */
-		'show_card' => function() {
-			$pagename = get_card_name($_GET["id"]) . " | ";
-			echo $db['prefix'];
-			include('header.php');
-			show_card($_GET["id"]);
-			show_new_comment_form($_GET["id"]);
-			include("footer.php");},
-		'new_card' => function(){
-			$pagename = "New Card | ";
-			include('header.php');
-			show_new_card_form();
-			include('footer.php');},
-		'insert_card' => function(){
-			insert_card();},
-		'edit_card' => function(){
-			$pagename = "Editing " . get_card_name($_GET["id"]) . " | ";
-			include('header.php');
-			show_edit_card_form($_GET["id"]);
-			include('footer.php');},
-		'update_card' => function(){
-			update_card($_GET["id"]);},
-		'delete_card' => function(){
-			delete_card($_GET["id"]);},
-		/* HISTORY FUNCTIONS */
-		'revert_card' => function(){
-			revert_card_to_revision($_GET["id"], $_GET["date"]);},
-		/* IMAGE FUNCTIONS */
-		'upload_image' => function(){
-			upload_image($_GET['id']);},
-		'save_upload' => function(){
-			save_image($_GET['id'], $_GET['filename']);},
-		/* USER FUNCTIONS */
-		'login' => function(){
-			$pagename = "Login | ";
-			include('header.php');
-			show_login();
-			include('footer.php');},
-		'login_submit' => function(){
-			login_submit();},
-		'logout' => function(){
-			logout();},
-		'register' => function(){
-			$pagename = "Register | ";
-			include('header.php');
-			show_register_form();
-			include('footer.php');},
-		'insert_user' => function(){
-			insert_user();},
-		'usercp' => function(){
-			$pagename = "User CP | ";
-			include('header.php');
-			show_usercp();
-			include('footer.php');},
-		'update_user' => function(){
-			update_user($_GET['name']);},
-		'delete_user' => function(){
-			delete_user($_GET['name']);},
-		'show_user' => function(){
-			$pagename = "USERNAME | "; // TODO: get username (I'm just being lazy)
-			include('header.php');
-			show_user($_GET['id']);
-			include('footer.php');},
-		/* COMMENT FUNCTIONS */
-		'delete_comment' => function(){
-			delete_comment($_GET['id']);},
-		'insert_comment' => function(){
-			insert_comment($_GET['id']);},
-		/* OTHER FUNCTIONS */
-		'browse' => function(){
-			$pagename = "Browse | ";
-			include('header.php');
-			browse();
-			include('footer.php');},
-		'recent_activity' => function(){
-			$pagename = "Recent Activity | ";
-			include('header.php');
-			recent_activity();
-			include('footer.php');},
-		'progress' => function(){
-			$pagename = "Progress Report | ";
-			include('header.php');
-			progress();
-			include('footer.php');},
-		'default' => function(){
-			$pagename = "Welcome | ";
-			include('header.php');
-			echo "<br>Welcome to Cardscape Alpha. Please click around and make some comments so we can test and revise this tool.";
-			include('footer.php');}
-		);
 
-// get the URL instruction
-$act = $_GET["act"];
-if($act == null){
-	$act = 'default';}
+	'show_card' => function() {
+		show_card( $_GET[ 'show_card' ] ); },
 
-//perform the action
-$action[$act](); // This is where the magic happens ;)
-?>
+	'show_official_card' => function() {
+		error( 'to be implemented' ); },
+
+	'new_card' => function() {
+		check_permission();
+		global $smarty;
+		$smarty -> assign( 'card', new Card() ); //dummy card
+		$smarty -> assign( 'typeoptions', getCardTypes() );
+		$smarty -> assign( 'factionsoptions', getFactions() );
+		$smarty -> display( 'new_card.tpl' ); },
+
+	'new_card_submit' => function() {
+		check_permission();
+		new_card_submit(); },
+
+	'revise_card' => function() {
+		check_permission();
+		revise_card( $_GET[ 'revise_card' ] ); },
+
+	'revise_card_submit' => function() { //a small redirect
+		check_permission();
+		new_card_submit( $_GET[ 'revise_card_submit' ] ); },
+
+	/* small adjustments that do not create a new revision */
+	'update_card' => function() { //TODO
+		//authentication is done in the function itself
+		update_card( $_GET[ 'update_card' ] ); },
+
+	'delete_card' => function() { //TODO
+		check_permission( 'moderator' );
+		delete_card($_GET["id"]);},
+
+	'comment_reply' => function() {
+		check_permission();
+		comment_reply( $_GET[ 'comment_reply' ] );
+	},
+	'comment_reply_submit' => function() {
+		check_permission();
+		if( !isset( $_SESSION[ 'role' ] ) ) {
+			error( 'You need to be logged in to reply!' );
+		}
+		comment_reply_submit( $_GET[ 'comment_reply_submit' ] );
+	},
+
+
+	/* USER FUNCTIONS */
+	'login' => function() {
+		global $smarty;
+		$smarty -> display( 'login.tpl' ); },
+
+	'login_submit' => function() {
+		login_submit(); },
+
+	'logout' => function() {
+		session_destroy();
+		error( 'You are now logged out', 'notice' ); },
+
+	'register' => function() {
+		global $smarty;
+		$smarty -> display( 'register.tpl' ); },
+
+	'register_submit' => function() {
+		register_submit(); },
+
+	'usercp' => function() {
+		check_permission();
+		show_usercp(); },
+
+	'update_user' => function() {
+		check_permission( 'user' );
+		if( isset( $_POST[ 'other_uid' ] ) ) {
+			check_permission( 'gamemaker' );
+			update_user( $_POST[ 'other_uid' ] );
+		} else {
+			update_user( $_SESSION[ 'uid' ] );
+		}
+	},
+
+	'delete_user' => function() {
+		check_permission( 'self' );
+		delete_user($_GET[ 'delete_user' ] ); },
+
+	'show_user' => function() {
+		check_permission(); //keep Google out
+		show_user($_GET[ 'show_user' ] ); },
+
+	/* COMMENT FUNCTIONS */
+	//'delete_comment' => function(){ //important, but I'll take care of that later
+	//	delete_comment($_GET['id']);},
+	//'insert_comment' => function(){
+	//	insert_comment($_GET['id']);},
+
+	/* OTHER FUNCTIONS */
+
+	'browse' => function() {
+		browse(); },
+
+	'recent_activity' => function() {
+		recent_activity(); },
+
+	'statistics' => function() { //progress report
+		statistics(); },
+
+	);
+
+/** A function that includes further necessary files
+@param action Depending on the value of $action a spefic PHP file is included that contains the neccessary function definitons */
+function requirements( $action ) {
+	switch( $action ) {
+		case 'show_card': case 'new_card_submit': case 'revise_card':
+		case 'revise_card_submit':
+		case 'update_card': case 'delete_card': case 'comment_reply':
+		case 'comment_reply_submit':
+			require_once( 'card_functions.php' ); break;
+		case 'upload_image': case 'save_upload':
+			require_once( 'image_functions.php' ); break;
+		case 'login_submit': case 'logout':
+		case 'register': case 'register_submit':
+			require_once( 'login_functions.php' ); break;
+		case 'insert_user': case 'usercp': case 'update_user':
+		case 'delete_user': case 'show_user':
+			require_once( 'user_functions.php' ); break;
+		case 'browse': case 'recent_activity': case 'statistics':
+			require_once( 'other_functions.php' ); break;
+		case 'new_card': case 'login':
+			break; //nothing needs to be done
+		default:
+			error( 'No include requirements could be found' );
+	}
+}
+
+/* and now decide what to do */
+if( count( $_GET ) ) { //is there a specific request?
+	foreach( $_GET as $key => $value ) {
+		if( isset( $actions[ $key ] ) ) {
+			requirements( $key );
+			$actions[ $key ]();
+		}
+	}
+
+} else $smarty -> display( 'index.tpl' );
+
+$smarty -> display( 'footer.tpl' );

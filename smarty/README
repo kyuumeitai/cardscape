@@ -1,0 +1,18 @@
+=== Installation instructions for Smarty ===
+Download Smarty from http://www.smarty.net/download
+
+Copy the contents of the 'libs/' directory into this directory
+
+Create the directories 'cache', 'configs' and 'templates_c' manually
+
+On my system the following files are now in this directory:
+
+cache
+configs
+debug.tpl
+plugins
+README
+Smarty.class.php
+sysplugins
+templates
+templates_c
