@@ -1,9 +1,10 @@
 <h3>Card discussion</h3>
+<p><a href="?enable_js&show_card={$card -> id}">Enable JavaScript</a></p>
 <table class="comments_table">
  {foreach $comments as $c}
  <tr><td>
   <a name="comment{$c -> id}" id="comment{$c -> id}" href="#comment{$c -> id}">{$c -> date}</a><br />
-  {$c -> name}<br />{* TODO replace direction symbols with arrows *}
+  {$c -> name}<br />
 
   {if $c -> parent != 0} <a href="#comment{$c -> parent}"
   onclick="highlight_comment( 'comment{$c -> parent}' )"

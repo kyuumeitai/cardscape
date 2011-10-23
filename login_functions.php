@@ -18,6 +18,7 @@ function login_submit() {
 		$_SESSION[ 'user' ] = $_POST[ 'user' ];
 		$_SESSION[ 'uid' ] = $data[ 'uid' ];
 		$_SESSION[ 'role' ] = $data[ 'role' ];
+		$_SESSION[ 'js_on' ] = $_POST[ 'js_on' ] == '1';
 		error( 'You are now logged in.', 'notice' );
 	} else 	error( 'Wrong password or username!' );
 }
@@ -42,9 +43,9 @@ function register_submit() {
 	$query = $dbh -> prepare( 'INSERT INTO '.$prefix.'users(
 		name, password, mail, role ) VALUES( ?, ?, ?, ? )' );
 	if( $query -> execute( array(
-		$_POST[ 'user' ],
+		htmlspecialchars( $_POST[ 'user' ] ),
 		md5( $salt . $_POST[ 'pass' ] ),
-		$_POST[ 'mail' ],
+		htmlspecialchars( $_POST[ 'mail' ] ),
 		'user' ) ) ) {
 
 		error( 'Registration successful! You can now log in', 'notice' );

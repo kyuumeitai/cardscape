@@ -1,7 +1,7 @@
 #header {
-	//position: relative;
+	/* position: relative; */
 	background-image: url( images/header-center.jpg );
-	height: 125;
+	height: 125px;
 	width: 100%;
 	color: #FFFFFF;
 }
@@ -69,4 +69,12 @@
 .statistics {
 	border: 1px solid #000000;
 	margin: 3px;
+}
+
+.js_comment {
+	margin-left: 20px;
+}
+
+.js_comment .js_comment {
+	display: none;
 }

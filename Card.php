@@ -11,6 +11,7 @@ $cardFields = array( //predefined fields: id, ancestor, date, author. [ENUM {SET
 	'threshold' => 'INT',
 	'faction' => 'ENUM( "Gaia","Red Banner","Empire","Shadowguild","House of Nobles" )',
 	'type' => 'ENUM( "unit","event","spell","entchantment","artifact","equipment" )',
+	'status' => 'ENUM( "concept","new","discussed","playtested","official","rejected","superseded" )',
 	'subtype' => STR,
 	'rules' => TEXT,
 	'flavor' => TEXT,
@@ -31,8 +32,8 @@ function SQL_card_table() {
 	( id INT AUTO_INCREMENT PRIMARY KEY,
 	ancestor INT,
 	date TIMESTAMP,
-	author INT,
-	status ENUM( "concept", "new", "discussed", "playtested", "official", "rejected", "superseded" )';
+	author INT';
+	//status ENUM( "concept", "new", "discussed", "playtested", "official", "rejected", "superseded" )';
 
 	global $cardFields;
 	while( list( $name, $type ) = each( $cardFields ) ) {
@@ -41,20 +42,13 @@ function SQL_card_table() {
 	return $sql.');';
 }
 
-/** A dirty function that extracts all types of cards as a list from $cardFields
- @return A list of types (as strings)  */
-function getCardTypes() {
+/** A dirty function to extract possible ENUM values
+  @param field The field for which values should be extracted
+  @return a list of possible values (as strings) */
+function getEnumValues( $field ) {
 	global $cardFields;
-	$types = rtrim( substr( $cardFields[ 'type' ], 7 ), ') "' );
-	return doubleArray( explode( '","', $types ) );
-}
-
-/** Another dirty function that extracts all factions from $cardFields
-  @return A list of factions */ //TODO summarize with function above
-function getFactions() {
-	global $cardFields;
-	$factions = rtrim( substr( $cardFields[ 'faction' ], 7 ), ') "' );
-	return doubleArray( explode( '","', $factions ) );
+	$values = rtrim( substr( $cardFields[ $field ], 7 ), ') "' );
+	return doubleArray( explode( '","', $values ) );
 }
 
 /** The Card class. Its members should be identical to those in cardFields plus 

@@ -18,7 +18,7 @@ CREATE TABLE posting(
 	id INT AUTO_increment PRIMARY KEY,
 	user INT,
 	card INT,
-	answer_to INT DEFAULT 0,
+	revision INT,
 	text VARCHAR(255) );
 
 CREATE TABLE official(
@@ -27,6 +27,10 @@ CREATE TABLE official(
 	dev_id INT,
 	img_url VARCHAR(63),
 	promotion TIMESTAMP );
+
+CREATE TABLE last_revision(
+	card_id INT PRIMARY KEY,
+	revision INT );
 
 CREATE TABLE history(
 	id INT AUTO_INCREMENT PRIMARY KEY,

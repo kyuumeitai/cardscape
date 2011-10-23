@@ -13,6 +13,7 @@
   @param card the card's id that's affected by the event
   @param action the action that was performend (string)
 */
+
 function log_entry( $user, $card, $action ) {
 	global $dbh;
 	global $cfg;
@@ -22,7 +23,7 @@ function log_entry( $user, $card, $action ) {
 	$query -> execute( array(
 		intval( $user ),
 		intval( $card ),
-		$action ) );
+		htmlspecialchars( $action ) ) );
 }
 
 /** A class for holding comments. Each comment may have a parent, siblings and/or children. A comment gains a child if someone writes an answer to that comment. This answer is considered a child. Therefore discussions spread out like a tree */
@@ -106,7 +107,13 @@ function show_card( $card_id ) {
 	}
 
 	$smarty -> assign( 'comments', $comments );
-	$smarty -> display( 'comments.tpl' );
+	$comments_tpl = 'comments';
+        if( !isset( $_SESSION[ 'js_on' ] ) ) {
+		$_SESSION[ 'js_on' ] = false;
+	}
+
+	$comments_tpl .= $_SESSION[ 'js_on' ]? '_javascript' : '';
+	$smarty -> display( $comments_tpl . '.tpl' );
 
 
 	/* now show the history */
@@ -118,6 +125,28 @@ function show_card( $card_id ) {
 	$hist_entries = $query -> fetchAll( PDO::FETCH_ASSOC );
 	$smarty -> assign( 'hist_entries', $hist_entries );
 	$smarty -> display( 'card_history.tpl' );
+}
+
+function show_official_card( $card_id ) {
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	$query = $dbh -> prepare( 'SELECT * FROM '.$prefix.'official WHERE
+		id = ?' );
+	$query -> execute( array( $card_id ) );
+	$official_data = $query -> fetch( PDO::FETCH_ASSOC );
+
+	$card_dev_id = $official_data[ 'dev_id' ];
+
+	$query = $dbh -> prepare(
+		'SELECT * FROM '.$prefix.'cards WHERE id = ?' );
+	$query -> execute( array( $card_dev_id ) );
+	$card = $query -> fetchObject( 'Card' );
+
+	$smarty -> assign( 'official_data', $official_data );
+	$smarty -> assign( 'card', $card );
+	$smarty -> display( 'official_card.tpl' );
+
+	//TODO comment board
 }
 
 function new_card_submit( $ancestor = 0 ) {
@@ -135,18 +164,18 @@ function new_card_submit( $ancestor = 0 ) {
 	//TODO shouldn't this be unified?
 	$values = array(
 		':ancestor' => intval( $ancestor ),
-		':name' => $_POST[ 'cardname' ],
+		':name' => htmlspecialchars( $_POST[ 'cardname' ] ),
 		':author' => $_SESSION[ 'uid' ],
-		':faction' => $_POST[ 'faction' ],
-		':type' => $_POST[ 'cardtype' ],
-		':subtype' => $_POST[ 'subtype' ],
-		':cost' => $_POST[ 'cost' ],
-		':threshold' => $_POST[ 'threshold' ],
-		':attack' => $_POST[ 'attack' ],
-		':defense' => $_POST[ 'defense' ],
-		':rules' => $_POST[ 'rules' ],
-		':flavor' => $_POST[ 'flavor' ],
-		':image' => $_POST[ 'imgdesc' ] );
+		':faction' => htmlspecialchars( $_POST[ 'faction' ] ),
+		':type' => htmlspecialchars( $_POST[ 'cardtype' ] ),
+		':subtype' => htmlspecialchars( $_POST[ 'subtype' ] ),
+		':cost' => intval( $_POST[ 'cost' ] ),
+		':threshold' => intval( $_POST[ 'threshold' ] ),
+		':attack' => intval( $_POST[ 'attack' ] ),
+		':defense' => intval( $_POST[ 'defense' ] ),
+		':rules' => htmlspecialchars( $_POST[ 'rules' ] ),
+		':flavor' => htmlspecialchars( $_POST[ 'flavor' ] ),
+		':image' => htmlspecialchars( $_POST[ 'imgdesc' ] ) );
 	$values[ ':status' ] = (isset( $_POST[ 'concept' ] ) )? 'concept':'new';
 		
 	if( $query -> execute( $values ) ) {
@@ -247,7 +276,7 @@ function comment_reply_submit( $comment, $card_id = null ) {
 		':user' => $_SESSION[ 'uid' ],
 		':card' => $card_id,
 		':parent' => $comment,
-		':text' => $_POST[ 'reply_text' ] );
+		':text' => htmlspecialchars( $_POST[ 'reply_text' ] ) );
 	if( !$query -> execute( $params ) ) {
 		error( 'Your comment could not be added' );
 	}
@@ -258,7 +287,7 @@ function comment_reply_submit( $comment, $card_id = null ) {
 /** Show a form for a new revision of a card
   @param card_id the id of the card that will be revised
 */
-function revise_card( $card_id ) {
+function revise_card( $card_id, $update_only = false ) {
 	global $dbh, $smarty, $cfg;
 	$prefix = $cfg[ 'database' ][ 'prefix' ];
 
@@ -270,9 +299,62 @@ function revise_card( $card_id ) {
 	}
 
 	$smarty -> assign( 'card', $card );
-	$smarty -> assign( 'typeoptions', getCardTypes() );
-	$smarty -> assign( 'factionsoptions', getFactions() );
+	$smarty -> assign( 'typeoptions', getEnumValues( 'type' ) );
+	$smarty -> assign( 'factionsoptions', getEnumValues( 'faction' ) );
+	$smarty -> assign( 'statusoptions', getEnumValues( 'status' ) );
 	$smarty -> display( 'new_card.tpl' );
+}
+
+/** Update a card without creation of a new revision
+  This function is reserved for gamemakers */
+function update_card_submit( $card_id ) {
+	global $dbh, $smarty, $cfg;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+
+	$query = $dbh -> prepare( 'UPDATE '.$prefix.'cards SET
+		status = ?,
+		name = ?,
+		cost = ?,
+		threshold = ?,
+		faction = ?,
+		type = ?,
+		subtype = ?,
+		rules = ?,
+		flavor = ?,
+		image = ?,
+		attack = ?,
+		defense = ?
+		WHERE id = ?' );
+	$params = array(
+		htmlspecialchars( $_POST[ 'card_status' ] ), //status
+		htmlspecialchars( $_POST[ 'cardname' ] ), //name
+		intval(           $_POST[ 'cost' ] ),
+		intval(           $_POST[ 'threshold' ] ),
+		htmlspecialchars( $_POST[ 'faction' ] ),
+		htmlspecialchars( $_POST[ 'cardtype' ] ),
+		htmlspecialchars( $_POST[ 'subtype' ] ),
+		htmlspecialchars( $_POST[ 'rules' ] ),
+		htmlspecialchars( $_POST[ 'flavor' ] ),
+		htmlspecialchars( $_POST[ 'imgdesc' ] ), //image
+		intval(           $_POST[ 'attack' ] ),
+		intval(           $_POST[ 'defense' ] ),
+		htmlspecialchars( $_GET[ 'update_card_submit' ] ) ); //id
+
+	$query -> execute( $params );
+
+	$uid = $_SESSION[ 'uid' ];
+	$card_id = intval( $_GET[ 'update_card_submit' ] );
+	$comment = htmlspecialchars( $_POST[ 'admin_update_comment' ] );
+	if( strlen( $comment ) ) {
+		log_entry( $uid, $card_id, $comment );
+	} else {
+		$status = $_POST[ 'card_status' ];
+		log_entry( $uid, $card_id, 'Status ('.$status.')' );
+	}
+
+	error( 'Card has been updated', 'notice' );
+
+	show_card( $_GET[ 'update_card_submit' ] );
 }
 
 ?>

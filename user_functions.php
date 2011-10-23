@@ -18,8 +18,23 @@ function show_usercp() {
 }
 
 function update_user( $uid ) {
-	print_r( $_POST );
-	error( 'this still has to be implemented' );
+	global $cfg, $dbh;
+	$prefix = $cfg[ 'database' ][ 'prefix' ];
+	//determine if this is an admin action or a user action
+	if( isset( $_POST[ 'user_role' ] ) ) {
+		check_permission( 'gamemaker' );
+		$query = $dbh -> prepare( 'UPDATE '.$prefix.'users
+			SET name = ?, role = ?  WHERE uid = ?' );
+		$query -> execute( array(
+			htmlspecialchars( $_POST[ 'user_name' ] ),
+			htmlspecialchars( $_POST[ 'user_role' ] ),
+			intval(           $_POST[ 'other_uid' ] ) ) );
+		error( 'User settings changed', 'notice' );
+		show_usercp();
+		return;
+	}
+
+
 
 }
 

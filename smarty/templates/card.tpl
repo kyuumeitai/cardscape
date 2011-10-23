@@ -1,8 +1,12 @@
 <h2>Card details</h2>
 <div class="card">
+	<!-- Development images are disabled
 	<span class="cardimg">
 		<img src="cardimg.php?card={$card -> id}" alt="{$card -> name}" />
-	</span><span class="cardinfo">
+	</span>
+	-->
+
+	<span class="cardinfo">
 		<table>
 			<tr><td>Name</td><td>{$card -> name}</td></tr>
 			<tr><td>Status</td><td>{$card -> status}</td></tr>
@@ -18,6 +22,10 @@
 	</span>
 	
 </div>
-<form method="post" action="?edit_card={$card -> id}">
- <input type="submit" value="Create new version of this card" />
-</form>
+<div class="edit_links">
+ <a href="?revise_card={$card -> id}">Create new version of this card</a>
+ <br />
+{if check_permission( 'gamemaker', false )} <!-- TODO also allow minor changes by author -->
+<a href="?update_card={$card -> id}">Edit Card</a> (Admin)
+{/if}
+</div>

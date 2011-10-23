@@ -1,4 +1,9 @@
 <h2>Card browser</h2>
+<p>Cardscrape distinguishes between official cards and cards in the development
+area. All official cards can also be found in the development area. If you are
+ony interested in official cards, have a look at the <a
+href="?browse_official_cards">official cards catalogue</a>.</p>
+
 <table class="cardbrowser">
  <thead>
   <tr><th>Card name</th><th>Author</th><th>date</th></tr>

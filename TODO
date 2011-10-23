@@ -1,0 +1,13 @@
+better installer
+admin panel (card and user settings) everything else will be in config.php
+control panel
+security
+card search
+card images
+progress report/statistics
+recent activity
+card translations
+reverse output of browse and card history (are there better ways than ORDER BY id DESC?)
+RSS feed for card changes and other stuff
+
+export as JSON, XML, CSV

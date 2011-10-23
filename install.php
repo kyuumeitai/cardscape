@@ -1,4 +1,6 @@
 <?php //this is only a small installer file that sets the DB up. No fancy HTML output is provided
+//TODO block reinstall
+//create admin user
 
 $success = 0;
 

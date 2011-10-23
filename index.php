@@ -63,7 +63,7 @@ try {
 	                $db_cfg[ 'user' ],
 	                $db_cfg[ 'pass' ] );
 } catch( PDOException $e ) {
-	error( 'Database connection could not be established!' );
+	error( 'DB connection failed: ' . $e -> getMessage() );
 }
 
 /** check if a user is allowed to perform a certain action.
@@ -71,7 +71,7 @@ try {
   @param critical If true, abort PHP processing if user is not authorized. Otherwise return true or false */
 function check_permission( $role = 'user', $critical = true ) {
 	if( !isset( $_SESSION[ 'role' ] ) ) {
-		error( 'You need to be logged in!' );
+		$_SESSION[ 'role' ] = 'guest';
 	}
 
 	$priv = false;
@@ -95,32 +95,36 @@ $actions = array(
 		show_card( $_GET[ 'show_card' ] ); },
 
 	'show_official_card' => function() {
-		error( 'to be implemented' ); },
+		show_official_card( $_GET[ 'show_official_card' ] ); },
 
 	'new_card' => function() {
 		check_permission();
 		global $smarty;
 		$smarty -> assign( 'card', new Card() ); //dummy card
-		$smarty -> assign( 'typeoptions', getCardTypes() );
-		$smarty -> assign( 'factionsoptions', getFactions() );
+		$smarty -> assign( 'typeoptions', getEnumValues( 'type' ) );
+		$smarty -> assign( 'factionsoptions', getEnumValues( 'faction' ) );
 		$smarty -> display( 'new_card.tpl' ); },
 
 	'new_card_submit' => function() {
 		check_permission();
 		new_card_submit(); },
 
-	'revise_card' => function() {
+	'revise_card' => function() { //create a new modified card
 		check_permission();
 		revise_card( $_GET[ 'revise_card' ] ); },
 
-	'revise_card_submit' => function() { //a small redirect
+	'revise_card_submit' => function() { //a small internal redirect
 		check_permission();
 		new_card_submit( $_GET[ 'revise_card_submit' ] ); },
 
-	/* small adjustments that do not create a new revision */
-	'update_card' => function() { //TODO
-		//authentication is done in the function itself
-		update_card( $_GET[ 'update_card' ] ); },
+	'update_card' => function() {
+		check_permission( 'gamemaker' );
+		revise_card( $_GET[ 'update_card' ], true ); },
+
+	'update_card_submit' => function() {
+		check_permission( 'gamemaker' );
+		update_card_submit( $_GET[ 'update_card_submit' ] );
+	},
 
 	'delete_card' => function() { //TODO
 		check_permission( 'moderator' );
@@ -137,6 +141,8 @@ $actions = array(
 		}
 		comment_reply_submit( $_GET[ 'comment_reply_submit' ] );
 	},
+
+
 
 
 	/* USER FUNCTIONS */
@@ -191,11 +197,18 @@ $actions = array(
 	'browse' => function() {
 		browse(); },
 
+	'browse_official_cards' => function() {
+		browse( true ); },
+
 	'recent_activity' => function() {
 		recent_activity(); },
 
 	'statistics' => function() { //progress report
 		statistics(); },
+	'enable_js' => function() {
+		$_SESSION[ 'js_on' ] = true; },
+	'disable_js' => function() {
+		$_SESSION[ 'js_on' ] = false; },
 
 	);
 
@@ -203,11 +216,18 @@ $actions = array(
 @param action Depending on the value of $action a spefic PHP file is included that contains the neccessary function definitons */
 function requirements( $action ) {
 	switch( $action ) {
-		case 'show_card': case 'new_card_submit': case 'revise_card':
+		case 'show_card':
+		case 'show_official_card':
+		case 'new_card_submit':
+		case 'revise_card':
 		case 'revise_card_submit':
-		case 'update_card': case 'delete_card': case 'comment_reply':
+		case 'update_card':
+		case 'delete_card':
+		case 'comment_reply':
 		case 'comment_reply_submit':
-			require_once( 'card_functions.php' ); break;
+		case 'update_card_submit':
+			require_once( 'card_functions.php' );
+			break;
 		case 'upload_image': case 'save_upload':
 			require_once( 'image_functions.php' ); break;
 		case 'login_submit': case 'logout':
@@ -216,9 +236,11 @@ function requirements( $action ) {
 		case 'insert_user': case 'usercp': case 'update_user':
 		case 'delete_user': case 'show_user':
 			require_once( 'user_functions.php' ); break;
-		case 'browse': case 'recent_activity': case 'statistics':
+		case 'browse': case 'browse_official_cards':
+		case 'recent_activity': case 'statistics':
 			require_once( 'other_functions.php' ); break;
 		case 'new_card': case 'login':
+		case 'enable_js': case 'disable_js':
 			break; //nothing needs to be done
 		default:
 			error( 'No include requirements could be found' );
