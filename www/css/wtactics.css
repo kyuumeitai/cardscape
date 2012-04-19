@@ -1,35 +1,70 @@
+body, ul, img, a, h1, h2, h3, input, select, textarea {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+}
+
 #header {
-    background-image: url(../images/header-center.jpg );
+    background-image: url(../images/header-center.jpg);
     height: 125px;
-    width: 100%;
     color: #FFFFFF;
 }
 
-#title {
-    padding-top:20px;
-    padding-left: 20px;
-    font-size: 24px;
+#header h1 {
+    float: left;
+    width: 60%;
+}
+
+#tools {
+    float: left;
+    width: 38%;
+    text-align: right;
 }
 
 #menubar {
-    padding-top: 20px;
-    padding-left: 20px;
+}
+
+#menubar ul {
+    list-style: none;
+    float: right;
+}
+
+#menubar li {
+    float: left;
+    list-style: none;
 }
 
 #menubar a {
-    color: #FFFFFF;
-    text-decoration: none;
+    display: block;
+    color: #FFF;
+    padding: 0 2em 0 2em;
 }
 
 #content {
-    background-color: #CCCCCC;
+    /*background-color: #CCCCCC;*/
 }
 
 #footer {
-    color: #8AFF8A;
 }
 
-.error, .notice {
+a, a:visited {
+    text-decoration: none;
+}
+
+input, select, textarea {
+    border: 1px solid #000;
+}
+
+input, select {
+    padding: 0.3em;
+}
+
+.row {
+}
+
+/*.error, .notice {
     padding: 5px;
     font-weight: bold;
 }
@@ -44,13 +79,8 @@
     background-color: #FFFFFF;
 }
 
-#footer {
-    color: #000000;
-    border-top: 2px solid #000000;
-}
-
 #flavor {
-    font-style: italic;
+  font-style: italic;
 }
 
 .comments_table {
@@ -76,3 +106,4 @@
 .js_comment .js_comment {
     display: none;
 }
+*/

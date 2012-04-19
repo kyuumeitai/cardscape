@@ -17,44 +17,51 @@ class Controller extends CController {
             //public
             array(
                 'label' => 'Home',
-                //index.php
-                'url' => array('site/index')
+                'url' => array('/site')
             ),
             array(
                 'label' => 'Browse Cards',
                 //index.php?browse=0
-                'url' => array('cards/browse', 'catalogue' => 'all')
+                'url' => array('/cards', 'catalogue' => 'all')
             ),
             array(
                 'label' => 'Statistics',
                 //index.php?statistics
                 'url' => array('site/statistics')
             ),
-            array(
-                'label' => 'Login',
-                //index.php?login
-                'url' => array('site/login')
-            ),
             //members
-            array(
-                'label' => 'User CP',
-                //index.php?usercp
-                'url' => array('/cpanel')
-            ),
             array(
                 'label' => 'New Card',
                 //index.php?new_card 
-                'url' => array('cards/suggest')
+                'url' => array('cards/suggest'),
+                'visible' => !Yii::app()->user->isGuest
             ),
             array(
                 'label' => 'Recent Activity',
                 //index.php?recent_activity
-                'url' => array('site/recent')
+                'url' => array('site/recent'),
+                'visible' => !Yii::app()->user->isGuest
             ),
             array(
-                'label' => 'Logout',
+                'label' => 'Factions',
                 //index.php?logout
-                'url' => array('site/logout')
+                'url' => array('/factions'),
+                //gamemaker
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
+            ),
+            array(
+                'label' => 'Types',
+                //index.php?logout
+                'url' => array('/types'),
+                //gamemaker
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
+            ),
+            array(
+                'label' => 'Users',
+                //index.php?logout
+                'url' => array('/users'),
+                //administrator
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 3)
             )
         );
     }

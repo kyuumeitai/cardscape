@@ -11,3 +11,12 @@ reverse output of browse and card history (are there better ways than ORDER BY i
 RSS feed for card changes and other stuff
 
 export as JSON, XML, CSV
+
+
+-- CREATE TABLE message(
+-- `cardId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
+-- 	user INT,
+--	card INT,
+--	revision INT,
+--	text VARCHAR(255) );
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
