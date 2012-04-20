@@ -1,0 +1,11 @@
+Yet another pet project where I throw some code.
+
+This is a fork of the Cardscape project, http://sourceforge.net/projects/cardscape/, 
+created as part of WTactics, http://wtactics.org, and that aims to offer a card development 
+platform to be used by WTactics.
+
+I'm starting to port some of the existing features to the Yii framework, remove the 
+use of smarty template system and update the database.
+
+After I get a usable set of features that represent the project's original state I'll 
+try to improve existing features or add new ones.

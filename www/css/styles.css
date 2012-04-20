@@ -64,6 +64,28 @@ input, select {
 .row {
 }
 
+
+#loginarea {
+    width: 49%;
+    float: left;
+}
+
+#registerarea {
+    width: 49%;
+    float: right;
+}
+
+fieldset {
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}
+
+legend {
+    padding: 0 .8em 0 .8em;
+    margin-left: 25px;
+}
+
 /*.error, .notice {
     padding: 5px;
     font-weight: bold;

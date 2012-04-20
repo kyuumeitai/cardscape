@@ -57,4 +57,8 @@ class CardsController extends Controller {
          */
     }
 
+    public function actionSuggest() {
+        $this->render('edit');
+    }
+
 }

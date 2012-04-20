@@ -2,19 +2,18 @@
 
 class Credentials extends CBaseUserIdentity {
 
-    private $email;
     private $username;
     private $password;
     private $id;
 
-    public function __construct($email, $password) {
-        $this->email = $email;
+    public function __construct($username, $password) {
+        $this->username = $username;
         $this->password = $password;
     }
 
     public function authenticate() {
         $this->errorCode = self::ERROR_NONE;
-        $user = User::model()->findByAttributes(array('email' => $this->email));
+        $user = User::model()->findByAttributes(array('username' => $this->username));
 
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
@@ -33,7 +32,7 @@ class Credentials extends CBaseUserIdentity {
                 }
 
                 $time = time();
-                $token = md5($time . $this->id . $user->email);
+                $token = md5($time . $this->id . $user->username);
 
                 $expires = $time + (3600 * 24 * 7);
 

@@ -21,7 +21,34 @@ class SiteController extends Controller {
     }
 
     public function actionLogin() {
-        $this->render('login');
+        $login = new LoginForm();
+        $register = new RegisterForm();
+
+        $this->performAjaxValidation('register-form', $register);
+
+        if (isset($_POST['LoginForm'])) {
+            $login->attributes = $_POST['LoginForm'];
+            if ($login->validate() && $login->login()) {
+                $this->redirect(Yii::app()->user->returnUrl);
+            }
+        } else if (isset($_POST['RegisterForm'])) {
+            $register->attributes = $_POST['RegisterForm'];
+            if ($register->validate() && $register->register()) {
+                $login->email = $register->email;
+                $login->password = $register->password;
+
+                if ($login->login()) {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                } else {
+                    $this->redirect(array('index'));
+                }
+            }
+        }
+
+        $this->render('login', array(
+            'login' => $login,
+            'register' => $register
+        ));
     }
 
     public function actionLogout() {

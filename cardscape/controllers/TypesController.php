@@ -13,4 +13,16 @@ class TypesController extends Controller {
         $this->render('index', array('filter' => $filter));
     }
 
+    public function actionCreate() {
+        
+    }
+
+    public function actionUpdate($id) {
+        
+    }
+
+    public function actionDelete($id) {
+        
+    }
+
 }

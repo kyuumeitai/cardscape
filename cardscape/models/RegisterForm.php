@@ -9,7 +9,7 @@ class RegisterForm extends CFormModel {
 
     public function rules() {
         return array(
-            array('email, password, password_repeat', 'required'),
+            array('username, email, password, password_repeat', 'required'),
             array('email', 'email'),
             array('email', 'unique', 'className' => 'User'),
             array('password', 'compare'),

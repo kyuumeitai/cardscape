@@ -2,15 +2,14 @@
 
 class LoginForm extends CFormModel {
 
-    public $email;
+    public $username;
     public $password;
     public $rememberMe;
     private $credentials;
 
     public function rules() {
         return array(
-            array('email, password', 'required'),
-            array('email', 'email'),
+            array('username, password', 'required'),
             array('rememberMe', 'boolean'),
             array('password', 'authenticate'),
         );
@@ -24,7 +23,7 @@ class LoginForm extends CFormModel {
 
     public function authenticate($attribute, $params) {
         if (!$this->hasErrors()) {
-            $this->credentials = new Credentials($this->email, $this->password);
+            $this->credentials = new Credentials($this->username, $this->password);
             if (!$this->credentials->authenticate())
                 $this->addError('password', 'Incorrect email or password.');
         }
@@ -32,7 +31,7 @@ class LoginForm extends CFormModel {
 
     public function login() {
         if ($this->credentials === null) {
-            $this->credentials = new Credentials($this->email, $this->password);
+            $this->credentials = new Credentials($this->username, $this->password);
             $this->credentials->authenticate();
         }
 

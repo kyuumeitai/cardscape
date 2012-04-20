@@ -3,14 +3,14 @@
     <head>
         <meta charset="UTF-8" />
 
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/wtactics.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->baseUrl; ?>/css/styles.css">
         <!-- <script type="text/javascript" src="util.js"></script> -->
 
         <title><?php echo $this->title; ?></title>
     </head>
     <body>
         <div id="header">
-            <h1>Cardscape - {$cfg.general.game}</h1>
+            <h1><?php echo Yii::app()->name; ?></h1>
             <div id="tools">
                 <?php if (Yii::app()->user->isGuest) { ?>
                     <a href="<?php echo $this->createUrl('site/login'); ?>">Login/Register</a>

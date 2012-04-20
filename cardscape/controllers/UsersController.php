@@ -9,7 +9,7 @@ class UsersController extends Controller {
     public function actionIndex() {
         $filter = new User('search');
         $filter->unsetAttributes();
-        
+
         $this->render('index', array('filter' => $filter));
     }
 
@@ -17,11 +17,11 @@ class UsersController extends Controller {
         
     }
 
-    public function actionEdit() {
+    public function actionUpdate($id) {
         
     }
 
-    public function actionDelete() {
+    public function actionDelete($id) {
         
     }
 
