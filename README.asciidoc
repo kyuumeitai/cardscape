@@ -9,3 +9,7 @@ use of smarty template system and update the database.
 
 After I get a usable set of features that represent the project's original state I'll 
 try to improve existing features or add new ones.
+
+I should point out that I'm *not* trying to take over the project and that this version 
+is in no way endorsed or used by the WTactics team, please refer to the official 
+version at SourceForce.net.
