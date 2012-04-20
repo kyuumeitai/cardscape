@@ -6,7 +6,7 @@ class CardsController extends Controller {
         parent::__construct($id, $module);
     }
 
-    public function actionIndex() {
+    public function actionIndex($catalogue) {
         $filter = new Card();
         $filter->unsetAttributes();
 
@@ -58,7 +58,7 @@ class CardsController extends Controller {
     }
 
     public function actionSuggest() {
-        $this->render('edit');
+        $this->render('suggest');
     }
 
 }

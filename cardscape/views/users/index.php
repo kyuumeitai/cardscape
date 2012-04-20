@@ -1,3 +1,4 @@
+<h2>Users</h2>
 <?php
 
 $this->widget('zii.widgets.grid.CGridView', array(

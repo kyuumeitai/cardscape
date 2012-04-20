@@ -1,4 +1,4 @@
-<h3>Recent activity</h3>
+<h2>Recent Activity</h2>
 <table class="recent_activity">
     <thead>
         <tr><th>time</th><th>card</th><th>user</th><th>action</th></tr>

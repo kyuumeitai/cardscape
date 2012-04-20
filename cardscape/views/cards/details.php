@@ -1,4 +1,4 @@
-<h2>Card details</h2>
+<h2>Card Details</h2>
 <div class="card">
     <!-- Development images are disabled
     <span class="cardimg">

@@ -4,12 +4,19 @@ body, ul, img, a, h1, h2, h3, input, select, textarea {
 }
 
 body {
+    font-family: Geneva, Helvetica, Verdana, Arial, sans-serif;
+    text-align: justify;
+    font-size: 10pt;
 }
 
 #header {
     background-image: url(../images/header-center.jpg);
     height: 125px;
     color: #FFFFFF;
+}
+
+#header a {
+    color: #FFF;
 }
 
 #header h1 {
@@ -24,6 +31,7 @@ body {
 }
 
 #menubar {
+    margin: 50px 0 0 0; 
 }
 
 #menubar ul {
@@ -40,6 +48,10 @@ body {
     display: block;
     color: #FFF;
     padding: 0 2em 0 2em;
+}
+
+#menubar li.active a {
+    color: yellow;
 }
 
 #content {

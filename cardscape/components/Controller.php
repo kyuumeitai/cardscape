@@ -17,12 +17,12 @@ class Controller extends CController {
             //public
             array(
                 'label' => 'Home',
-                'url' => array('/site')
+                'url' => array('site/index')
             ),
             array(
                 'label' => 'Browse Cards',
                 //index.php?browse=0
-                'url' => array('/cards', 'catalogue' => 'all')
+                'url' => array('cards/index', 'catalogue' => 'all')
             ),
             array(
                 'label' => 'Statistics',
@@ -45,21 +45,21 @@ class Controller extends CController {
             array(
                 'label' => 'Factions',
                 //index.php?logout
-                'url' => array('/factions'),
+                'url' => array('factions/index'),
                 //gamemaker
                 'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
             ),
             array(
                 'label' => 'Types',
                 //index.php?logout
-                'url' => array('/types'),
+                'url' => array('types/index'),
                 //gamemaker
                 'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
             ),
             array(
                 'label' => 'Users',
                 //index.php?logout
-                'url' => array('/users'),
+                'url' => array('users/index'),
                 //administrator
                 'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 3)
             )
