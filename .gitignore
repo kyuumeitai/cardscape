@@ -1,4 +1,5 @@
-/nbproject/private/
+nbproject
 /cardscape/config/main.dev.php
 /cardscape/config/params.dev.php
 .DS_Store
+*~
