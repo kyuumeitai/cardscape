@@ -1,5 +1,11 @@
 <?php
 
+echo 'Not implemented yet.', "\n";
+
+//This is an old version, needs to be updated since we now have a proper backup 
+//f the original database
+
+/*
 $server = '<DB SERVER>';
 $username = '<DB USER>';
 $password = '<DB PASS>';
@@ -133,4 +139,4 @@ if (($conn = mysql_connect($server, $username, $password))) {
     }
 } else {
     echo 'Can\'t connect to the database server';
-}
+}*/

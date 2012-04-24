@@ -1,1 +1,0 @@
-<h2>Suggest a Card</h2>
