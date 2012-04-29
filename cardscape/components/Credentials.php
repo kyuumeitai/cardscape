@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Implements a used identity allowing custom authentication code to be injected 
+ * in the standard Yii's authentication method. 
+ */
 class Credentials extends CBaseUserIdentity {
 
     private $username;

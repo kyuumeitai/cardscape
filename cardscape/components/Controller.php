@@ -2,9 +2,25 @@
 
 class Controller extends CController {
 
+    /**
+     * @var string The name of the layout used by the controller. Defaults to 
+     * //layouts/main.
+     * 
+     * Should not be changed unless really necessary and it's only a public 
+     * attribute because it needs to be used outside this class' scope. 
+     */
     public $layout;
+
+    /**
+     * @var array Contains the application menu that is passed on to the 
+     * zii.widgets.CMenu class in the application's layout.
+     */
     protected $menu;
-    protected $breadcrumbs;
+
+    /**
+     * @var string Page tile, should be overriden by each controller/view when 
+     * setting the page title.
+     */
     protected $title;
 
     public function __construct($id, $module = null) {
@@ -13,6 +29,9 @@ class Controller extends CController {
         $this->layout = '//layouts/main';
         $this->title = 'Cardscape';
 
+        //Default menu taken from the previous version, may need to be updated.
+        //The commented query strings represent the request that was used before
+        //and may be used as reference.
         $this->menu = array(
             //public
             array(
@@ -66,6 +85,14 @@ class Controller extends CController {
         );
     }
 
+    /**
+     * Performs AJAX validation that can be used by forms to dynamically validate 
+     * user input in the server or for AJAX requests that need to validade a 
+     * given model.
+     * 
+     * @param mixed $form
+     * @param mixed $model 
+     */
     public final function performAjaxValidation($form, $model) {
         if (isset($_POST['ajax']) && ($_POST['ajax'] === $form || (is_array($form) && in_array($_POST['ajax'], $form)))) {
             echo CActiveForm::validate($model);
@@ -74,4 +101,32 @@ class Controller extends CController {
         }
     }
 
+    /**
+     * Please see Yii's documentation about filters and particular access control 
+     * filter. This method activates the use of filters in controller actions 
+     * and will be used whenever an action is requested.
+     * 
+     * The default filter is access control that is used to limit access to certain
+     * users depending on the access rules in place for the controller.
+     * 
+     * @return array Default action filters.
+     */
+    public function filters() {
+        return array(
+            'accessControl', // perform access control for CRUD operations
+        );
+    }
+
+    /*
+     * //NOTE: //TODO: uncomment this when authentication and access rules are in 
+     * is in place else we lock everyone out of the system.
+      public function accessRules() {
+      return array(
+      //default rule denies every action to every user
+      array('deny',
+      'users' => array('*'),
+      )
+      );
+      }
+     */
 }
