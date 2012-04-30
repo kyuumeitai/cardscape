@@ -1,4 +1,4 @@
-<?php $form = $this->beginWidget('CActiveForm', array('id' => 'recover-form')); ?>
+<?php $form = $this->beginWidget('CActiveForm', array('id' => 'recover-form', 'enableAjaxValidation' => false)); ?>
 <fieldset>
     <legend>Recover</legend>
     <div class="row">

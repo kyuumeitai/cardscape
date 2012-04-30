@@ -164,7 +164,6 @@ nav li:hover > a, nav a:focus {
 }
 
 nav .active > a {
-    font-weight: bold;
     color: #1982D1;
 }
 /*END*/

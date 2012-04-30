@@ -111,8 +111,8 @@ class Controller extends CController {
      * user input in the server or for AJAX requests that need to validade a 
      * given model.
      * 
-     * @param mixed $form
-     * @param mixed $model 
+     * @param mixed $form The name of the form being validated or an array of form names.
+     * @param mixed $model The model to validate.
      */
     public final function performAjaxValidation($form, $model) {
         if (isset($_POST['ajax']) && ($_POST['ajax'] === $form || (is_array($form) && in_array($_POST['ajax'], $form)))) {

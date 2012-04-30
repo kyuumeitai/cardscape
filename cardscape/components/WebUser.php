@@ -17,6 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Extends the default CWebUser class adding token validation to control expired 
+ * users and allow automatic login based on cookies. 
+ */
 class WebUser extends CWebUser {
 
     public function beforeLogin($id, $states, $fromCookie) {

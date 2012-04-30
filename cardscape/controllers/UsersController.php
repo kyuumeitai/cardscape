@@ -23,50 +23,83 @@ class UsersController extends Controller {
         parent::__construct($id, $module);
     }
 
-    public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('User');
-        $this->render('index', array(
-            'dataProvider' => $dataProvider,
-        ));
+    public function accessRules() {
+        //merging with parent rules, though usually the parent just blocks everything
+        return array_merge(
+                        array(
+                    array('allow',
+                        'actions' => array('index', 'create', 'update', 'delete'),
+                        'expression' => '($user->role == 2)'
+                    )
+                        ), parent::accessRules()
+        );
     }
 
-    public function actionCreate() {
-        $model = new User();
-        $this->performAjaxValidation($model);
+    /**
+     * Default action, lists all available (active) users. 
+     */
+    public function actionIndex() {
+        $filter = new User('search');
+        $filter->unsetAttributes();
 
         if (isset($_POST['User'])) {
-            $model->attributes = $_POST['User'];
-            if ($model->save()) {
-                $this->redirect(array('view', 'id' => $model->userId));
+            $filter->attributes = $_POST['User'];
+        }
+
+        $this->render('index', array('filter' => $filter));
+    }
+
+    /**
+     * Creates a new user. This actions is only available to administrators. 
+     */
+    public function actionCreate() {
+        //TODO: incomplete, allow for avatar upload
+        $user = new User();
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                //TODO: send the password to the new user's email
+                $this->redirect(array('update', 'id' => $user->userId));
             }
         }
 
-        $this->render('create', array(
-            'model' => $model,
-        ));
+        $this->render('create', array('user' => $user));
     }
 
+    /**
+     * Allows an administrator to change a user's profile.
+     * 
+     * @param integer $id The user's database ID.
+     */
     public function actionUpdate($id) {
-        $model = $this->loadUserModel($id);
-        $this->performAjaxValidation($model);
+        //TODO: incomplete, allow for avatar upload
+        $user = $this->loadUserModel($id);
+
+        $this->performAjaxValidation('user-form', $user);
 
         if (isset($_POST['User'])) {
-            $model->attributes = $_POST['User'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->userId));
+            $user->attributes = $_POST['User'];
+            if ($user->save())
+                $this->redirect(array('update', 'id' => $user->userId));
         }
 
-        $this->render('update', array(
-            'model' => $model,
-        ));
+        $this->render('update', array('user' => $user));
     }
 
+    /**
+     * Deletes an existing user by setting its active property to be zero.
+     * 
+     * @param integer $id The user's database ID.
+     * 
+     * @throws CHttpException 
+     */
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
             $user->active = 0;
             $user->save();
 
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax'])) {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
@@ -77,8 +110,8 @@ class UsersController extends Controller {
 
     /**
      *
-     * @param integer $id the record ID used to load the User model.
-     * @return User the User model or null if the ID is invalid.
+     * @param integer $id The record ID used to load the User model.
+     * @return User The User model or null if the ID is invalid.
      * 
      * @throws CHttpException 
      */
@@ -88,22 +121,6 @@ class UsersController extends Controller {
         }
 
         return $model;
-    }
-
-    public function accessRules() {
-        //merging with parent rules, though usually the parent just blocks everything
-        return array_merge(
-                        array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete'),
-                        'users' => array('*'),
-                    ),
-                        //array('allow',
-                        //    'actions' => array('create', 'update'),
-                        //    'users' => array('@'),
-                        //),
-                        ), parent::accessRules()
-        );
     }
 
 }
