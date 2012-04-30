@@ -1,7 +1,7 @@
 <?php
 
-/* 
- * Copyright (C) 2012  Cardscape project
+/* Copyright (C) 2012  Cardscape project
+ * Web based collaborative platform for creating Collectible Card Games
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,10 +23,22 @@ class SiteController extends Controller {
         parent::__construct($id, $module = null);
     }
 
+    /**
+     * Default system action.
+     * Used when the user requests the base URL or home page.
+     */
     public function actionIndex() {
         $this->render('index');
     }
 
+    /**
+     * Whenever an error occurs this is the action that is used to show a message
+     * to the user. It makes no difference if the error is a PHP error, an 
+     * exception or some HTTP error like 404.
+     * 
+     * If the request was made by AJAX the error is simple echoed to the 
+     * requqesting agent.
+     */
     public function actionError() {
         if (($error = Yii::app()->errorHandler->error)) {
             if (Yii::app()->request->isAjaxRequest) {
@@ -37,6 +49,9 @@ class SiteController extends Controller {
         }
     }
 
+    /**
+     * Shows the login/register view and provides login and register features. 
+     */
     public function actionLogin() {
         $login = new LoginForm();
         $register = new RegisterForm();
@@ -68,72 +83,19 @@ class SiteController extends Controller {
         ));
     }
 
+    /**
+     * Logs a user out of the system and redirects to the home page. 
+     */
     public function actionLogout() {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
 
-    public function actionStatistics() {
-        /*
-          global $dbh, $smarty, $cfg;
-          $prefix = $cfg[ 'database' ][ 'prefix' ];
-          $fields = $cfg[ 'database' ][ 'statistic_fields' ];
-
-          $query = $dbh -> prepare( 'SELECT '.$fields.' FROM '.$prefix.'cards' );
-          $query -> execute();
-
-          $fields = explode( ',', $fields );
-
-          $statistics = array();
-          foreach( $fields as $field ) {
-          $statistics[ $field ] = array();
-          }
-
-          while( $card_data = $query -> fetch( PDO::FETCH_ASSOC ) ) {
-          foreach( $fields as $field ) {
-          $val = $card_data[ $field ];
-          if( isset( $statistics[ $field ][ $val ] ) ) {
-          $statistics[ $field ][ $val ]++;
-          } else
-          $statistics[ $field ][ $val ] = 1;
-          }
-          }
-
-          foreach( $fields as $field ) {
-          $smarty -> assign( 'field', $field );
-          $smarty -> assign( 'counts', $statistics[ $field ] );
-          $smarty -> display( 'statistics.tpl' );
-          }
-         */
-        $this->render('statistics');
-    }
-
-    public function actionRecent() {
-        /*
-          global $dbh, $smarty, $cfg;
-          $prefix = $cfg[ 'database' ][ 'prefix' ];
-          $pagesize = $cfg[ 'database' ][ 'pagesize' ];
-          $display_offset = intval( $_GET[ 'recent_activity' ] );
-          if( $display_offset < 0 ) $display_offset = 0;
-
-          $query = $dbh -> prepare( 'SELECT h.date, h.action, c.id AS card_id, c.name AS card_name, u.uid AS user_id, u.name AS username
-          FROM '.$prefix.'history h
-          LEFT JOIN '.$prefix.'users u ON h.user = u.uid
-          LEFT JOIN '.$prefix.'cards c ON h.card = c.id
-          LIMIT :offset, :pagesize' );
-
-          $query -> bindValue( ':offset', $display_offset, PDO::PARAM_INT );
-          $query -> bindValue( ':pagesize', $pagesize, PDO::PARAM_INT );
-
-          $query -> execute();
-
-          $hist_entries = $query -> fetchAll( PDO::FETCH_ASSOC );
-          $smarty -> assign( 'hist_entries', $hist_entries );
-          $smarty -> assign( 'offset', $display_offset );
-          $smarty -> assign( 'pagesize', $pagesize );
-          $smarty -> display( 'history.tpl' );
-         */
-        $this->render('recent');
+    /**
+     * Allows a user to recover a lost password. 
+     */
+    public function actionRecover() {
+        
     }
 
 }

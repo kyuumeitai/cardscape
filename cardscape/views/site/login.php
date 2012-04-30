@@ -1,12 +1,12 @@
 <?php $this->title = 'Login or Register'; ?>
 
-<h2>Login or Register</h2>
+<h1>Login or Register</h1>
 
-<div id="loginarea">
+<div class="halfleft">
     <?php $this->renderPartial('_login', array('login' => $login)); ?>
 </div>
 
-<div id="registerarea">
+<div class="halfright">
     <?php $this->renderPartial('_register', array('register' => $register)); ?>
 </div>
 

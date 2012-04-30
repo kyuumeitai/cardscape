@@ -1,143 +1,233 @@
-body, ul, img, a, h1, h2, h3, input, select, textarea {
+/* Copyright (C) 2012  Cardscape project
+ * Web based collaborative platform for creating Collectible Card Games
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* Standard RESET */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, 
+pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, ins, kbd, q, s, 
+samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, 
+form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+    border: 0 none;
+    font-family: inherit;
+    font-size: 100%;
+    font-style: inherit;
+    font-weight: inherit;
     margin: 0;
+    outline: 0 none;
     padding: 0;
+    vertical-align: baseline;
+}
+
+:focus {
+    outline: 0 none;
 }
 
 body {
-    font-family: Geneva, Helvetica, Verdana, Arial, sans-serif;
+    background: none repeat scroll 0 0 #FFFFFF;
+    line-height: 1;
     text-align: justify;
-    font-size: 10pt;
 }
 
-#header {
-    background-image: url(../images/header-center.jpg);
-    height: 125px;
-    color: #FFFFFF;
+ol, ul {
+    list-style: none outside none;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
 }
 
-#header a {
-    color: #FFF;
+blockquote:before, blockquote:after, q:before, q:after {
+    content: "";
 }
 
-#header h1 {
-    float: left;
-    width: 60%;
+blockquote, q {
+    quotes: "" "";
 }
 
-#tools {
-    float: left;
-    width: 38%;
-    text-align: right;
+a img {
+    border: 0 none;
 }
 
-#menubar {
-    margin: 50px 0 0 0; 
-}
-
-#menubar ul {
-    list-style: none;
-    float: right;
-}
-
-#menubar li {
-    float: left;
-    list-style: none;
-}
-
-#menubar a {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
-    color: #FFF;
-    padding: 0 2em 0 2em;
 }
 
-#menubar li.active a {
-    color: yellow;
+h1, h2, h3, h4, h5, h6 {
+    clear: both;
 }
 
-#content {
-    /*background-color: #CCCCCC;*/
-}
-
-#footer {
-}
-
-a, a:visited {
-    text-decoration: none;
-}
-
-input, select, textarea {
-    border: 1px solid #000;
-}
-
-input, select {
-    padding: 0.3em;
-}
-
-.row {
-}
-
-
-#loginarea {
-    width: 49%;
-    float: left;
-}
-
-#registerarea {
-    width: 49%;
-    float: right;
-}
-
-fieldset {
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-}
-
-legend {
-    padding: 0 .8em 0 .8em;
-    margin-left: 25px;
-}
-
-/*.error, .notice {
-    padding: 5px;
+strong {
     font-weight: bold;
 }
 
-.error {
-    border: 3px dashed yellow;
-    background-color: #FF0000;
+cite, em, i {
+    font-style: italic;
+}
+/*END*/
+
+body {
+    background: none repeat scroll 0 0 #E2E2E2;
 }
 
-.notice {
-    border: 3px solid #0000FF;
-    background-color: #FFFFFF;
+body, input, textarea {
+    color: #373737;
+    font: 300 15px/1.625 "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-#flavor {
-  font-style: italic;
+#page {
+    margin: 0 auto;
+    max-width: 1000px;
+    background: none repeat scroll 0 0 #FFFFFF;
 }
 
-.comments_table {
-    background-color: #cccccc;
-    border: 3px solid #000000;
-    padding: 2px;
+#content {
+    padding: .3em;
 }
 
-.comments_table td {
-    border-bottom: 2px solid #444444;
-    margin-left: 0px;
+a {
+    color: #1982D1;
+    text-decoration: none;
 }
 
-.statistics {
-    border: 1px solid #000000;
-    margin: 3px;
+a:focus, a:active, a:hover {
+    text-decoration: underline;
 }
 
-.js_comment {
+/* Main menu navigation */
+nav div {
+    margin: 0 7.6%;
+}
+
+nav {
+    background: -moz-linear-gradient(#252525, #0A0A0A) repeat scroll 0 0 transparent;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    clear: both;
+    display: block;
+    float: left;
+    margin: 0 auto 6px;
+    width: 100%;
+}
+
+nav ul {
+    font-size: 13px;
+    list-style: none outside none;
+    margin: 0 0 0 -0.8125em;
+    padding-left: 0;
+}
+
+nav li {
+    float: left;
+    position: relative;
+}
+
+nav a, nav a:hover {
+    color: #EEEEEE;
+    display: block;
+    line-height: 3.333em;
+    padding: 0 1.2125em;
+    text-decoration: none;
+}
+
+nav li:hover > a, nav a:focus {
+    background: none repeat scroll 0 0 #EFEFEF;
+}
+
+nav li:hover > a, nav a:focus {
+    background: -moz-linear-gradient(#F9F9F9, #E5E5E5) repeat scroll 0 0 transparent;
+    color: #373737;
+}
+
+nav .active > a {
+    font-weight: bold;
+    color: #1982D1;
+}
+/*END*/
+
+/* Footer */
+footer {
+    background: none repeat scroll 0 0 #000000;
+    color: #DDD;
+    padding: 0 2em;
+}
+/*END*/
+
+/* FORM definitions */
+form {
+    margin-bottom: 2em;
+}
+
+fieldset {
+    border-top: 1px solid #000;
+}
+
+legend {
+    padding: 0 1em 0 1em;
     margin-left: 20px;
 }
 
-.js_comment .js_comment {
-    display: none;
+label {
+    display: block;
+    float: left;
+    min-width: 150px;
 }
-*/
+
+.row {
+    margin-bottom: .5em;
+    clear: both;
+}
+
+span.required {
+    color: #F00;
+}
+
+.buttons {
+}
+
+input[type="text"], input[type="password"], select, textarea {
+    background: none repeat scroll 0 0 #FAFAFA;
+    border: 1px solid #DDDDDD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
+    color: #888888;
+}
+
+input[type="text"]:focus, select, textarea:focus {
+    color: #373737;
+}
+
+
+textarea {
+    padding-left: .1em;
+    width: 98%;
+}
+
+input[type="text"], select {
+    padding: 2px;
+}
+
+.halfleft {
+    float: left;
+    width: 49%;
+}
+
+.halfright {
+    float: right;
+    width: 49%;
+
+}

@@ -1,11 +1,12 @@
+<h1>Recover Password</h1>
 <?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'login-form',
-    'focus' => array($login, 'username')
-        ));
+//$form = $this->beginWidget('CActiveForm', array(
+//    'id' => 'login-form',
+//    'focus' => array($login, 'username')
+//        ));
 ?>
 <fieldset>
-    <legend>Login</legend>
+    <legend></legend>
     <div class="row">
         <?php
         echo $form->labelEx($login, 'username'),

@@ -19,6 +19,7 @@ return array(
           'username' => '<DB USER>',
           'password' => '<USER PASSWORD>',
           'charset' => 'utf8',
+          'tablePrefix' => ''
           ),
          */
         'errorHandler' => array(

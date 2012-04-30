@@ -31,6 +31,7 @@ return array(
             'username' => '<DB USER>',
             'password' => '<DB PASSWORD>',
             'charset' => 'utf8',
+            'tablePrefix' => ''
         ),
         'errorHandler' => array(
             'errorAction' => 'site/error',

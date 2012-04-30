@@ -1,5 +1,22 @@
 <?php
 
+/* Copyright (C) 2012  Cardscape project
+ * Web based collaborative platform for creating Collectible Card Games
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 class Controller extends CController {
 
     /**
@@ -32,54 +49,45 @@ class Controller extends CController {
         //Default menu taken from the previous version, may need to be updated.
         //The commented query strings represent the request that was used before
         //and may be used as reference.
+        //TODO: Uncomment menu elements when they became active
         $this->menu = array(
-            //public
+            //public or guest links
             array(
                 'label' => 'Home',
                 'url' => array('site/index')
             ),
             array(
-                'label' => 'Browse Cards',
-                //index.php?browse=0
-                'url' => array('cards/index', 'catalogue' => 'all')
+                'label' => 'Login or Register',
+                'url' => array('site/login'),
+                'visible' => Yii::app()->user->isGuest
             ),
-            array(
-                'label' => 'Statistics',
-                //index.php?statistics
-                'url' => array('site/statistics')
-            ),
+            //array(
+            //    'label' => 'Browse Cards',
+            //    //index.php?browse=0
+            //    'url' => array('cards/index', 'catalogue' => 'all')
+            //),
+            //array(
+            //    'label' => 'Statistics',
+            //    //index.php?statistics
+            //    'url' => array('site/statistics')
+            //),
             //members
-            array(
-                'label' => 'New Card',
-                //index.php?new_card 
-                'url' => array('cards/suggest'),
-                'visible' => !Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Recent Activity',
-                //index.php?recent_activity
-                'url' => array('site/recent'),
-                'visible' => !Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Factions',
-                //index.php?logout
-                'url' => array('factions/index'),
-                //gamemaker
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
-            ),
-            array(
-                'label' => 'Types',
-                //index.php?logout
-                'url' => array('types/index'),
-                //gamemaker
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role >= 2)
-            ),
+            //array(
+            //    'label' => 'New Card',
+            //    //index.php?new_card 
+            //    'url' => array('cards/suggest'),
+            //    'visible' => !Yii::app()->user->isGuest
+            //),
+            //array(
+            //    'label' => 'Recent Activity',
+            //    //index.php?recent_activity
+            //    'url' => array('site/recent'),
+            //    'visible' => !Yii::app()->user->isGuest
+            //),
             array(
                 'label' => 'Users',
-                //index.php?logout
                 'url' => array('users/index'),
-                //administrator
+                //visible to administrators only
                 'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 3)
             )
         );
