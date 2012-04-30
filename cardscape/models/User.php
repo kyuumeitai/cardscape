@@ -41,7 +41,7 @@
  * @property string $about Description text with a message about the user (optional)
  * @property integer $active Flag that marks this user as a deleted user
  *
- * The followings are the available model relations:
+ * The following are the available model relations:
  * @property Card[] $cards The cards this user created
  * @property Comment[] $comments The comments this user wrote
  * @property Project[] $projects The projects this user moderates
@@ -72,7 +72,7 @@ class User extends CActiveRecord {
     public function rules() {
         return array(
             array('username, email', 'required'),
-            array('role, showEmail, active', 'numerical', 'integerOnly' => true),
+            array('role, showEmail', 'numerical', 'integerOnly' => true),
             array('username', 'length', 'max' => 25),
             array('email, location, msn, skype, avatar, about', 'length', 'max' => 255),
             array('twitter', 'length', 'max' => 50),
@@ -89,7 +89,7 @@ class User extends CActiveRecord {
                 //TODO: uncomment when they became available
                 //'cards' => array(self::MANY_MANY, 'Card', 'CardUser(userId, cardId)'),
                 //'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
-                //'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
+                'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
                 //'revisions' => array(self::HAS_MANY, 'Revision', 'userId'),
         );
     }
@@ -117,7 +117,7 @@ class User extends CActiveRecord {
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * 
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+     * @return CActiveDataProvider The data provider that can return the models based on the search/filter conditions.
      */
     public function search() {
         $criteria = new CDbCriteria();

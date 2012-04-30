@@ -77,7 +77,7 @@ CONSTRAINT `fkAOI18NAttributeOption` FOREIGN KEY (`attributeOptionId`) REFERENCE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- R2
--- Joins a card with it's attributes
+-- Joins a card with its attributes
 CREATE TABLE `CardAttribute` (
 `cardId` INT UNSIGNED NOT NULL ,
 `attributeId` INT UNSIGNED NOT NULL ,
@@ -109,6 +109,7 @@ CONSTRAINT `fkRevisionAttributeRevision` FOREIGN KEY (`revisionId`) REFERENCES `
 CONSTRAINT `fkRevisionAttributeAttribute` FOREIGN KEY (`attributeId`) REFERENCES `Attribute`(`attributeId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
+-- Registers comments made to a card by a user.
 CREATE TABLE `Comment` (
 `commentId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `userId` INT UNSIGNED NOT NULL ,
@@ -126,7 +127,9 @@ CREATE TABLE `Project` (
 `name` VARCHAR( 50 ) NOT NULL ,
 `description` VARCHAR( 255 ) NULL ,
 `expires` DATETIME NULL ,
-`active` TINYINT NOT NULL DEFAULT 1
+`active` TINYINT NOT NULL DEFAULT 1 ,
+`userId` INT UNSIGNED NOT NULL ,
+CONSTRAINT `fkProjectUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- R4

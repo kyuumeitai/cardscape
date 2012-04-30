@@ -2,6 +2,10 @@
 
 <h1>Manage Users</h1>
 
+<div class="tools">
+    <a href="<?php echo $this->createUrl('users/create'); ?>">Create User</a>
+</div>
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',
@@ -35,4 +39,3 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     ),
 ));
-?>

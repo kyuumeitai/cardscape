@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UsersController extends Controller {
+class ProjectsController extends Controller {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -36,72 +36,68 @@ class UsersController extends Controller {
     }
 
     /**
-     * Default action, lists all available (active) users. 
+     * Lists all available projects.
      */
     public function actionIndex() {
-        $filter = new User('search');
+        $filter = new Project('search');
         $filter->unsetAttributes();
 
-        if (isset($_POST['User'])) {
-            $filter->attributes = $_POST['User'];
+        if (isset($_GET['Project'])) {
+            $filter->attributes = $_GET['Project'];
         }
 
         $this->render('index', array('filter' => $filter));
     }
 
     /**
-     * Creates a new user. This actions is only available to administrators. 
+     * Allows administrators to create new projects. 
      */
     public function actionCreate() {
-        //TODO: incomplete, allow for avatar upload
-        $user = new User();
-        $this->performAjaxValidation('user-form', $user);
+        $project = new Project();
+        $this->performAjaxValidation('project-form', $project);
 
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'];
-            if ($user->save()) {
-                //TODO: send the password to the new user's email
-                $this->redirect(array('update', 'id' => $user->userId));
+        if (isset($_POST['Project'])) {
+            $project->attributes = $_POST['Project'];
+            if ($project->save()) {
+                $this->redirect(array('update', 'id' => $project->projectId));
             }
         }
 
-        $this->render('create', array('user' => $user));
+        $this->render('create', array('project' => $project,));
     }
 
     /**
-     * Allows an administrator to change a user's profile.
-     * 
-     * @param integer $id The user's database ID.
+     * Allows administrators to update existing project's information.
+     * @param intenger $id Database ID for the project.
      */
     public function actionUpdate($id) {
-        //TODO: incomplete, allow for avatar upload
-        $user = $this->loadUserModel($id);
+        $project = $this->loadProjectModel($id);
+        $this->performAjaxValidation('project-form', $project);
 
-        $this->performAjaxValidation('user-form', $user);
-
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'];
-            if ($user->save())
-                $this->redirect(array('update', 'id' => $user->userId));
+        if (isset($_POST['Project'])) {
+            $project->attributes = $_POST['Project'];
+            if ($project->save()) {
+                $this->redirect(array('update', 'id' => $project->projectId));
+            }
         }
 
-        $this->render('update', array('user' => $user));
+        $this->render('update', array('project' => $project));
     }
 
     /**
-     * Deletes an existing user by setting its active property to be zero.
+     * Used to delete projects, currently only available in the projects list (index).
      * 
-     * @param integer $id The user's database ID.
+     * @param integer $id Project's database ID.
      * 
      * @throws CHttpException 
      */
     public function actionDelete($id) {
-        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
-            $user->active = 0;
-            $user->save();
+        if (Yii::app()->request->isPostRequest && (($project = $this->loadModel($id)) !== null)) {
+            $project->active = 0;
+            $project->save();
 
             if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
@@ -109,18 +105,18 @@ class UsersController extends Controller {
     }
 
     /**
-     *
-     * @param integer $id The record ID used to load the User model.
-     * @return User The User model or null if the ID is invalid.
+     * Loads a Project model from the database.
+     * 
+     * @param integer $id The project's ID to use when searching for the record.
+     * @return Project The model if a record is found.
      * 
      * @throws CHttpException 
      */
-    public function loadUserModel($id) {
-        if (($user = User::model()->findByPk($id)) === null) {
+    public function loadProjectModel($id) {
+        if (($project = Project::model()->findByPk($id)) === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
-
-        return $user;
+        return $project;
     }
 
 }

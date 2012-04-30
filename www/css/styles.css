@@ -119,6 +119,10 @@ a:focus, a:active, a:hover {
     overflow:hidden;
 }
 
+.tools {
+    text-align: right;
+}
+
 /* Main menu navigation */
 nav div {
     margin: 0 7.6%;

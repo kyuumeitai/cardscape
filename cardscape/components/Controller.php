@@ -88,6 +88,12 @@ class Controller extends CController {
             //    'visible' => !Yii::app()->user->isGuest
             //),
             array(
+                'label' => 'Projects',
+                'url' => array('projects/index'),
+                //visible to administrators only
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2)
+            ),
+            array(
                 'label' => 'Users',
                 'url' => array('users/index'),
                 //visible to administrators only
