@@ -1,9 +1,4 @@
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'register-form',
-    'enableAjaxValidation' => true
-        ));
-?>
+<?php $form = $this->beginWidget('CActiveForm', array('id' => 'register-form', 'enableAjaxValidation' => true)); ?>
 <fieldset>
     <legend>Register</legend>
     <div class="row">

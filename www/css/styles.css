@@ -110,6 +110,15 @@ a:focus, a:active, a:hover {
     text-decoration: underline;
 }
 
+.clearfix:after {
+    content: "\0020";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    overflow:hidden;
+}
+
 /* Main menu navigation */
 nav div {
     margin: 0 7.6%;

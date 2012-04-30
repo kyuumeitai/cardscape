@@ -17,6 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Base application controller, this class contains all application wide settings 
+ * and methods. Generally it contains the filters for all controllers, the default 
+ * access rules (deny everything), the main application menu and the used layout.
+ * 
+ * Any variable that should be available to the layout needs to be placed here, 
+ * also any data that is common to all controllers is also part of this class. 
+ */
 class Controller extends CController {
 
     /**
@@ -56,11 +64,6 @@ class Controller extends CController {
                 'label' => 'Home',
                 'url' => array('site/index')
             ),
-            array(
-                'label' => 'Login or Register',
-                'url' => array('site/login'),
-                'visible' => Yii::app()->user->isGuest
-            ),
             //array(
             //    'label' => 'Browse Cards',
             //    //index.php?browse=0
@@ -88,8 +91,18 @@ class Controller extends CController {
                 'label' => 'Users',
                 'url' => array('users/index'),
                 //visible to administrators only
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 3)
-            )
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2)
+            ),
+            array(
+                'label' => 'Login or Register',
+                'url' => array('site/login'),
+                'visible' => Yii::app()->user->isGuest
+            ),
+            array(
+                'label' => 'Logout',
+                'url' => array('site/logout'),
+                'visible' => !Yii::app()->user->isGuest
+            ),
         );
     }
 
@@ -125,16 +138,20 @@ class Controller extends CController {
         );
     }
 
-    /*
-     * //NOTE: //TODO: uncomment this when authentication and access rules are in 
-     * is in place else we lock everyone out of the system.
-      public function accessRules() {
-      return array(
-      //default rule denies every action to every user
-      array('deny',
-      'users' => array('*'),
-      )
-      );
-      }
+    /**
+     * Default access rules to be used when a controller sub-class forgets to add 
+     * its own rules. The default rules denies access to any and all controller 
+     * actions, regardless of the user's role.
+     * 
+     * @return array The access rules array.
      */
+    public function accessRules() {
+        return array(
+            //default rule denies every action to every user
+            array('deny',
+                'users' => array('*'),
+            )
+        );
+    }
+
 }

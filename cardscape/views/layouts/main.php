@@ -8,13 +8,13 @@
     </head>
     <body>
         <div id="page">
-            <div id="topbanner">
-            </div>
+            <div id="topbanner"><!-- //TODO: Big image header and logo to the side --></div>
             <nav role="navigation">
                 <div id="menu-container">
                     <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu)); ?>
                 </div>
             </nav>
+            <div class="clearfix"></div>
 
             <div id="content" role="main">
                 <?php echo $content; ?>

@@ -23,6 +23,23 @@ class SiteController extends Controller {
         parent::__construct($id, $module = null);
     }
 
+    public function accessRules() {
+        return array(
+            array('allow',
+                'actions' => array('index', 'error'),
+                'users' => array('*'),
+            ),
+            array('allow',
+                'actions' => array('login', 'recover'),
+                'users' => array('?'),
+            ),
+            array('allow',
+                'actions' => array('logout'),
+                'users' => array('@'),
+            )
+        );
+    }
+
     /**
      * Default system action.
      * Used when the user requests the base URL or home page.
@@ -53,6 +70,7 @@ class SiteController extends Controller {
      * Shows the login/register view and provides login and register features. 
      */
     public function actionLogin() {
+        //TODO: add captcha for registration
         $login = new LoginForm();
         $register = new RegisterForm();
 
@@ -66,10 +84,12 @@ class SiteController extends Controller {
         } else if (isset($_POST['RegisterForm'])) {
             $register->attributes = $_POST['RegisterForm'];
             if ($register->validate() && $register->register()) {
-                $login->email = $register->email;
+                //auto login the user
+                $login->unsetAttributes();
+                $login->username = $register->username;
                 $login->password = $register->password;
 
-                if ($login->login()) {
+                if (Yii::app()->user->returnUrl) {
                     $this->redirect(Yii::app()->user->returnUrl);
                 } else {
                     $this->redirect(array('index'));
@@ -95,7 +115,17 @@ class SiteController extends Controller {
      * Allows a user to recover a lost password. 
      */
     public function actionRecover() {
-        
+        $recover = new RecoverForm();
+
+        if (isset($_POST['RecoverForm'])) {
+            $recover->attributes = $_POST['RecoverForm'];
+            //TODO: show success or error
+            if ($recover->validate() && $recover->recover()) {
+                //TODO: not implemented yet
+            }
+        }
+
+        $this->render('recover', array('recover' => $recover));
     }
 
 }
