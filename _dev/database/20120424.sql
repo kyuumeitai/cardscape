@@ -39,6 +39,7 @@ CREATE TABLE `Card` (
 `status` TINYINT NOT NULL DEFAULT 0 ,
 `active` TINYINT NOT NULL DEFAULT 1 ,
 `userId` INT UNSIGNED NOT NULL ,
+`ancestor` INT UNSIGNED NOT NULL DEFAULT 0, -- ID of card from which this card is derived from
 CONSTRAINT `fkCardUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
