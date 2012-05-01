@@ -129,7 +129,7 @@ CREATE TABLE `Project` (
 `expires` DATETIME NULL ,
 `active` TINYINT NOT NULL DEFAULT 1 ,
 `userId` INT UNSIGNED NOT NULL ,
-CONSTRAINT `fkProjectUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`) ,
+CONSTRAINT `fkProjectUser` FOREIGN KEY (`userId`) REFERENCES `User`(`userId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- R4
