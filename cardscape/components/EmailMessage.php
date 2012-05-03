@@ -40,7 +40,9 @@ class EmailMessage {
 
         $this->form = $from;
         if (!$this->from) {
-            //TODO: get address from config
+            if (($setting = Setting::model()->findByPk('email')) !== null) {
+                $this->form = $setting->value;
+            }
         }
 
         $this->sender = $sender;
@@ -70,18 +72,33 @@ class EmailMessage {
         $mailer->Subject = $this->subject;
         $mailer->Body = $this->message;
 
-        //TODO: get settings for SMTP
-        if (false) {
-            
-            
-            
-            
-            
+        $smtp = false;
+        if (($setting = Setting::model()->findByPk('usesmtp')) !== null) {
+            $smtp = intval($setting->value);
+        }
+        if ($smtp) {
             $mailer->IsSMTP();
-            $mailer->Host = '';
             $mailer->SMTPAuth = true;
-            $mailer->Username = '';
-            $mailer->Password = '';
+
+            if (($setting = Setting::model()->findByPk('username')) !== null) {
+                $mailer->Username = $setting->value;
+            }
+
+            if (($setting = Setting::model()->findByPk('password')) !== null) {
+                $mailer->Password = $setting->value;
+            }
+
+            if (($setting = Setting::model()->findByPk('host')) !== null) {
+                $mailer->Host = $setting->value;
+            }
+
+            if (($setting = Setting::model()->findByPk('port')) !== null) {
+                $mailer->Port = intval($setting->port);
+            }
+
+            if (($setting = Setting::model()->findByPk('security')) !== null) {
+                $mailer->SMTPSecure = $setting->value;
+            }
         }
 
         $mailer->Send();
