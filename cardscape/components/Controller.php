@@ -64,11 +64,10 @@ class Controller extends CController {
                 'label' => 'Home',
                 'url' => array('site/index')
             ),
-            //array(
-            //    'label' => 'Browse Cards',
-            //    //index.php?browse=0
-            //    'url' => array('cards/index', 'catalogue' => 'all')
-            //),
+            array(
+                'label' => 'Gallery',
+                'url' => array('cards/gallery')
+            ),
             //array(
             //    'label' => 'Statistics',
             //    //index.php?statistics

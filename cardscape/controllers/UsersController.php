@@ -30,6 +30,10 @@ class UsersController extends Controller {
                     array('allow',
                         'actions' => array('index', 'create', 'update', 'delete', 'reset'),
                         'expression' => '($user->role == 2)'
+                    ),
+                    array('allow',
+                        'actions' => array('account'),
+                        'users' => array('@')
                     )
                         ), parent::accessRules()
         );
@@ -156,6 +160,10 @@ class UsersController extends Controller {
         } else {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
+    }
+
+    public function actionAccount() {
+        $this->render('account');
     }
 
 }
