@@ -28,8 +28,7 @@ CREATE TABLE `User` (
 `active` TINYINT NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- STATUS: concept(0), discussion(1), playtest(2), approved(3), official(4), 
---         halt(5), restricted(6), rejected(7)
+-- STATUS: concept(0), discussion(1), playtest(2), approved(3), rejected(4)
 -- Card status are made hardcoded because they are considered control information
 -- to be used by the platform and not edited by users. Any other status that is
 -- needed will probably require code changes to be effective thus they are out 
@@ -180,5 +179,4 @@ CREATE TABLE `Setting` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Insert default data
-INSERT INTO `Setting` VALUES ('captcha', 0), ('registration', 1), ('lang', 'en'), 
-('minnick', 3), ('avatarwidth', 100), ('avatarheight', 75), ('projects', 0) ;
+INSERT INTO `Setting` VALUES ('captcha', 0), ('registration', 1), ('minnick', 3), ('avatarwidth', 100), ('avatarheight', 75), ('projects', 0) ;
