@@ -1,0 +1,36 @@
+Cardscape
+=========
+
+
+[preface]
+
+About this document
+-------------------
+
+Introduction
+------------
+Over the last two decades there have been several success stories on collaboration 
+over the Internet. Beginning with the development of the _GNU Linux kernel_ and not 
+ending with collaborative efforts like _Wikipedia_, the Internet has brought a new 
+way of sharing and crafting to human kind.
+
+The World Wide Web is the most used service on the Internet today. It once started 
+out as a service to distribute static HTML files and has been further developed 
+to become the _Web 2.0_ which uses dynamically generated content.
+
+The fundamental part of the _Web 2.0_ is collaboration. People from all over the 
+world can create content and improve or extend existing content.
+
+Cardscape is another one of these _Web 2.0_ tools. It allows the users to create 
+concepts for their favorite collecting card games. These concepts may be further 
+discussed by the game's community and finally be approved by the game makers.
+
+
+Using Cardscape
+---------------
+
+Installation
+~~~~~~~~~~~~
+Cardscape requires PHP 5 and MySQL 5 database server.
+
+//TODO: when more info is available

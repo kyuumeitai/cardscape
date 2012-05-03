@@ -1,0 +1,23 @@
+Cardscape
+=========
+
+Cardscape is a generic tool for creating cards used in Collectible/Trading Card Games 
+that was born as part of the WTactics project. It is now independent and generic 
+enough so that it can be used by anyone wanting to create a CCG.
+
+Cardscape offers a platform where users can collaborate in the creation of cards 
+or that can be used only as a card database used to search card details and information.
+
+
+Requirements
+------------
+
+- Apache web server, thought the only supported server Cardscape may work with other web server;
+- PHP 5.3+, version 5.1 and 5.2 may also work but we do not guarantee backward compatibility at the moment;
+- MySQL 5+ with InnoDB support, we will probably support other relational database server in the future;
+- A recent enough web browser, IE is not supported so change to Firefox/Chrome/Opera/Safari or any of the other fine browsers out there.
+
+Version History
+---------------
+
+No official version yet.
