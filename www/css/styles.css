@@ -162,7 +162,7 @@ nav a, nav a:hover {
     text-decoration: none;
 }
 
-nav li:hover > a, nav a:focus {
+nav li:hover > a, nav ul ul *:hover > a, nav a:focus {
     background: none repeat scroll 0 0 #EFEFEF;
 }
 
@@ -173,6 +173,38 @@ nav li:hover > a, nav a:focus {
 
 nav .active > a {
     color: #1982D1;
+}
+
+nav ul ul {
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+    display: none;
+    float: left;
+    left: 0;
+    margin: 0;
+    position: absolute;
+    top: 3.333em;
+    width: 188px;
+    z-index: 100;
+}
+
+nav ul ul a {
+    background: none repeat scroll 0 0 #F9F9F9;
+    border-bottom: 1px dotted #DDDDDD;
+    color: #444444;
+    font-size: 13px;
+    height: auto;
+    line-height: 1.4em;
+    padding: 10px;
+    width: 168px;
+}
+
+nav ul ul a:hover {
+    line-height: 1.4em;
+    padding: 10px;
+}
+
+nav ul li:hover > ul {
+    display: block;
 }
 /*END*/
 
