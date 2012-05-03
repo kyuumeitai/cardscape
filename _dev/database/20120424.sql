@@ -179,4 +179,4 @@ CREATE TABLE `Setting` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Insert default data
-INSERT INTO `Setting` VALUES ('captcha', 0), ('registration', 1), ('minnick', 3), ('avatarwidth', 100), ('avatarheight', 75), ('projects', 0) ;
+INSERT INTO `Setting` VALUES ('captcha', 0), ('registration', 1), ('minnick', 3), ('projects', 0) ;
