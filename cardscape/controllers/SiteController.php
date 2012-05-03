@@ -26,7 +26,7 @@ class SiteController extends Controller {
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('index', 'error'),
+                'actions' => array('index', 'error', 'credits', 'about'),
                 'users' => array('*'),
             ),
             array('allow',
@@ -70,7 +70,7 @@ class SiteController extends Controller {
      * Shows the login/register view and provides login and register features. 
      */
     public function actionLogin() {
-        //TODO: add captcha for registration
+//TODO: add captcha for registration
         $login = new LoginForm();
         $register = new RegisterForm();
 
@@ -84,7 +84,7 @@ class SiteController extends Controller {
         } else if (isset($_POST['RegisterForm'])) {
             $register->attributes = $_POST['RegisterForm'];
             if ($register->validate() && $register->register()) {
-                //auto login the user
+//auto login the user
                 $login->unsetAttributes();
                 $login->username = $register->username;
                 $login->password = $register->password;
@@ -119,13 +119,52 @@ class SiteController extends Controller {
 
         if (isset($_POST['RecoverForm'])) {
             $recover->attributes = $_POST['RecoverForm'];
-            //TODO: show success or error
             if ($recover->validate() && $recover->recover()) {
-                //TODO: not implemented yet
+                //TODO: show success message
             }
         }
 
         $this->render('recover', array('recover' => $recover));
+    }
+
+    /**
+     * This is the action that changes the password based on the key that was 
+     * sent to the user's email address.
+     * 
+     * @param string $key The reset key used to control password recovery requests.
+     * 
+     * @throws CHttpException 
+     */
+    public function actionChangePassword($key) {
+        if (($passwordRecover = PasswordRecover::model()->findByAttributes(array('key' => $key))) !== null) {
+            $change = new ChangeForm();
+            $this->performAjaxValidation('change-form', $change);
+
+            if (isset($_POST['ChangeForm'])) {
+                $change->attributes = $_POST['ChangeForm'];
+                if ($change->validate() && $change->changePassword($passwordRecover->userId)) {
+                    //TODO: show success message
+                }
+            }
+
+            $this->render('passwordchange', array('change' => $change));
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
+
+    /**
+     * Shows the credits page. 
+     */
+    public function actionCredits() {
+        $this->render('credits');
+    }
+
+    /**
+     * Shows the about page. 
+     */
+    public function actionAbout() {
+        $this->render('about');
     }
 
 }

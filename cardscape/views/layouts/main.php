@@ -8,7 +8,11 @@
     </head>
     <body>
         <div id="page">
-            <div id="topbanner"><!-- //TODO: Big image header and logo to the side --></div>
+            <div id="topbanner">
+                <!-- //TODO: Big image header and logo to the side -->
+                Find some nice images to slide here and offer the usually header...
+                A logo should be placed similar to a clip (a bit offset to the left).
+            </div>
             <nav role="navigation">
                 <div id="menu-container">
                     <?php $this->widget('zii.widgets.CMenu', array('items' => $this->menu)); ?>
@@ -21,9 +25,13 @@
             </div>
 
             <footer role="contentinfo">
-                <ul>
-                    <li>Footer information</li>
+                <ul>                   
+                    <li><a href="<?php echo $this->createUrl('site/about'); ?>">About</a></li>
+                    <li><a href="<?php echo $this->createUrl('site/credits'); ?>">Credits</a></li>
+                    <li><a href="http://sourceforge.net/projects/cardscape/">Cardscape</a></li>
+                    <li><a href="http://wtactics.org">WTactics</a></li>                    
                 </ul>
+                <p>&copy; <?php echo date('Y'); ?> Cardscape development team</p>
             </footer>
         </div>
     </body>

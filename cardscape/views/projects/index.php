@@ -10,6 +10,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'project-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
+    'template' => '{items} {pager} {summary}',
     'columns' => array(
         array(
             'name' => 'projectId',

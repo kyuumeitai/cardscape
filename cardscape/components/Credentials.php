@@ -45,7 +45,6 @@ class Credentials extends CBaseUserIdentity {
                 $this->id = $user->userId;
                 $this->username = $user->username;
 
-
                 $sd = null;
                 if (($sd = SessionData::model()->findByPk($user->userId)) === null) {
                     $sd = new SessionData();

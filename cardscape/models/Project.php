@@ -18,18 +18,19 @@
  */
 
 /**
- * //TODO: documentation ...
+ * A project can be used to focus the development of a group of cards and grant 
+ * permissions on those cards.
  * 
- * @property integer $projectId
- * @property string $name
- * @property string $description
- * @property string $expires
- * @property integer $active
+ * @property integer $projectId Project database ID
+ * @property string $name Project's name
+ * @property string $description A description about this project
+ * @property string $expires The date when the project
+ * @property integer $active Flag that marks a project as deleted
  *
  * The following are the available model relations:
- * @property Attribute[] $attributes
- * @property ProjectCard[] $projectCards
- * @property User[] $users
+ * @property Attribute[] $attributes Array of attributes that make this project's goals
+ * @property ProjectAttribute[] $objectives An array of project/attribute relations with each goals' objectives
+ * @property User[] $moderators Array of users that have moderation previleges on the project
  */
 class Project extends CActiveRecord {
 
@@ -70,9 +71,10 @@ class Project extends CActiveRecord {
     public function relations() {
         return array(
             //TODO: uncomment when they became available
-            //'attributes' => array(self::MANY_MANY, 'Attribute', 'ProjectAttribute(projectId, attributeId)'),
+            'attributes' => array(self::MANY_MANY, 'Attribute', 'ProjectAttribute(projectId, attributeId)'),
+            'objectives' => array(self::HAS_MANY, 'ProjectAttribute', 'projectId'),
             //'projectCards' => array(self::HAS_MANY, 'ProjectCard', 'projectId'),
-            'users' => array(self::MANY_MANY, 'User', 'ProjectUser(projectId, userId)'),
+            'moderators' => array(self::MANY_MANY, 'User', 'ProjectUser(projectId, userId)'),
         );
     }
 

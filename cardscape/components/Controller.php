@@ -88,26 +88,39 @@ class Controller extends CController {
             //    'visible' => !Yii::app()->user->isGuest
             //),
             array(
-                'label' => 'Projects',
-                'url' => array('projects/index'),
-                //visible to administrators only
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2)
+                'label' => 'Administration',
+                'url' => array('administration/index'),
+                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2),
+                'items' => array(
+                    array(
+                        'label' => 'Card Attributes',
+                        'url' => array('attributes/index')
+                    ),
+                    array(
+                        'label' => 'Projects',
+                        'url' => array('projects/index')
+                    ),
+                    array(
+                        'label' => 'Users',
+                        'url' => array('users/index')
+                    ),
+                )
             ),
             array(
-                'label' => 'Users',
-                'url' => array('users/index'),
-                //visible to administrators only
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2)
+                'label' => 'Account',
+                'url' => array('users/account'),
+                'visible' => !Yii::app()->user->isGuest,
+                'items' => array(
+                    array(
+                        'label' => 'Logout',
+                        'url' => array('site/logout'),
+                    )
+                )
             ),
             array(
                 'label' => 'Login or Register',
                 'url' => array('site/login'),
                 'visible' => Yii::app()->user->isGuest
-            ),
-            array(
-                'label' => 'Logout',
-                'url' => array('site/logout'),
-                'visible' => !Yii::app()->user->isGuest
             ),
         );
     }

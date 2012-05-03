@@ -49,7 +49,39 @@ class RecoverForm extends CFormModel {
      * Recovery code that sends the new password to the user e-mail. 
      */
     public function recover() {
-        //TODO: not implemented yet
+        if (($user = User::model()->findByAttributes(array('email' => $this->email))) !== null) {
+
+            $passwordRecover = null;
+            if (($passwordRecover = PasswordRecover::model()->findByPk($user->userId)) === null) {
+                $passwordRecover = new PasswordRecover();
+                $passwordRecover->userId = $user->userId;
+            }
+
+            //randomize (more or less) a string to use as key
+            $passwordRecover->key = md5($user->email . $user->username . Yii::app()->params['hash'] . time());
+            $passwordRecover->requested = date('Y-m-d H:i:s');
+
+            if ($passwordRecover->save()) {
+                $url = Yii::app()->createUrl('users/changepassword', array('key' => $passwordRecover->key));
+
+                $email = new EmailMessage($user->email, 'Password recovery for ' . Yii::app()->name
+                                , sprintf("Someone requested a password recovery at %s, if you're not the one requesting a new password just ignore this message.
+                                You can set a new password using the URL: %s", Yii::app()->name, $url));
+                try {
+                    $email->send();
+
+                    return true;
+                } catch (phpmailerException $ex) {
+                    throw new CHttpException(500, 'An error occured. Unable to send e-mail message.');
+                }
+            } else {
+                throw new CHttpException(500, 'An error occured. Unable to save data.');
+            }
+        } else {
+            throw new CHttpException(404, 'Invalid request. Please do not repeat this request again.');
+        }
+
+        return false;
     }
 
 }

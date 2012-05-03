@@ -34,7 +34,7 @@
  * @property string $msn Description text with the user MSN contact address (optional)
  * @property string $skype Description text with the user's Skyep contact address (optional)
  * @property string $twitter Description text with the user's Twitter contact address (optional)
- * @property string $avatar The URI (file or standard URL) for the user's avatar (optional)
+ * @property string $avatar The URI for the user's avatar (optional)
  * @property integer $showEmail Flag that activates the display of the user's email 
  * address to other users, doesn't prevent administrators from seeing the address
  * 
@@ -75,6 +75,7 @@ class User extends CActiveRecord {
             array('role, showEmail', 'numerical', 'integerOnly' => true),
             array('username', 'length', 'max' => 25),
             array('email, location, msn, skype, avatar, about', 'length', 'max' => 255),
+            array('avatar', 'url'),
             array('twitter', 'length', 'max' => 50),
             // search rules, used only when invoking the search() method
             array('username, email, role', 'safe', 'on' => 'search'),
@@ -86,10 +87,10 @@ class User extends CActiveRecord {
      */
     public function relations() {
         return array(
-                //TODO: uncomment when they became available
-                //'cards' => array(self::MANY_MANY, 'Card', 'CardUser(userId, cardId)'),
-                //'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
-                'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
+            //TODO: uncomment when they became available
+            //'cards' => array(self::MANY_MANY, 'Card', 'CardUser(userId, cardId)'),
+            //'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
+            'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
                 //'revisions' => array(self::HAS_MANY, 'Revision', 'userId'),
         );
     }
@@ -151,7 +152,6 @@ class User extends CActiveRecord {
      */
     public final static function roleNames() {
         //Roles: 0 - user, 1 - moderator, 2 - admin
-        //TODO: Add i18n support
         return array(
             0 => 'User',
             1 => 'Moderator',
@@ -170,6 +170,24 @@ class User extends CActiveRecord {
         $roles = self::roleNames();
 
         return $roles[$role];
+    }
+
+    /**
+     * Offers a very basic random password generation.
+     * 
+     * @param int $size The generated password size.
+     * @return string The new randome string. 
+     */
+    public final static function randomPassword($size = 8) {
+        $password = '';
+        $data = array('aeioubcdfghjklmnpqrstvwxyz', '1234567890', '+#&@');
+        for ($i = 0; $i < $size; $i++) {
+            $password .= $data[$index = rand(0, 2)][($index % 2 == 0) ?
+                            strtoupper(rand(0, strlen($data[$index]))) :
+                            rand(0, strlen($data[$index]))];
+        }
+
+        return $password;
     }
 
 }

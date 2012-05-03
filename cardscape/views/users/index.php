@@ -32,10 +32,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'header' => 'Actions',
             'class' => 'CButtonColumn',
-            //TODO: add reset password icon and action
             'buttons' => array(
-                'view' => array('visible' => 'false')
-            )
+                'view' => array('visible' => 'false'),
+                'reset' => array(
+                    'label' => 'Reset Password',
+                    'url' => 'Yii::app()->createUrl("users/reset", array("id" => $data->userId)))',
+                    'imageUrl' => Yii::app()->baseUrl . '/images/icons/key-solid.png',
+                    'click' => 'function () { return confirm("Are you sure you want to reset this user\'s password?"); }'
+                )
+            ),
+            'template' => '{update} {reset} {delete}'
         )
     ),
 ));

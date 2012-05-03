@@ -97,6 +97,10 @@ body, input, textarea {
     background: none repeat scroll 0 0 #FFFFFF;
 }
 
+#topbanner {
+    height: 180px;
+}
+
 #content {
     padding: .3em;
 }
@@ -177,6 +181,11 @@ footer {
     background: none repeat scroll 0 0 #000000;
     color: #DDD;
     padding: 0 2em;
+}
+
+footer p {
+    font-size: 80%;
+    text-align: center;
 }
 /*END*/
 
