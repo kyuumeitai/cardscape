@@ -11,6 +11,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'attribute-grid',
     'dataProvider' => $data,
     'template' => '{items} {pager} {summary}',
+    'cssFile' => Yii::app()->baseUrl . '/css/grid.css',
     'columns' => array(
         array(
             'name' => 'attributeId',

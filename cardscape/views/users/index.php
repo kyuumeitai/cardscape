@@ -1,4 +1,8 @@
-<?php $this->title = 'Users'; ?>
+<?php
+$this->title = 'Users';
+
+Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/grids.css');
+?>
 
 <h1>Manage Users</h1>
 
@@ -12,6 +16,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(),
     'filter' => $filter,
     'template' => '{items} {pager} {summary}',
+    'cssFile' => Yii::app()->baseUrl . '/css/grid.css',
     'columns' => array(
         array(
             'name' => 'userId',
