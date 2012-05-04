@@ -40,6 +40,7 @@
  * 
  * @property string $about Description text with a message about the user (optional)
  * @property integer $active Flag that marks this user as a deleted user
+ * @property string $language Language used in the system and card data
  *
  * The following are the available model relations:
  * @property Card[] $cards The cards this user created
@@ -111,7 +112,8 @@ class User extends CActiveRecord {
             'twitter' => 'Twitter',
             'avatar' => 'Avatar',
             'showEmail' => 'Show E-mail',
-            'about' => 'About me'
+            'about' => 'About me',
+            'language' => 'Language'
         );
     }
 

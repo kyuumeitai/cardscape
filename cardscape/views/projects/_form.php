@@ -36,13 +36,13 @@ $form = $this->beginWidget('CActiveForm', array(
         echo $form->error($project, 'expires');
         ?>
     </div>
-
-    <div class="row buttons">
-        <?php
-        echo CHtml::submitButton($project->isNewRecord ? 'Create' : 'Save'),
-        CHtml::link('Cancel', $this->createUrl('projects/index'), array('class' => 'cancel'));
-        ?>
-    </div>
 </fieldset>
+
+<div class="row buttons">
+    <?php
+    echo CHtml::submitButton($project->isNewRecord ? 'Create' : 'Save'),
+    CHtml::link('Cancel', $this->createUrl('projects/index'), array('class' => 'cancel'));
+    ?>
+</div>
 <?php
 $this->endWidget();

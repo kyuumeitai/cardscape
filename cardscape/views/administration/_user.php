@@ -27,6 +27,7 @@
         ?>
     </div>
 </fieldset>
+
 <div class="row buttons">
     <?php
     echo CHtml::submitButton('Save');

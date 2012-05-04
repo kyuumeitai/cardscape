@@ -39,77 +39,24 @@ class AttributesController extends Controller {
      * Default action, lists all available (active) attributes. 
      */
     public function actionIndex() {
-        //$filter = new User('search');
-        //$filter->unsetAttributes();
-        //if (isset($_POST['User'])) {
-        //    $filter->attributes = $_POST['User'];
-        //}
 
-        $this->render('index');
+        $criteria = new CDbCriteria();
+        $criteria->compare('active', 1);
+        $data = new CActiveDataProvider('Attribute', array('criteria' => $criteria));
+
+        $this->render('index', array('data' => $data));
     }
 
-    /**
-     * Creates a new user. This actions is only available to administrators. 
-     */
     public function actionCreate() {
-        //$user = new User();
-        //$this->performAjaxValidation('user-form', $user);
-        //if (isset($_POST['User'])) {
-        //    $user->attributes = $_POST['User'];
-        //    if ($user->save()) {
-        //        $this->redirect(array('update', 'id' => $user->userId));
-        //    }
-        //}
-        //$this->render('create', array('user' => $user));
+        $this->render('create');
     }
 
-    /**
-     * Allows an administrator to change a user's profile.
-     * 
-     * @param integer $id The user's database ID.
-     */
     public function actionUpdate($id) {
-        //$user = $this->loadUserModel($id);
-        //$this->performAjaxValidation('user-form', $user);
-        //if (isset($_POST['User'])) {
-        //    $user->attributes = $_POST['User'];
-        //    if ($user->save())
-        //        $this->redirect(array('update', 'id' => $user->userId));
-        //}
-        //$this->render('update', array('user' => $user));
+        $this->render('update');
     }
 
-    /**
-     * Deletes an existing user by setting its active property to be zero.
-     * 
-     * @param integer $id The user's database ID.
-     * 
-     * @throws CHttpException 
-     */
     public function actionDelete($id) {
-        //if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
-        //    $user->active = 0;
-        //    $user->save();
-        //    if (!isset($_GET['ajax'])) {
-        //        $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-        //    }
-        //} else {
-        //    throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-        //}
-    }
-
-    /**
-     *
-     * @param integer $id The record ID used to load the User model.
-     * @return User The User model or null if the ID is invalid.
-     * 
-     * @throws CHttpException 
-     */
-    public function loadUserModel($id) {
-        //if (($user = User::model()->findByPk($id)) === null) {
-        //    throw new CHttpException(404, 'The requested page does not exist.');
-        //}
-        //return $user;
+        //TODO: not implemented yet  
     }
 
 }

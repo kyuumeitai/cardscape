@@ -33,6 +33,7 @@
  * @property AttributeI18N[] $translations An array of attribute i18n records with the translations for this attribute
  * @property AttributeOption[] $options An array of attribute options with the multiple values for this attribute (can be null)
  * @property Project[] $projects An array of projects if this attribute is a goal for an existing project
+ * @property integer useCount A relational statistical query, returns the number of cards using this attribute
  */
 class Attribute extends CActiveRecord {
 
@@ -69,9 +70,11 @@ class Attribute extends CActiveRecord {
         return array(
             'translations' => array(self::HAS_MANY, 'AttributeI18N', 'attributeId'),
             'options' => array(self::HAS_MANY, 'AttributeOption', 'attributeId'),
-            //'cards' => array(self::MANY_MANY, 'Card', 'CardAttribute(attributeId, cardId)'),
+            'cards' => array(self::MANY_MANY, 'Card', 'CardAttribute(attributeId, cardId)'),
             'projects' => array(self::MANY_MANY, 'Project', 'ProjectAttribute(attributeId, projectId)'),
-                //'revisions' => array(self::MANY_MANY, 'Revision', 'RevisionAttribute(attributeId, revisionId)'),
+            'revisions' => array(self::MANY_MANY, 'Revision', 'RevisionAttribute(attributeId, revisionId)'),
+            //stat queries
+            'useCount' => array(self::STAT, 'Card', 'CardAttribute(attributeId, cardId)')
         );
     }
 
@@ -82,7 +85,24 @@ class Attribute extends CActiveRecord {
         return array(
             'attributeId' => 'ID',
             'multivalue' => 'Multi-value',
+            'useCount' => 'Cards'
         );
+    }
+
+    /**
+     *
+     * @return AttributeI18N 
+     */
+    public function defaultName() {
+        $language = 'en_US';
+        if (($setting = Setting::model()->findByPk('language')) !== null && trim($setting->value) != '') {
+            $language = trim($setting->value);
+        }
+
+        return AttributeI18N::model()->findByAttributes(array(
+                    'attributeId' => $this->attributeId,
+                    'isoCode' => $language
+                ))->string;
     }
 
 }
