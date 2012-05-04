@@ -66,10 +66,13 @@ class AdministrationController extends Controller {
             }
         }
 
+        $languages = Yii::app()->params['languages'];
+
         $this->render('index', array(
             'suForm' => $suForm,
             'seForm' => $seForm,
-            'ssForm' => $ssForm
+            'ssForm' => $ssForm,
+            'languages' => $languages
         ));
     }
 

@@ -19,7 +19,10 @@ $this->widget('CTabView', array(
         'system' => array(
             'title' => 'System',
             'view' => '_system',
-            'data' => array('ssForm' => $ssForm)
+            'data' => array(
+                'ssForm' => $ssForm,
+                'languages' => $languages
+            )
         )
     )
 ));

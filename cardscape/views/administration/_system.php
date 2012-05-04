@@ -2,14 +2,20 @@
 
 <fieldset>
     <legend>System Settings</legend>
-
     <div class="row">
         <?php
-        echo $form->labelEx($ssForm, 'allowProjects'),
-        $form->checkBox($ssForm, 'allowProjects');
-        $form->error($ssForm, 'allowProjects');
+        echo $form->labelEx($ssForm, 'language'),
+        $form->dropDownList($ssForm, 'language', $languages);
+        $form->error($ssForm, 'language');
         ?>
     </div>    
+    <div class="row">
+        <?php
+        echo $form->labelEx($ssForm, 'projects'),
+        $form->checkBox($ssForm, 'projects');
+        $form->error($ssForm, 'projects');
+        ?>
+    </div>
 </fieldset>
 
 <div class="row buttons">

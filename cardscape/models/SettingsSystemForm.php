@@ -25,14 +25,20 @@ class SettingsSystemForm extends CFormModel {
     /**
      * @var integer Flag to allow or disallow the use of card development projects
      */
-    public $allowProjects;
+    public $projects;
+
+    /**
+     * @var string The system language used for both default interface and card/attribute translations
+     */
+    public $language;
 
     /**
      * @return array Validation rules for model attributes.
      */
     public function rules() {
         return array(
-            array('allowProjects', 'numerical', 'integerOnly' => true)
+            array('projects', 'numerical', 'integerOnly' => true),
+            array('language', 'length', 'max' => 5)
         );
     }
 
@@ -41,7 +47,8 @@ class SettingsSystemForm extends CFormModel {
      */
     public function attributeLabels() {
         return array(
-            'allowProjects' => 'Allow Projects'
+            'projects' => 'Allow Projects',
+            'language' => 'Default Language'
         );
     }
 
@@ -50,9 +57,14 @@ class SettingsSystemForm extends CFormModel {
      * values stored in the <em>Setting</em> table. 
      */
     public function init() {
-        $this->allowProjects = 0;
-        if (($setting = Setting::model()->findByPk('allowProjects')) !== null) {
-            $this->allowProjects = intval($setting->value);
+        $this->projects = 0;
+        if (($setting = Setting::model()->findByPk('projects')) !== null) {
+            $this->projects = intval($setting->value);
+        }
+
+        $this->language = 'en_US';
+        if (($setting = Setting::model()->findByPk('language')) !== null && trim($setting->value) != '') {
+            $this->language = $setting->value;
         }
     }
 
@@ -61,14 +73,24 @@ class SettingsSystemForm extends CFormModel {
      * @return boolean True if the changes were save, false otherwise.
      */
     public function save() {
+        $success = false;
+
         $setting = null;
-        if (($setting = Setting::model()->findByPk('allowProjects')) === null) {
+        if (($setting = Setting::model()->findByPk('projects')) === null) {
             $setting = new Setting();
-            $setting->key = 'allowProjects';
+            $setting->key = 'projects';
         }
         $setting->value = $this->allowProjects;
+        $success = $setting->save();
 
-        return $setting->save();
+        $setting = null;
+        if (($setting = Setting::model()->findByPk('language')) === null) {
+            $setting = new Setting();
+            $setting->key = 'language';
+        }
+        $setting->value = $this->language;
+
+        return $success && $setting->save();
     }
 
 }
