@@ -70,10 +70,9 @@ class Project extends CActiveRecord {
      */
     public function relations() {
         return array(
-            //TODO: uncomment when they became available
             'attributes' => array(self::MANY_MANY, 'Attribute', 'ProjectAttribute(projectId, attributeId)'),
             'objectives' => array(self::HAS_MANY, 'ProjectAttribute', 'projectId'),
-            //'projectCards' => array(self::HAS_MANY, 'ProjectCard', 'projectId'),
+            'cards' => array(self::HAS_MANY, 'Card', 'ProjectCard(projectId, cardId'),
             'moderators' => array(self::MANY_MANY, 'User', 'ProjectUser(projectId, userId)'),
         );
     }
@@ -101,7 +100,15 @@ class Project extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
         $criteria->compare('active', 1);
 
-        return new CActiveDataProvider($this, array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->params['pageSize']
+                    ),
+                    'sort' => array(
+                        'defaultOrder' => 'name,expires'
+                    )
+                ));
     }
 
 }

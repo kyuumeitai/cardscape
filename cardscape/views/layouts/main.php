@@ -31,7 +31,7 @@
                     <li><a href="http://sourceforge.net/projects/cardscape/">Cardscape</a></li>
                     <li><a href="http://wtactics.org">WTactics</a></li>                    
                 </ul>
-                <p>&copy; <?php echo date('Y'); ?> Cardscape development team</p>
+                <p><?php echo Yii::app()->params['copyright']; ?></p>
             </footer>
         </div>
     </body>

@@ -80,7 +80,7 @@ class SettingsSystemForm extends CFormModel {
             $setting = new Setting();
             $setting->key = 'projects';
         }
-        $setting->value = $this->allowProjects;
+        $setting->value = $this->projects;
         $success = $setting->save();
 
         $setting = null;

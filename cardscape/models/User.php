@@ -88,11 +88,10 @@ class User extends CActiveRecord {
      */
     public function relations() {
         return array(
-            //TODO: uncomment when they became available
-            //'cards' => array(self::MANY_MANY, 'Card', 'CardUser(userId, cardId)'),
-            //'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
+            'cards' => array(self::MANY_MANY, 'Card', 'CardUser(userId, cardId)'),
+            'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
             'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
-                //'revisions' => array(self::HAS_MANY, 'Revision', 'userId'),
+            'revisions' => array(self::HAS_MANY, 'Revision', 'userId'),
         );
     }
 
@@ -131,7 +130,15 @@ class User extends CActiveRecord {
         //only show active users in default searches
         $criteria->compare('active', 1);
 
-        return new CActiveDataProvider($this, array('criteria' => $criteria));
+        return new CActiveDataProvider($this, array(
+                    'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->params['pageSize']
+                    ),
+                    'sort' => array(
+                        'defaultOrder' => 'username,email,role'
+                    )
+                ));
     }
 
     /**
