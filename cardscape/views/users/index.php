@@ -1,7 +1,5 @@
 <?php
 $this->title = 'Users';
-
-Yii::app()->clientScript->registerCssFile(Yii::app()->baseUrl . '/css/grids.css');
 ?>
 
 <h1>Manage Users</h1>

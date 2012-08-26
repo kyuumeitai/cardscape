@@ -21,8 +21,7 @@
 
 .grid-view table.items th {
     color: white;
-    /*background: url("bg.gif") repeat-x scroll left top white;*/
-    background-color: red;
+    background-color: #0A0A0A;
     text-align: center;
 }
 
@@ -37,12 +36,14 @@
 }
 
 .grid-view table.items th a.asc {
-    background: url(up.gif) right center no-repeat;
+    /* //TODO: Find some nice images for up/down arrows */
+    /*background: url(up.gif) right center no-repeat;*/
     padding-right: 10px;
 }
 
 .grid-view table.items th a.desc {
-    background:url(down.gif) right center no-repeat;
+    /* //TODO: Find some nice images for up/down arrows */
+    /*background:url(down.gif) right center no-repeat;*/
     padding-right: 10px;
 }
 
