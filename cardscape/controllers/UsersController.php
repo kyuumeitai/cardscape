@@ -1,7 +1,11 @@
 <?php
 
-/* Copyright (C) 2012  Cardscape project
- * Web based collaborative platform for creating Collectible Card Games
+/* UsersController.php
+ * 
+ * This file is part of Cardscape.
+ * Web based collaborative platform for creating Collectible Card Games.
+ *
+ * Copyright (c) 2011 - 2013, the Cardscape team.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,21 +27,21 @@ class UsersController extends Controller {
         parent::__construct($id, $module);
     }
 
-    public function accessRules() {
-        //merging with parent rules, though usually the parent just blocks everything
-        return array_merge(
-                        array(
-                    array('allow',
-                        'actions' => array('index', 'create', 'update', 'delete', 'reset'),
-                        'expression' => '($user->role == 2)'
-                    ),
-                    array('allow',
-                        'actions' => array('account'),
-                        'users' => array('@')
-                    )
-                        ), parent::accessRules()
-        );
-    }
+    /* public function accessRules() {
+      //merging with parent rules, though usually the parent just blocks everything
+      return array_merge(
+      array(
+      array('allow',
+      'actions' => array('index', 'create', 'update', 'delete', 'reset'),
+      'expression' => '($user->role == 2)'
+      ),
+      array('allow',
+      'actions' => array('account'),
+      'users' => array('@')
+      )
+      ), parent::accessRules()
+      );
+      } */
 
     /**
      *

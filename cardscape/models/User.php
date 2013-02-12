@@ -1,7 +1,11 @@
 <?php
 
-/* Copyright (C) 2012  Cardscape project
- * Web based collaborative platform for creating Collectible Card Games
+/* User.php
+ * 
+ * This file is part of Cardscape.
+ * Web based collaborative platform for creating Collectible Card Games.
+ *
+ * Copyright (c) 2011 - 2013, the Cardscape team.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -78,7 +82,7 @@ class User extends CActiveRecord {
             array('email, location, msn, skype, avatar, about', 'length', 'max' => 255),
             array('avatar', 'url'),
             array('twitter', 'length', 'max' => 50),
-            // search rules, used only when invoking the search() method
+            // search
             array('username, email, role', 'safe', 'on' => 'search'),
         );
     }
@@ -127,8 +131,6 @@ class User extends CActiveRecord {
         $criteria->compare('username', $this->username, true);
         $criteria->compare('email', $this->email, true);
         $criteria->compare('role', $this->role);
-        //only show active users in default searches
-        $criteria->compare('active', 1);
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,

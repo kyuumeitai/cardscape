@@ -3,3 +3,5 @@ nbproject
 /cardscape/config/params.dev.php
 .DS_Store
 *~
+/www/debug.php
+/www/.htaccess

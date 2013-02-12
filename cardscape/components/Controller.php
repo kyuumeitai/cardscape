@@ -1,7 +1,11 @@
 <?php
 
-/* Copyright (C) 2012  Cardscape project
- * Web based collaborative platform for creating Collectible Card Games
+/* Controller.php
+ * 
+ * This file is part of Cardscape.
+ * Web based collaborative platform for creating Collectible Card Games.
+ *
+ * Copyright (c) 2011 - 2013, the Cardscape team.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -153,22 +157,6 @@ class Controller extends CController {
     public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
-        );
-    }
-
-    /**
-     * Default access rules to be used when a controller sub-class forgets to add 
-     * its own rules. The default rules denies access to any and all controller 
-     * actions, regardless of the user's role.
-     * 
-     * @return array The access rules array.
-     */
-    public function accessRules() {
-        return array(
-            //default rule denies every action to every user
-            array('deny',
-                'users' => array('*'),
-            )
         );
     }
 

@@ -1,7 +1,11 @@
 <?php
 
-/* Copyright (C) 2012  Cardscape project
- * Web based collaborative platform for creating Collectible Card Games
+/* Attribute.php
+ * 
+ * This file is part of Cardscape.
+ * Web based collaborative platform for creating Collectible Card Games.
+ *
+ * Copyright (c) 2011 - 2013, the Cardscape team.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by

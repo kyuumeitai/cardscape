@@ -1,12 +1,9 @@
 <?php
-$this->title = 'Users';
+/** @var UsersController $this */
+$this->title = Yii::t('interface', 'Users');
 ?>
 
-<h1>Manage Users</h1>
-
-<div class="tools">
-    <a href="<?php echo $this->createUrl('users/create'); ?>">Create User</a>
-</div>
+<h1><?php echo Yii::t('interface', 'Manage Users'); ?></h1>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -14,12 +11,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(),
     'filter' => $filter,
     'template' => '{items} {pager} {summary}',
-    'cssFile' => Yii::app()->baseUrl . '/css/grid.css',
+    'cssFile' => false,
     'columns' => array(
-        array(
-            'name' => 'userId',
-            'filter' => false
-        ),
         array(
             'name' => 'username',
             'type' => 'raw',
@@ -34,17 +27,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false'),
-                'reset' => array(
-                    'label' => 'Reset Password',
-                    'url' => 'Yii::app()->createUrl("users/reset", array("id" => $data->userId)))',
-                    'imageUrl' => Yii::app()->baseUrl . '/images/icons/key-solid.png',
-                    'click' => 'function () { return confirm("Are you sure you want to reset this user\'s password?"); }'
-                )
-            ),
-            'template' => '{update} {reset} {delete}'
+            'class' => 'CButtonColumn'
         )
     ),
 ));

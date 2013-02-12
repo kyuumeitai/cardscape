@@ -1,7 +1,11 @@
 <?php
 
-/* Copyright (C) 2012  Cardscape project
- * Web based collaborative platform for creating Collectible Card Games
+/* AttributesController.php
+ * 
+ * This file is part of Cardscape.
+ * Web based collaborative platform for creating Collectible Card Games.
+ *
+ * Copyright (c) 2011 - 2013, the Cardscape team.
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -23,7 +27,7 @@ class AttributesController extends Controller {
         parent::__construct($id, $module);
     }
 
-    public function accessRules() {
+    /*public function accessRules() {
         //merging with parent rules, though usually the parent just blocks everything
         return array_merge(
                         array(
@@ -33,7 +37,7 @@ class AttributesController extends Controller {
                     )
                         ), parent::accessRules()
         );
-    }
+    }*/
 
     /**
      * Default action, lists all available (active) attributes. 
