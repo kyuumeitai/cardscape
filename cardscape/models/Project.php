@@ -25,7 +25,7 @@
  * A project can be used to focus the development of a group of cards and grant 
  * permissions on those cards.
  * 
- * @property integer $projectId Project database ID
+ * @property integer $id Project database ID
  * @property string $name Project's name
  * @property string $description A description about this project
  * @property string $expires The date when the project
@@ -64,7 +64,7 @@ class Project extends CActiveRecord {
             array('name', 'length', 'max' => 50),
             array('description', 'length', 'max' => 255),
             array('expires', 'safe'),
-            // search rules, used only when invoking the search() method
+            // search
             array('name', 'safe', 'on' => 'search'),
         );
     }
@@ -86,10 +86,10 @@ class Project extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'projectId' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'expires' => 'Expires',
+            'id' => Yii::t('project', 'ID'),
+            'name' => Yii::t('project', 'Name'),
+            'description' => Yii::t('project', 'Description'),
+            'expires' => Yii::t('project', 'Expires'),
         );
     }
 
@@ -102,12 +102,11 @@ class Project extends CActiveRecord {
         $criteria = new CDbCriteria();
 
         $criteria->compare('name', $this->name, true);
-        $criteria->compare('active', 1);
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
                     'pagination' => array(
-                        'pageSize' => Yii::app()->params['pageSize']
+                        'pageSize' => Yii::app()->params['paginationSize']
                     ),
                     'sort' => array(
                         'defaultOrder' => 'name,expires'

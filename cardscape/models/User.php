@@ -27,24 +27,15 @@
  * help in user related actions (hashing passwords, getting a human readable name 
  * for a role, etc.).
  * 
- * @property integer $userId User database ID
+ * @property integer $id User database ID
  * @property string $username Username for display and authetication
  * @property string $password The user's password, generally blank
  * @property string $email The email used for registering this user
  * @property integer $role A role defines what permissions a user has, can be any 
- * value in 0, 1 or 2 for standard user, moderator or administrator
+ * value in 'user', 'moderator', 'administrator' for standard user, moderator or administrator
  * 
- * @property string $location Description text containing the user location (optional)
- * @property string $msn Description text with the user MSN contact address (optional)
- * @property string $skype Description text with the user's Skyep contact address (optional)
- * @property string $twitter Description text with the user's Twitter contact address (optional)
- * @property string $avatar The URI for the user's avatar (optional)
- * @property integer $showEmail Flag that activates the display of the user's email 
- * address to other users, doesn't prevent administrators from seeing the address
- * 
- * @property string $about Description text with a message about the user (optional)
- * @property integer $active Flag that marks this user as a deleted user
  * @property string $language Language used in the system and card data
+ * @property integer $active Flag that marks this user as a deleted user
  *
  * The following are the available model relations:
  * @property Card[] $cards The cards this user created
@@ -77,11 +68,11 @@ class User extends CActiveRecord {
     public function rules() {
         return array(
             array('username, email', 'required'),
-            array('role, showEmail', 'numerical', 'integerOnly' => true),
             array('username', 'length', 'max' => 25),
-            array('email, location, msn, skype, avatar, about', 'length', 'max' => 255),
-            array('avatar', 'url'),
-            array('twitter', 'length', 'max' => 50),
+            array('language', 'length', 'max' => 5),
+            array('email', 'length', 'max' => 255),
+            array('email', 'email'),
+            array('role', 'in', array('user', 'moderator', 'administrator')),
             // search
             array('username, email, role', 'safe', 'on' => 'search'),
         );
@@ -104,19 +95,12 @@ class User extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'userId' => 'ID',
-            'username' => 'Username',
-            'password' => 'Password',
-            'email' => 'Email',
-            'role' => 'Role',
-            'location' => 'Location',
-            'msn' => 'Msn',
-            'skype' => 'Skype',
-            'twitter' => 'Twitter',
-            'avatar' => 'Avatar',
-            'showEmail' => 'Show E-mail',
-            'about' => 'About me',
-            'language' => 'Language'
+            'id' => Yii::t('user', 'ID'),
+            'username' => Yii::t('user', 'Username'),
+            'password' => Yii::t('user', 'Password'),
+            'email' => Yii::t('user', 'E-mail'),
+            'role' => Yii::t('user', 'Role'),
+            'language' => Yii::t('user', 'Language')
         );
     }
 
@@ -135,7 +119,7 @@ class User extends CActiveRecord {
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
                     'pagination' => array(
-                        'pageSize' => Yii::app()->params['pageSize']
+                        'pageSize' => Yii::app()->params['paginationSize']
                     ),
                     'sort' => array(
                         'defaultOrder' => 'username,email,role'
@@ -159,28 +143,26 @@ class User extends CActiveRecord {
      * Provides an array with the proper names to be shown to the user when dealing 
      * with roles.
      * 
-     * @return array(ID => Role name)
+     * @return array(role => Role name)
      */
-    public final static function roleNames() {
-        //Roles: 0 - user, 1 - moderator, 2 - admin
+    public final static function getRolesArray() {
         return array(
-            0 => 'User',
-            1 => 'Moderator',
-            2 => 'Administrator'
+            'user' => 'User',
+            'moderator' => 'Moderator',
+            'administrator' => 'Administrator'
         );
     }
 
     /**
-     * Gets the name of a given role. This is just a shortcut to the <em>roleNames</em> 
-     * method.
+     * Gets the name of a given role. This is just a shortcut to the method.
      * 
      * @param integer $role The 0 based index for the role array.
      * @return string The role name that can be used in views.
      */
-    public final static function roleNameById($role) {
+    public function getRoleName($role) {
         $roles = self::roleNames();
 
-        return $roles[$role];
+        return isset($roles[$role]) ? $roles[$role] : Yii::t('user', 'Unknown role');
     }
 
     /**
@@ -189,7 +171,7 @@ class User extends CActiveRecord {
      * @param int $size The generated password size.
      * @return string The new randome string. 
      */
-    public final static function randomPassword($size = 8) {
+    public final static function generateRandomPassword($size = 8) {
         $password = '';
         $data = array('aeioubcdfghjklmnpqrstvwxyz', '1234567890', '+#&@');
         for ($i = 0; $i < $size; $i++) {

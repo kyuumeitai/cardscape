@@ -22,7 +22,7 @@
  */
 
 /**
- * @property integer $commentId
+ * @property integer $id
  * @property integer $userId
  * @property integer $cardId
  * @property string $date
@@ -58,7 +58,7 @@ class Comment extends CActiveRecord {
     public function rules() {
         return array(
             array('message', 'required'),
-            // The following rule is used by search method.
+            // search
             array('userId, cardId, date, message', 'safe', 'on' => 'search'),
         );
     }
@@ -78,11 +78,11 @@ class Comment extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'commentId' => 'ID',
-            'userId' => 'User',
-            'cardId' => 'Card',
-            'date' => 'Date',
-            'message' => 'Message',
+            'id' => Yii::t('comment', 'ID'),
+            'userId' => Yii::t('comment', 'User'),
+            'cardId' => Yii::t('comment', 'Card'),
+            'date' => Yii::t('comment', 'Date'),
+            'message' => Yii::t('comment', 'Message'),
         );
     }
 
@@ -93,16 +93,15 @@ class Comment extends CActiveRecord {
     public function search() {
         $criteria = new CDbCriteria();
 
-        $criteria->compare('userId', $this->userId, true);
-        $criteria->compare('cardId', $this->cardId, true);
+        $criteria->compare('userId', $this->userId);
+        $criteria->compare('cardId', $this->cardId);
         $criteria->compare('date', $this->date, true);
         $criteria->compare('message', $this->message, true);
-        $criteria->compare('active', 1);
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
                     'pagination' => array(
-                        'pageSize' => Yii::app()->params['pageSize']
+                        'pageSize' => Yii::app()->params['paginationSize']
                     ),
                     'sort' => array(
                         'defaultOrder' => 'username,email,role'

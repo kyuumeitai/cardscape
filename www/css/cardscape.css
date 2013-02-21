@@ -1,170 +1,107 @@
-body{
-    background-color: #DDD;
-    /*font-family: liberation;*/
+body {
+    background-color: #6F605A;
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+    padding: 0;
+    font-size: 12px;
+    margin: 0px auto auto auto;
+    color: #000000;
+    text-align: justify;
 }
 
 a {
-    text-decoration:none;
+    color:#F8981d;
 }
 
-/* -------------------------- */
-/*table {
-    border-collapse:collapse;
+#page {
+    background-color: #FFFFFF;
 }
 
-table, th, td{
+#header {
+    height: 181px;
+    background: url('../images/header-center.jpg') no-repeat;
 }
 
-
-
-/***** STYLES FOR THE CARD PAGE *****/
-.card-title{
-    font-size: 40px;
-    font-family:ChunkFiveRoman;
-    padding-left:5px;
+#logo {
+    height: 151px;
 }
-.card-subtitle{
-    font-size: 20px;
-    padding-left:5px;
-}
-.card-status{
-    position:absolute;
-    right:0px;
-    top:0px;
-    height:70px;
-    width:70px;
-}
-.card-infobox{
-    position:relative;
-    padding: 10px;
-    background-color:#bbbbbb;
-    min-height:300px;
-    border: 1px solid black;
-}
-.card-tab-line{
-    position:relative;
-    padding-left:5px;
-}
-.card-tab{
-    position:absolute;
-    top: 0px;
-    width: 60px;
-    color: black;
-    background-color:#bbbbbb;
-    text-align: center;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
-}
-.card-tab-selected{
-    position:absolute;
-    top: 0px;
-    width: 60px;
-    color: black;
-    background-color:#999999;
-    text-align: center;
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-bottom: 1px solid black;
+.navigation {
+    height: 30px;
+    background-color: transparent;
 }
 
-/* DATA FIELD STYLE ASSOCIATIONS */
-/* These should match the titles of the entries in card_definition.txt */
-.cardname{
-    text-decoration: underline;
-    color: black; /* this is needed to keep the links from changing. */
-}
-.flavor{
-    text-decoration:none;
-    font-style:italic;
-}
-.subtype{
-    font-style:italic;
+.navigation ul {
+    display: block;
+    list-style: none;
+    padding: 9px 0 0 10px;
+    margin: 0px;
 }
 
-/* WORKFLOW STYLE ASSOCIATIONS */
-/* These should match the ENUM values for STATUS in card_definition.txt */
-
-.concept{
-    background-image:url("images/concept.png");
-}
-.discuss{
-    background-image:url("images/discuss.png");
-}
-.playtest{
-    background-image:url("images/playtest.png");
-}
-.approved{
-    background-image:url("images/approved.png");
-}
-.official{
-    background-image:url("images/official.png");
-}
-.halt{
-    background-image:url("images/halt.png");
-}
-.restricted{
-    background-image:url("images/restricted.png");
-}
-.rejected{
-    background-image:url("images/rejected.png");
+.navigation ul li {
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+    height: 20px;
 }
 
-/* FONT DECLARATIONS */
-@font-face {
-    font-family: Liberation;
-    src: url(fonts/LiberationSerif-Regular.ttf);
-}
-@font-face {
-    font-family: ChunkFiveRoman;
-    src: url(fonts/ChunkFive-Roman.otf);
-}
-.chunk {
-    font-family: ChunkFiveRoman;
-}
-
-/* UNSORTED STYLES --> TODO: sort these to make the file intuitive */
-.avatar{
-    border: 1px solid black;
-    margin-top: 3px;
-}
-.error{
-    color:red;
-    font-weight:bold;
-}
-.username{
-    font-weight:bold;
+.navigation ul li a {
+    height: 27px;
+    display: block;
+    padding: 0px 10px 0 10px;
+    margin: 0 4px 0 4px;
+    float: left;
     text-decoration: none;
-    color: black;
-}
-.role{
-    font-style:italic;
-}
-.fieldtype_int{
-    width:100px;
-}
-.header{
-    color:#FFFFFF;
-    text-decoration: none;
-}
-.statusheader{
-    font-weight:bold;
-    font-size:30px;
-    padding: 5px;
+    text-align: center;
+    color: #FFF;
+    font-size: 13px;
+    line-height: 25px;
 }
 
-.cardinfo{
-    background-color:#d4ceb4;
-    border: 1px dashed black;
-    padding:3px;
+.navigation ul li.active a {
+    height: 27px;
+    display: block;
+    padding: 0px 10px 0 10px;
+    margin: 0 5px 0 5px;
+    float: left;
+    text-decoration: none;
+    text-align: center;
+    color: #F7A849;
+    font-size: 13px;
+    line-height: 25px;
 }
-.userdata{
+
+.navigation ul li a:hover {
+    color: #F7A849;
+}
+
+#content-wrapper {
+    border-top: 1px #B2B2B2 solid;
+    background: url("../images/background.png") repeat ;
+}
+
+.content {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0;
     border: none;
 }
-.userdata td{
-    border: none;
+
+.footer {
+    height: 45px;
+    border-top: 1px #B2B2B2 dashed;
 }
-.comment{
-    width:100%;
-    margin-bottom:5px;
-} */
+
+.footer .left {
+    float: left;
+    padding: 10px 0 0 10px;
+}
+
+.footer .right {
+    float: right;
+    padding:10px 10px 0 0;
+}
+
+.footer a {
+    text-decoration: none;
+    padding: 0 5px 0 5px;
+    color: #AFAEAF;
+}

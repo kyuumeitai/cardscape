@@ -27,7 +27,7 @@
  * difference that this translation is tied to the attribute option on multi-value 
  * attributes.
  *
- * @property integer $attributeOptionI18NId The database ID
+ * @property integer $id The database ID
  * @property string $string The translated name of this attribute option
  * @property string $isoCode The ISO code used to identify the translation
  * @property string $attributeOptionId The database ID for the owner attribute option
@@ -61,7 +61,7 @@ class AttributeOptionI18N extends CActiveRecord {
         return array(
             array('string, isoCode', 'required'),
             array('string', 'length', 'max' => 150),
-            array('isoCode', 'length', 'max' => 7)
+            array('isoCode', 'length', 'max' => 5)
         );
     }
 
@@ -79,10 +79,10 @@ class AttributeOptionI18N extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeOptionI18NId' => 'ID',
-            'string' => 'String',
-            'isoCode' => 'ISO Code',
-            'attributeOptionId' => 'Attribute Option',
+            'attributeOptionI18NId' => Yii::t('attributeoptionsi18n', 'ID'),
+            'string' => Yii::t('attributeoptionsi18n', 'String'),
+            'isoCode' => Yii::t('attributeoptionsi18n', 'ISO Code'),
+            'attributeOptionId' => Yii::t('attributeoptionsi18n', 'Attribute Option'),
         );
     }
 

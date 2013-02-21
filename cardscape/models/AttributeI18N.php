@@ -24,7 +24,7 @@
 /**
  * Maintains the translations for the existing attributes.
  *
- * @property integer $attributeI18NId The database ID
+ * @property integer $id The database ID
  * @property string $string The translated attribute name
  * @property string $isoCode The ISO code for this translation
  * @property string $attributeId The database ID for the owner attribute
@@ -76,10 +76,10 @@ class AttributeI18N extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeI18NId' => 'ID',
-            'string' => 'String',
-            'isoCode' => 'ISO Code',
-            'attributeId' => 'Attribute',
+            'attributeI18NId' => Yii::t('attributei18n', 'ID'),
+            'string' => Yii::t('attributei18n', 'String'),
+            'isoCode' => Yii::t('attributei18n', 'ISO Code'),
+            'attributeId' => Yii::t('attributei18n', 'Attribute'),
         );
     }
 

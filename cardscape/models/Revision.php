@@ -22,7 +22,7 @@
  */
 
 /**
- * @property integer $revisionId
+ * @property integer $id
  * @property string $date
  * @property integer $active
  * @property integer $cardId
@@ -58,7 +58,7 @@ class Revision extends CActiveRecord {
     public function rules() {
         return array(
             array('date', 'required'),
-            array('active', 'numerical', 'integerOnly' => true),
+            array('active, cardId, userId', 'numerical', 'integerOnly' => true),
             //rules for the search method
             array('date, cardId, userId', 'safe', 'on' => 'search'),
         );
@@ -80,10 +80,10 @@ class Revision extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'revisionId' => 'ID',
-            'date' => 'Date',
-            'cardId' => 'Card',
-            'userId' => 'User',
+            'id' => Yii::t('revision', 'ID'),
+            'date' => Yii::t('revision', 'Date'),
+            'cardId' => Yii::t('revision', 'Card'),
+            'userId' => Yii::t('revision', 'User'),
         );
     }
 
@@ -101,7 +101,7 @@ class Revision extends CActiveRecord {
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
                     'pagination' => array(
-                        'pageSize' => Yii::app()->params['pageSize']
+                        'pageSize' => Yii::app()->params['paginationSize']
                     ),
                     'sort' => array(
                         'defaultOrder' => 'revisionId,date'

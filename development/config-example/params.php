@@ -8,7 +8,6 @@ return array(
         'en_US' => 'English (US)',
         'pt_PT' => 'Portuguese (Portugal)'
     ),
-    'copyright' => '&copy; ' . date('Y') . 'Cardscape Development Team',
-    'pageSize' => 25,
+    'paginationSize' => 25,
     'cardsDir' => '//cards'
 );

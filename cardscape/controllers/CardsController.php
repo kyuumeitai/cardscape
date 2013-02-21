@@ -26,29 +26,24 @@
  * develop the system further without having to wait for a more complete card 
  * controller.
  */
-class CardsController extends Controller {
+class CardsController extends CardscapeController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
-    /*public function accessRules() {
-        return array(
-            array('allow',
-                'actions' => array('index, gallery'),
-                'users' => array('*')
-            )
-        );
-    }*/
+    //public function accessRules() {
+    //return array(
+    //array('allow',
+    //'actions' => array('index, gallery'),
+    //'users' => array('*')
+    //)
+    //);
+    //
 
     public function actionIndex() {
-        $this->redirect(array('gallery'));
-    }
-
-    public function actionGallery() {
-        //NOTE: just testing the layout, this code does nothing.
         $cards = Card::model()->findAll('active = 1');
-        $this->render('gallery', array('cards' => $cards));
+        $this->render('index', array('cards' => $cards));
     }
 
 }

@@ -29,7 +29,7 @@
  * The main reason for this model is to make possible the various relations with 
  * cards, projects and other models.
  * 
- * @property integer $attributeId The attribute's database ID
+ * @property integer $id The attribute's database ID
  * @property integer $multivalue Flag that identifies this attribute as having multiple values
  * @property integer $active Flag that marks this attribute as deleted
  *
@@ -87,9 +87,9 @@ class Attribute extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeId' => 'ID',
-            'multivalue' => 'Multi-value',
-            'useCount' => 'Cards'
+            'attributeId' => Yii::t('attribute', 'ID'),
+            'multivalue' => Yii::t('attribute', 'Multi-value'),
+            'useCount' => Yii::t('attribute', 'Cards')
         );
     }
 
@@ -104,7 +104,7 @@ class Attribute extends CActiveRecord {
         }
 
         return AttributeI18N::model()->findByAttributes(array(
-                    'attributeId' => $this->attributeId,
+                    'attributeId' => $this->id,
                     'isoCode' => $language
                 ))->string;
     }

@@ -31,7 +31,7 @@
  * attribute: the objective for the goal corresponding to the number of cards with 
  * a given attribute that need to exist in a complete state.
  * 
- * @property integer $projectId The database ID for the owner project
+ * @property integer $id The database ID for the owner project
  * @property integer $attributeId The database ID for the owner attribute
  * @property integer $objective The number of cards with the attribute that the project needs
  */
@@ -59,9 +59,9 @@ class ProjectAttribute extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'projectId' => 'Project',
-            'attributeId' => 'Attribute',
-            'objective' => 'Objective',
+            'id' => Yii::t('project', 'Project'),
+            'attributeId' => Yii::t('project', 'Attribute'),
+            'objective' => Yii::t('project', 'Objective'),
         );
     }
 

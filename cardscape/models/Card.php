@@ -25,7 +25,7 @@
  * This is the model class for table "Card".
  *
  * The followings are the available columns in table 'Card':
- * @property string $cardId
+ * @property string $id
  * @property integer $status
  * @property integer $active
  * @property string $userId
@@ -42,6 +42,7 @@ class Card extends CActiveRecord {
 
     /**
      * Returns the static model of the specified AR class.
+     * 
      * @param string $className active record class name.
      * @return Card the static model class
      */
@@ -53,22 +54,19 @@ class Card extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'Card';
+        return '{{Card}}';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('userId', 'required'),
-            array('status, active', 'numerical', 'integerOnly' => true),
-            array('userId', 'length', 'max' => 10),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
-            array('cardId, status, active, userId', 'safe', 'on' => 'search'),
+            array('active, ancestorId', 'numerical', 'integerOnly' => true),
+            array('status', 'in', array('concept', 'discussion', 'playtest', 'approved', 'rejected')),
+            // search
+            array('status, userId, ancestorId', 'safe', 'on' => 'search'),
         );
     }
 
@@ -76,8 +74,6 @@ class Card extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
             'attributes' => array(self::MANY_MANY, 'Attribute', 'CardAttribute(cardId, attributeId)'),
@@ -93,10 +89,11 @@ class Card extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'cardId' => 'Card',
-            'status' => 'Status',
-            'active' => 'Active',
-            'userId' => 'User',
+            'id' => Yii::t('card', 'ID'),
+            'status' => Yii::t('card', 'Status'),
+            'active' => Yii::t('card', 'Active'),
+            'userId' => Yii::t('card', 'User'),
+            'ancestorId' => Yii::t('card', 'Ancestor'),
         );
     }
 
@@ -105,18 +102,20 @@ class Card extends CActiveRecord {
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
     public function search() {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
+        $criteria = new CDbCriteria();
 
-        $criteria = new CDbCriteria;
-
-        $criteria->compare('cardId', $this->cardId, true);
-        $criteria->compare('status', $this->status);
-        $criteria->compare('active', $this->active);
-        $criteria->compare('userId', $this->userId, true);
+        $criteria->compare('status', $this->status, true);
+        $criteria->compare('userId', $this->userId);
+        $criteria->compare('ancestorId', $this->ancestorId);
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
+                    'pagination' => array(
+                        'pageSize' => Yii::app()->params['paginationSize']
+                    ),
+                    'sort' => array(
+                        'defaultOrder' => 'status'
+                    )
                 ));
     }
 

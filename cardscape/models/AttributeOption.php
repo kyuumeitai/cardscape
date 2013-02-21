@@ -26,7 +26,7 @@
  * set group of possibilities. Each option represents one possible value for the 
  * attribute that the user can choose from.
  *
- * @property integer $attributeOptionId The database ID
+ * @property integer $id The database ID
  * @property string $key The key used to identify this attribute in views
  * @property integer $attributeId The database ID for the owner attribute
  *
@@ -78,9 +78,9 @@ class AttributeOption extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeOptionId' => 'ID',
-            'key' => 'Key',
-            'attributeId' => 'Attribute',
+            'attributeOptionId' => Yii::t('attributeoption', 'ID'),
+            'key' => Yii::t('attributeoption', 'Key'),
+            'attributeId' => Yii::t('attributeoption', 'Attribute'),
         );
     }
 

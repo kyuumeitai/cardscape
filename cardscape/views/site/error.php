@@ -1,6 +1,6 @@
-<?php $this->title = Yii::app()->name . ' - Error'; ?>
+<?php $this->title = Yii::t('cardscape', ' Error'); ?>
 
-<h1>Error <?php echo $code; ?></h1>
+<h1 class="fancy"><?php echo Yii::t('cardscape', 'Erro'), '&nbsp;', $code; ?></h1>
 
 <div class="error">
     <?php echo CHtml::encode($message); ?>

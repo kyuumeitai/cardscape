@@ -1,6 +1,6 @@
 <?php
 
-/* Controller.php
+/* CardscapeController.php
  * 
  * This file is part of Cardscape.
  * Web based collaborative platform for creating Collectible Card Games.
@@ -29,7 +29,7 @@
  * Any variable that should be available to the layout needs to be placed here, 
  * also any data that is common to all controllers is also part of this class. 
  */
-class Controller extends CController {
+class CardscapeController extends CController {
 
     /**
      * @var string The name of the layout used by the controller. Defaults to 
@@ -57,75 +57,75 @@ class Controller extends CController {
 
         $this->layout = '//layouts/main';
         $this->title = 'Cardscape';
-
-        //Default menu taken from the previous version, may need to be updated.
-        //The commented query strings represent the request that was used before
-        //and may be used as reference.
-        //TODO: Uncomment menu elements when they became active
         $this->menu = array(
-            //public or guest links
-            array(
-                'label' => 'Home',
-                'url' => array('site/index')
-            ),
-            array(
-                'label' => 'Gallery',
-                'url' => array('cards/gallery')
-            ),
-            //array(
-            //    'label' => 'Statistics',
-            //    //index.php?statistics
-            //    'url' => array('site/statistics')
-            //),
-            //members
-            //array(
-            //    'label' => 'New Card',
-            //    //index.php?new_card 
-            //    'url' => array('cards/suggest'),
-            //    'visible' => !Yii::app()->user->isGuest
-            //),
-            //array(
-            //    'label' => 'Recent Activity',
-            //    //index.php?recent_activity
-            //    'url' => array('site/recent'),
-            //    'visible' => !Yii::app()->user->isGuest
-            //),
-            array(
-                'label' => 'Administration',
-                'url' => array('administration/index'),
-                'visible' => (!Yii::app()->user->isGuest && Yii::app()->user->role == 2),
-                'items' => array(
-                    array(
-                        'label' => 'Card Attributes',
-                        'url' => array('attributes/index')
-                    ),
-                    array(
-                        'label' => 'Projects',
-                        'url' => array('projects/index')
-                    ),
-                    array(
-                        'label' => 'Users',
-                        'url' => array('users/index')
-                    ),
-                )
-            ),
-            array(
-                'label' => 'Account',
-                'url' => array('users/account'),
-                'visible' => !Yii::app()->user->isGuest,
-                'items' => array(
-                    array(
-                        'label' => 'Logout',
-                        'url' => array('site/logout'),
-                    )
-                )
-            ),
-            array(
-                'label' => 'Login or Register',
-                'url' => array('site/login'),
-                'visible' => Yii::app()->user->isGuest
-            ),
+            'items' => array(
+                array(
+                    'label' => Yii::t('cardscape', 'Home'),
+                    'url' => array('site/index')
+                ),
+                array(
+                    'label' => 'Cards',
+                    'url' => array('cards/index')
+                ),
+//                array(
+//                    'label' => Yii::t('cardscape', 'Administration'),
+//                    'url' => array('administration/index'),
+//                    'items' => array(
+//                        array(
+//                            'label' => 'Card Attributes',
+//                            'url' => array('attributes/index')
+//                        ),
+//                        array(
+//                            'label' => 'Projects',
+//                            'url' => array('projects/index')
+//                        ),
+//                        array(
+//                            'label' => 'Users',
+//                            'url' => array('users/index')
+//                        ),
+//                    )
+//                ),
+            )
         );
+
+        //TODO: Uncomment menu elements when they became active
+        /* $this->menu = array(
+          //array(
+          //    'label' => 'Statistics',
+          //    //index.php?statistics
+          //    'url' => array('site/statistics')
+          //),
+          //members
+          //array(
+          //    'label' => 'New Card',
+          //    //index.php?new_card
+          //    'url' => array('cards/suggest'),
+          //    'visible' => !Yii::app()->user->isGuest
+          //),
+          //array(
+          //    'label' => 'Recent Activity',
+          //    //index.php?recent_activity
+          //    'url' => array('site/recent'),
+          //    'visible' => !Yii::app()->user->isGuest
+          //),
+
+          array(
+          'label' => 'Account',
+          'url' => array('users/account'),
+          'visible' => !Yii::app()->user->isGuest,
+          'items' => array(
+          array(
+          'label' => 'Logout',
+          'url' => array('site/logout'),
+          )
+          )
+          ),
+          array(
+          'label' => 'Login or Register',
+          'url' => array('site/login'),
+          'visible' => Yii::app()->user->isGuest
+          ),
+          ); */
     }
 
     /**
@@ -154,10 +154,10 @@ class Controller extends CController {
      * 
      * @return array Default action filters.
      */
-    public function filters() {
-        return array(
-            'accessControl', // perform access control for CRUD operations
-        );
-    }
+    //public function filters() {
+    //    return array(
+    //        'accessControl', // perform access control for CRUD operations
+    //    );
+    //}
 
 }
