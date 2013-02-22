@@ -21,27 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UsersController extends Controller {
+class UsersController extends CardscapeController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
-    /* public function accessRules() {
-      //merging with parent rules, though usually the parent just blocks everything
-      return array_merge(
-      array(
-      array('allow',
-      'actions' => array('index', 'create', 'update', 'delete', 'reset'),
-      'expression' => '($user->role == 2)'
-      ),
-      array('allow',
-      'actions' => array('account'),
-      'users' => array('@')
-      )
-      ), parent::accessRules()
-      );
-      } */
+//    public function accessRules() {
+//        return
+//                array(
+//                    array('allow',
+//                        'actions' => array('index', 'create', 'update', 'delete', 'reset'),
+//                        'expression' => '($user->role == 2)'
+//                    ),
+//                    array('allow',
+//                        'actions' => array('account'),
+//                        'users' => array('@')
+//                    )
+//        );
+//    }
 
     /**
      *
@@ -79,25 +77,25 @@ class UsersController extends Controller {
         $user = new User();
         $this->performAjaxValidation('user-form', $user);
 
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'];
-            if ($user->save()) {
-                $password = User::randomPassword();
-                $user->password = User::hash($password);
-                if ($user->save()) {
-                    $email = new EmailMessage($user->email, 'New account at ' . Yii::app()->name
-                                    , sprintf('A new account was created at %s, your username and password is: %s/%s'
-                                            , Yii::app()->name, $user->username, $password));
-                    try {
-                        $email->send();
-                    } catch (phpmailerException $ex) {
-                        throw new CHttpException(500, 'An error occured. Unable to send e-mail message.');
-                    }
-                }
-                $this->redirect(array('update', 'id' => $user->userId));
-            }
-        }
-
+//        if (isset($_POST['User'])) {
+//            $user->attributes = $_POST['User'];
+//            if ($user->save()) {
+//                $password = User::randomPassword();
+//                $user->password = User::hash($password);
+//                if ($user->save()) {
+//                    $email = new EmailMessage($user->email, 'New account at ' . Yii::app()->name
+//                                    , sprintf('A new account was created at %s, your username and password is: %s/%s'
+//                                            , Yii::app()->name, $user->username, $password));
+//                    try {
+//                        $email->send();
+//                    } catch (phpmailerException $ex) {
+//                        throw new CHttpException(500, 'An error occured. Unable to send e-mail message.');
+//                    }
+//                }
+//                $this->redirect(array('update', 'id' => $user->userId));
+//            }
+//        }
+//
         $this->render('create', array('user' => $user));
     }
 
@@ -107,17 +105,17 @@ class UsersController extends Controller {
      * @param integer $id The user's database ID.
      */
     public function actionUpdate($id) {
-        $user = $this->loadUserModel($id);
-
-        $this->performAjaxValidation('user-form', $user);
-
-        if (isset($_POST['User'])) {
-            $user->attributes = $_POST['User'];
-            if ($user->save())
-                $this->redirect(array('update', 'id' => $user->userId));
-        }
-
-        $this->render('update', array('user' => $user));
+//        $user = $this->loadUserModel($id);
+//
+//        $this->performAjaxValidation('user-form', $user);
+//
+//        if (isset($_POST['User'])) {
+//            $user->attributes = $_POST['User'];
+//            if ($user->save())
+//                $this->redirect(array('update', 'id' => $user->userId));
+//        }
+//
+//        $this->render('update', array('user' => $user));
     }
 
     /**
@@ -128,46 +126,20 @@ class UsersController extends Controller {
      * @throws CHttpException 
      */
     public function actionDelete($id) {
-        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
-            $user->active = 0;
-            $user->save();
-
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-            }
-        } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-        }
+//        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
+//            $user->active = 0;
+//            $user->save();
+//
+//            if (!isset($_GET['ajax'])) {
+//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+//            }
+//        } else {
+//            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+//        }
     }
 
-    /**
-     * Performs a password reset and sends the new password to the user.
-     * 
-     * @param integer $id The database ID for the user.
-     * 
-     * @throws CHttpException 
-     */
-    public function actionReset($id) {
-        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
-            $password = User::randomPassword();
-            $user->password = User::hash($password);
-            if ($user->save()) {
-                $email = new EmailMessage($user->email, 'Password reset at ' . Yii::app()->name
-                                , sprintf('A new password was generated by an administrator at %s. Your new password is: %s'
-                                        , Yii::app()->name, $password));
-                try {
-                    $email->send();
-                } catch (phpmailerException $ex) {
-                    throw new CHttpException(500, 'An error occured. Unable to send e-mail message.');
-                }
-            }
-        } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-        }
-    }
-
-    public function actionAccount() {
-        $this->render('account');
+    public function actionProfile() {
+        $this->render('profile');
     }
 
 }

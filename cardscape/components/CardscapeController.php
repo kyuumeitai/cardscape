@@ -67,25 +67,11 @@ class CardscapeController extends CController {
                     'label' => 'Cards',
                     'url' => array('cards/index')
                 ),
-//                array(
-//                    'label' => Yii::t('cardscape', 'Administration'),
-//                    'url' => array('administration/index'),
-//                    'items' => array(
-//                        array(
-//                            'label' => 'Card Attributes',
-//                            'url' => array('attributes/index')
-//                        ),
-//                        array(
-//                            'label' => 'Projects',
-//                            'url' => array('projects/index')
-//                        ),
-//                        array(
-//                            'label' => 'Users',
-//                            'url' => array('users/index')
-//                        ),
-//                    )
-//                ),
-            )
+                array(
+                    'label' => Yii::t('cardscape', 'Users'),
+                    'url' => array('users/index')
+                ),
+            ),
         );
 
         //TODO: Uncomment menu elements when they became active
@@ -159,5 +145,4 @@ class CardscapeController extends CController {
     //        'accessControl', // perform access control for CRUD operations
     //    );
     //}
-
 }

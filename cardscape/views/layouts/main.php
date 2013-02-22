@@ -9,6 +9,8 @@
         <!-- <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/ie.css"> -->
 
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/cardscape.css">
+        
+        <script src="<?php echo $baseUrl; ?>/js/jquery-1.9.1.min.js"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>
     </head>

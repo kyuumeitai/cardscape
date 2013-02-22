@@ -64,7 +64,7 @@ class Card extends CActiveRecord {
         return array(
             array('userId', 'required'),
             array('active, ancestorId', 'numerical', 'integerOnly' => true),
-            array('status', 'in', array('concept', 'discussion', 'playtest', 'approved', 'rejected')),
+            array('status', 'in', 'range' => array('concept', 'discussion', 'playtest', 'approved', 'rejected')),
             // search
             array('status, userId, ancestorId', 'safe', 'on' => 'search'),
         );

@@ -1,9 +1,9 @@
 <?php
 /** @var UsersController $this */
-$this->title = Yii::t('interface', 'Users');
+$this->title = Yii::t('cardscape', 'Users');
 ?>
 
-<h1><?php echo Yii::t('interface', 'Manage Users'); ?></h1>
+<h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage Users'); ?></h1>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -22,11 +22,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'role',
             'type' => 'raw',
-            'value' => 'User::roleNameById($data->role)',
-            'filter' => User::roleNames()
+            'value' => '$data->getRoleName()',
+            'filter' => User::getRolesArray()
         ),
         array(
-            'header' => 'Actions',
+            'header' => Yii::t('cardscape', 'Actions'),
             'class' => 'CButtonColumn'
         )
     ),

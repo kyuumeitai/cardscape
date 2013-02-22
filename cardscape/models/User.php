@@ -67,12 +67,12 @@ class User extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('username, email', 'required'),
+            array('username, email, role', 'required'),
             array('username', 'length', 'max' => 25),
             array('language', 'length', 'max' => 5),
             array('email', 'length', 'max' => 255),
             array('email', 'email'),
-            array('role', 'in', array('user', 'moderator', 'administrator')),
+            array('role', 'in', 'range' => array('user', 'moderator', 'administrator')),
             // search
             array('username, email, role', 'safe', 'on' => 'search'),
         );
