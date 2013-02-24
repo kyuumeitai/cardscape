@@ -11,7 +11,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'dataProvider' => $filter->search(),
     'filter' => $filter,
     'template' => '{items} {pager} {summary}',
-    'cssFile' => Yii::app()->baseUrl . '/css/grid.css',
+    'cssFile' => false,
     'columns' => array(
         array(
             'name' => 'projectId',

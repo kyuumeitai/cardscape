@@ -5,11 +5,9 @@
 
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/screen.css">
-        <!-- <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/print.css"> -->
-        <!-- <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/ie.css"> -->
 
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/cardscape.css">
-        
+
         <script src="<?php echo $baseUrl; ?>/js/jquery-1.9.1.min.js"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>
@@ -20,16 +18,6 @@
                 <div id="logo"></div>
                 <nav class="navigation">
                     <?php $this->widget('zii.widgets.CMenu', $this->menu); ?>
-                    <!-- <ul>
-                        <li class="selected"><a href="index.html">home</a></li>
-                        <li><a href="about.html">about us</a></li>
-                        <li><a href="category.html">books</a></li>
-                        <li><a href="specials.html">specials books</a></li>
-                        <li><a href="myaccount.html">my accout</a></li>
-                        <li><a href="register.html">register</a></li>
-                        <li><a href="details.html">prices</a></li>
-                        <li><a href="contact.html">contact</a></li>
-                    </ul> -->
                 </nav>
             </div>
             <div class="clearfix"></div>

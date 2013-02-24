@@ -4,3 +4,4 @@ nbproject
 *~
 /www/debug.php
 /www/.htaccess
+/cardscape/config/*.php

@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ProjectsController extends Controller {
+class ProjectsController extends CardscapeController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

@@ -33,6 +33,13 @@ $form = $this->beginWidget('CActiveForm', array(
         //$form->error($user, 'role');
         ?>
     </div>
+    <div class="formrow">
+        <?php
+        echo $form->labelEx($user, 'language'),
+        $form->textField($user, 'language', array('maxlength' => 5));
+        //$form->error($user, 'email');
+        ?>
+    </div>
 </fieldset>
 
 <div class="buttonsrow">

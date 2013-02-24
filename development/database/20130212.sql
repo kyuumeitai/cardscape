@@ -25,7 +25,7 @@ CREATE TABLE `User` (
 -- of the user reach.
 CREATE TABLE `Card` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
-`status` ENUM('concept', 'discussion', 'playtest', 'approved', 'rejected' NOT NULL DEFAULT 'concept' ,
+`status` ENUM('concept', 'discussion', 'playtest', 'approved', 'rejected') NOT NULL DEFAULT 'concept' ,
 `active` TINYINT NOT NULL DEFAULT 1 ,
 `userId` INT UNSIGNED NOT NULL ,
 `ancestorId` INT UNSIGNED NOT NULL DEFAULT 0, -- ID of card from which this card is derived from

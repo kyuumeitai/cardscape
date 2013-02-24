@@ -64,14 +64,22 @@ class CardscapeController extends CController {
                     'url' => array('site/index')
                 ),
                 array(
-                    'label' => 'Cards',
+                    'label' => Yii::t('cardscape', 'Cards'),
                     'url' => array('cards/index')
                 ),
-                array(
-                    'label' => Yii::t('cardscape', 'Users'),
-                    'url' => array('users/index')
-                ),
-            ),
+                array('label' => Yii::t('cardscape', 'Administration'),
+                    'url' => '#', 'items' => array(
+                        array(
+                            'label' => Yii::t('cardscape', 'Projects'),
+                            'url' => array('projects/index')
+                        ),
+                        array(
+                            'label' => Yii::t('cardscape', 'Users'),
+                            'url' => array('users/index')
+                        ),
+                    ),
+                )
+            )
         );
 
         //TODO: Uncomment menu elements when they became active
