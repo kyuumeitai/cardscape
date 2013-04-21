@@ -27,22 +27,22 @@ class SiteController extends CardscapeController {
         parent::__construct($id, $module = null);
     }
 
-    /*public function accessRules() {
+    public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('index', 'error', 'credits', 'about'),
+                'actions' => array('index', 'error', 'about', 'contactus'),
                 'users' => array('*'),
             ),
-            array('allow',
-                'actions' => array('login', 'recover'),
-                'users' => array('?'),
-            ),
-            array('allow',
-                'actions' => array('logout'),
-                'users' => array('@'),
-            )
+                /* array('allow',
+                  'actions' => array('login', 'recover'),
+                  'users' => array('?'),
+                  ),
+                  array('allow',
+                  'actions' => array('logout'),
+                  'users' => array('@'),
+                  ) */
         );
-    }*/
+    }
 
     /**
      * Default system action.
@@ -72,65 +72,59 @@ class SiteController extends CardscapeController {
 
     /**
      * Shows the login/register view and provides login and register features. 
-     */
-    public function actionLogin() {
-//TODO: add captcha for registration
-        $login = new LoginForm();
-        $register = new RegisterForm();
+      public function actionLogin() {
+      //TODO: add captcha for registration
+      $login = new LoginForm();
+      $register = new RegisterForm();
 
-        $this->performAjaxValidation('register-form', $register);
+      $this->performAjaxValidation('register-form', $register);
 
-        if (isset($_POST['LoginForm'])) {
-            $login->attributes = $_POST['LoginForm'];
-            if ($login->validate() && $login->login()) {
-                $this->redirect(Yii::app()->user->returnUrl);
-            }
-        } else if (isset($_POST['RegisterForm'])) {
-            $register->attributes = $_POST['RegisterForm'];
-            if ($register->validate() && $register->register()) {
-//auto login the user
-                $login->unsetAttributes();
-                $login->username = $register->username;
-                $login->password = $register->password;
+      if (isset($_POST['LoginForm'])) {
+      $login->attributes = $_POST['LoginForm'];
+      if ($login->validate() && $login->login()) {
+      $this->redirect(Yii::app()->user->returnUrl);
+      }
+      } else if (isset($_POST['RegisterForm'])) {
+      $register->attributes = $_POST['RegisterForm'];
+      if ($register->validate() && $register->register()) {
+      //auto login the user
+      $login->unsetAttributes();
+      $login->username = $register->username;
+      $login->password = $register->password;
 
-                if (Yii::app()->user->returnUrl) {
-                    $this->redirect(Yii::app()->user->returnUrl);
-                } else {
-                    $this->redirect(array('index'));
-                }
-            }
-        }
+      if (Yii::app()->user->returnUrl) {
+      $this->redirect(Yii::app()->user->returnUrl);
+      } else {
+      $this->redirect(array('index'));
+      }
+      }
+      }
 
-        $this->render('login', array(
-            'login' => $login,
-            'register' => $register
-        ));
-    }
-
+      $this->render('login', array(
+      'login' => $login,
+      'register' => $register
+      ));
+      } */
     /**
      * Logs a user out of the system and redirects to the home page. 
-     */
-    public function actionLogout() {
-        Yii::app()->user->logout();
-        $this->redirect(Yii::app()->homeUrl);
-    }
-
+      public function actionLogout() {
+      Yii::app()->user->logout();
+      $this->redirect(Yii::app()->homeUrl);
+      } */
     /**
      * Allows a user to recover a lost password. 
-     */
-    public function actionRecover() {
-        $recover = new RecoverForm();
+      public function actionRecover() {
+      $recover = new RecoverForm();
 
-        if (isset($_POST['RecoverForm'])) {
-            $recover->attributes = $_POST['RecoverForm'];
-            if ($recover->validate() && $recover->recover()) {
-                //TODO: show success message
-            }
-        }
+      if (isset($_POST['RecoverForm'])) {
+      $recover->attributes = $_POST['RecoverForm'];
+      if ($recover->validate() && $recover->recover()) {
+      //TODO: show success message
+      }
+      }
 
-        $this->render('recover', array('recover' => $recover));
-    }
-
+      $this->render('recover', array('recover' => $recover));
+      } */
     /**
      * This is the action that changes the password based on the key that was 
      * sent to the user's email address.
@@ -138,37 +132,33 @@ class SiteController extends CardscapeController {
      * @param string $key The reset key used to control password recovery requests.
      * 
      * @throws CHttpException 
-     */
-    public function actionChangePassword($key) {
-        if (($passwordRecover = PasswordRecover::model()->findByAttributes(array('key' => $key))) !== null) {
-            $change = new ChangeForm();
-            $this->performAjaxValidation('change-form', $change);
+      public function actionChangePassword($key) {
+      if (($passwordRecover = PasswordRecover::model()->findByAttributes(array('key' => $key))) !== null) {
+      $change = new ChangeForm();
+      $this->performAjaxValidation('change-form', $change);
 
-            if (isset($_POST['ChangeForm'])) {
-                $change->attributes = $_POST['ChangeForm'];
-                if ($change->validate() && $change->changePassword($passwordRecover->userId)) {
-                    //TODO: show success message
-                }
-            }
+      if (isset($_POST['ChangeForm'])) {
+      $change->attributes = $_POST['ChangeForm'];
+      if ($change->validate() && $change->changePassword($passwordRecover->userId)) {
+      //TODO: show success message
+      }
+      }
 
-            $this->render('passwordchange', array('change' => $change));
-        } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-        }
-    }
-
-    /**
-     * Shows the credits page. 
-     */
-    public function actionCredits() {
-        $this->render('credits');
-    }
+      $this->render('passwordchange', array('change' => $change));
+      } else {
+      throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+      }
+      } */
 
     /**
      * Shows the about page. 
      */
     public function actionAbout() {
         $this->render('about');
+    }
+
+    public function actionContactus() {
+        $this->render('contactus');
     }
 
 }

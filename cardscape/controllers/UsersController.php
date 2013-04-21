@@ -27,9 +27,9 @@ class UsersController extends CardscapeController {
         parent::__construct($id, $module);
     }
 
-//    public function accessRules() {
-//        return
-//                array(
+    public function accessRules() {
+        return array(
+                //TODO: setup proper access rules.
 //                    array('allow',
 //                        'actions' => array('index', 'create', 'update', 'delete', 'reset'),
 //                        'expression' => '($user->role == 2)'
@@ -38,19 +38,22 @@ class UsersController extends CardscapeController {
 //                        'actions' => array('account'),
 //                        'users' => array('@')
 //                    )
-//        );
-//    }
+        );
+    }
 
     /**
-     *
-     * @param integer $id The record ID used to load the User model.
-     * @return User The User model or null if the ID is invalid.
+     * Loads a <em>User</em> model from the database using the provided <em>id</em> 
+     * value. It should be used whenever we need to get a user record in this controller.
+     * 
+     * @param integer $id The record ID used to load the <em>User</em> model.
+     * @return User The <em>User</em> model. No value is returned if the ID is 
+     * invalid, instead an <em>CHttException</em> is thrown.
      * 
      * @throws CHttpException 
      */
-    public function loadUserModel($id) {
-        if (($user = User::model()->findByPk($id)) === null) {
-            throw new CHttpException(404, 'The requested page does not exist.');
+    private function loadUserModel($id) {
+        if (($user = User::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, Yii::t('cardscape', 'Invalid user. You\'re trying to load a user that does not exist.'));
         }
 
         return $user;
@@ -62,6 +65,7 @@ class UsersController extends CardscapeController {
     public function actionIndex() {
         $filter = new User('search');
         $filter->unsetAttributes();
+        $filter->active = 1;
 
         if (isset($_POST['User'])) {
             $filter->attributes = $_POST['User'];
@@ -77,25 +81,16 @@ class UsersController extends CardscapeController {
         $user = new User();
         $this->performAjaxValidation('user-form', $user);
 
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save()) {
-//                $password = User::randomPassword();
-//                $user->password = User::hash($password);
-//                if ($user->save()) {
-//                    $email = new EmailMessage($user->email, 'New account at ' . Yii::app()->name
-//                                    , sprintf('A new account was created at %s, your username and password is: %s/%s'
-//                                            , Yii::app()->name, $user->username, $password));
-//                    try {
-//                        $email->send();
-//                    } catch (phpmailerException $ex) {
-//                        throw new CHttpException(500, 'An error occured. Unable to send e-mail message.');
-//                    }
-//                }
-//                $this->redirect(array('update', 'id' => $user->userId));
-//            }
-//        }
-//
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                //TODO: Create random password, send password by e-mail to the 
+                //user if the proper flag was check in the user's creation interface.
+                //Add proper flash messages.
+                $this->redirect(array('update', 'id' => $user->id));
+            }
+        }
+
         $this->render('create', array('user' => $user));
     }
 
@@ -105,17 +100,18 @@ class UsersController extends CardscapeController {
      * @param integer $id The user's database ID.
      */
     public function actionUpdate($id) {
-//        $user = $this->loadUserModel($id);
-//
-//        $this->performAjaxValidation('user-form', $user);
-//
-//        if (isset($_POST['User'])) {
-//            $user->attributes = $_POST['User'];
-//            if ($user->save())
-//                $this->redirect(array('update', 'id' => $user->userId));
-//        }
-//
-//        $this->render('update', array('user' => $user));
+        $user = $this->loadUserModel($id);
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                //TODO: Add proper flash messages.
+                $this->redirect(array('update', 'id' => $user->id));
+            }
+        }
+
+        $this->render('update', array('user' => $user));
     }
 
     /**
@@ -126,20 +122,17 @@ class UsersController extends CardscapeController {
      * @throws CHttpException 
      */
     public function actionDelete($id) {
-//        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
-//            $user->active = 0;
-//            $user->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-//            }
-//        } else {
-//            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-//        }
-    }
+        if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
+            $user->active = 0;
+            $user->save();
+            //TODO: Add proper flash messages.
 
-    public function actionProfile() {
-        $this->render('profile');
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
     }
 
 }

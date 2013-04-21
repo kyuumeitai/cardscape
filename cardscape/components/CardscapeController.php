@@ -51,6 +51,7 @@ class CardscapeController extends CController {
      * setting the page title.
      */
     protected $title;
+    protected $footerMenu;
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
@@ -67,18 +68,31 @@ class CardscapeController extends CController {
                     'label' => Yii::t('cardscape', 'Cards'),
                     'url' => array('cards/index')
                 ),
-                array('label' => Yii::t('cardscape', 'Administration'),
-                    'url' => '#', 'items' => array(
-                        array(
-                            'label' => Yii::t('cardscape', 'Projects'),
-                            'url' => array('projects/index')
-                        ),
-                        array(
-                            'label' => Yii::t('cardscape', 'Users'),
-                            'url' => array('users/index')
-                        ),
-                    ),
+                //array(
+                //    'label' => Yii::t('cardscape', 'Projects'),
+                //    'url' => array('projects/index')
+                //),
+                array(
+                    'label' => Yii::t('cardscape', 'Users'),
+                    'url' => array('users/index')
                 )
+            )
+        );
+
+        $this->footerMenu = array(
+            'items' => array(
+                array(
+                    'label' => Yii::t('cardscape', 'Home'),
+                    'url' => array('site/index')
+                ),
+                array(
+                    'label' => Yii::t('cardscape', 'About'),
+                    'url' => array('site/about')
+                ),
+                array(
+                    'label' => Yii::t('cardscape', 'Contact us'),
+                    'url' => array('site/contactus')
+                ),
             )
         );
 
@@ -148,9 +162,10 @@ class CardscapeController extends CController {
      * 
      * @return array Default action filters.
      */
-    //public function filters() {
-    //    return array(
-    //        'accessControl', // perform access control for CRUD operations
-    //    );
-    //}
+    public function filters() {
+        return array(
+            'accessControl'
+        );
+    }
+
 }

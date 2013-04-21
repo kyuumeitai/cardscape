@@ -1,0 +1,35 @@
+/* Footer menu and items */
+.footer {
+    height: 45px;
+    border-top: 1px #B2B2B2 dashed;
+}
+
+.footer .left {
+    float: left;
+    padding: 10px 0 0 10px;
+}
+
+.footer .right {
+    float: right;
+    padding:10px 10px 0 0;
+}
+
+.footer .navigation ul li a {
+    height: 27px;
+    display: block;
+    padding: 0 5px 0 5px;
+    margin: 0 4px 0 4px;
+    text-decoration: none;
+    text-align: center;
+    color: #AFAEAF;
+    font-size: 13px;
+    line-height: 25px;
+}
+
+.footer .navigation li.active a {
+    color: #AFAEAF;
+}
+
+.footer .navigation ul li a:hover {
+    color: #AFAEAF;
+}

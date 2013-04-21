@@ -31,3 +31,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     ),
 ));
+?>
+<div>
+    <a href="<?php echo $this->createUrl('users/create'); ?>"><?php echo Yii::t('cardscape', 'Add user'); ?></a>
+</div>

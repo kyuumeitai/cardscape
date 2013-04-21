@@ -9,5 +9,5 @@ return array(
         'pt_PT' => 'Portuguese (Portugal)'
     ),
     'paginationSize' => 25,
-    'cardsDir' => '//cards'
+    'cardsDir' => '//cardscapedata'
 );

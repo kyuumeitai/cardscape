@@ -21,29 +21,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * This class should be merged with the <em>CardController</em>. I'm using it to 
- * develop the system further without having to wait for a more complete card 
- * controller.
- */
 class CardsController extends CardscapeController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);
     }
 
-    //public function accessRules() {
-    //return array(
-    //array('allow',
-    //'actions' => array('index, gallery'),
-    //'users' => array('*')
-    //)
-    //);
-    //
+    public function accessRules() {
+        return array(
+                //TODO: setup proper access rules.
+                //array('allow',
+                //    'actions' => array('index'),
+                //    'users' => array('*')
+                //)
+        );
+    }
 
     public function actionIndex() {
-        $cards = Card::model()->findAll('active = 1');
-        $this->render('index', array('cards' => $cards));
+        $this->render('index');
     }
 
 }

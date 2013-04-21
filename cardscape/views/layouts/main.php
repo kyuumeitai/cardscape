@@ -5,10 +5,10 @@
 
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/screen.css">
-
+        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/base.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/cardscape.css">
 
-        <script src="<?php echo $baseUrl; ?>/js/jquery-1.9.1.min.js"></script>
+        <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>
     </head>
@@ -30,13 +30,9 @@
             <div class="clearfix"></div>
 
             <footer class="footer span-24">
-                <div class="left"></div>
-                <div class="right">
-                    <a href="#">home</a>
-                    <a href="#">about us</a>
-                    <a href="#">services</a>
-                    <a href="#">privacy policy</a>
-                    <a href="#">contact us</a>
+                <div class="left"><?php echo (defined('CSVersion') ? 'v. ' . CSVersion : ''); ?></div>
+                <div class="right navigation">
+                    <?php $this->widget('zii.widgets.CMenu', $this->footerMenu); ?>
                 </div>
             </footer>
             <div class="clearfix"></div>

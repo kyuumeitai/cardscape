@@ -1,5 +1,5 @@
 <?php
-$this->title = Yii::t('cardscape', 'Card Gallery');
+$this->title = Yii::t('cardscape', '');
 ?>
 
-<h1 class="fancy"><?php echo Yii::t('cardscape', 'Card Gallery'); ?></h1>
+<h1 class="fancy"><?php echo Yii::t('cardscape', ''); ?></h1>

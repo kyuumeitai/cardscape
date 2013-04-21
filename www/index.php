@@ -30,5 +30,7 @@ if (is_file($debug)) {
     include $debug;
 }
 
+define('CSVersion', '0.2');
+
 require_once($yii);
 Yii::createWebApplication($config)->run();

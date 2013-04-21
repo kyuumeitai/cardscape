@@ -24,6 +24,7 @@ a {
 #logo {
     height: 151px;
 }
+
 .navigation {
     height: 30px;
     background-color: transparent;
@@ -127,27 +128,6 @@ a {
     margin: 0 auto;
     padding: 0;
     border: none;
-}
-
-.footer {
-    height: 45px;
-    border-top: 1px #B2B2B2 dashed;
-}
-
-.footer .left {
-    float: left;
-    padding: 10px 0 0 10px;
-}
-
-.footer .right {
-    float: right;
-    padding:10px 10px 0 0;
-}
-
-.footer a {
-    text-decoration: none;
-    padding: 0 5px 0 5px;
-    color: #AFAEAF;
 }
 
 /* TABLES */

@@ -22,7 +22,7 @@ CREATE TABLE `User` (
 -- Card status are made hardcoded because they are considered control information
 -- to be used by the platform and not edited by users. Any other status that is
 -- needed will probably require code changes to be effective thus they are out 
--- of the user reach.
+-- of the user's reach.
 CREATE TABLE `Card` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `status` ENUM('concept', 'discussion', 'playtest', 'approved', 'rejected') NOT NULL DEFAULT 'concept' ,
