@@ -30,11 +30,14 @@ class AttributesController extends CardscapeController {
     public function accessRules() {
 
         return array(
-                //array(
-                //    'allow',
-                //    'actions' => array('index', 'create', 'update', 'delete'),
-                //    'expression' => '($user->role == 2)'
-                //)
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'update', 'delete'),
+                'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
+            ),
+            array(
+                'deny'
+            )
         );
     }
 
@@ -43,7 +46,24 @@ class AttributesController extends CardscapeController {
     }
 
     public function actionIndex() {
-        $this->render('index');
+        $filter = new AttributeI18N('search');
+        if (isset($_GET['AttributeI18N'])) {
+            $filter->attributes = $_GET['AttributeI18N'];
+        }
+
+        $this->render('index', array('filter' => $filter));
+    }
+
+    public function actionCreate() {
+        $this->render('create', array());
+    }
+
+    public function actionUpdate($id) {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionDelete() {
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
 }

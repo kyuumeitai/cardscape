@@ -15,7 +15,14 @@
     <body>
         <div id="page" class="container">
             <div id="header" class="span-24">
-                <div id="logo"></div>
+                <div id="logo">
+                    <?php if (!Yii::app()->user->isGuest) { ?>
+                        <div class="user-options">
+                            <a href="<?php echo $this->createUrl('users/profile'); ?>">[ <?php echo Yii::app()->user->name; ?> ]</a>
+                            <a href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
+                        </div>
+                    <?php } ?>
+                </div>
                 <nav class="navigation">
                     <?php $this->widget('zii.widgets.CMenu', $this->menu); ?>
                 </nav>

@@ -29,15 +29,21 @@ class CardsController extends CardscapeController {
 
     public function accessRules() {
         return array(
-                //TODO: setup proper access rules.
-                //array('allow',
-                //    'actions' => array('index'),
-                //    'users' => array('*')
-                //)
+            array(
+                'allow',
+                'actions' => array('index'),
+                'users' => array('*')
+            ),
+            array(
+                'deny'
+            )
         );
     }
 
     public function actionIndex() {
+        if (isset($_POST['quicksearch'])) {
+            //TODO: Implement quick search options.    
+        }
         $this->render('index');
     }
 

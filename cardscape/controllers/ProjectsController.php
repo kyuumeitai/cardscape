@@ -28,13 +28,15 @@ class ProjectsController extends CardscapeController {
     }
 
     public function accessRules() {
-
         return array(
-                //array(
-                //    'allow',
-                //    'actions' => array('index', 'create', 'update', 'delete'),
-                //    'expression' => '($user->role == 2)'
-                //)
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'update', 'delete'),
+                'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
+            ),
+            array(
+                'deny'
+            )
         );
     }
 

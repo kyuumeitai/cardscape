@@ -37,7 +37,18 @@ class LoginForm extends CFormModel {
             return false;
         }
 
-        throw new CHttpException(501, 'Not implemented yet.');
+        $credentials = new Credentials($this->emailOrUsername, $this->password);
+        if (!($authenticationError = $credentials->authenticate())) {
+            $this->addErrors(array(
+                'emailOrUsername' => Yii::t('cardscape', 'Invalid username, e-mail or password.'),
+                'password' => Yii::t('cardscape', 'Invalid username, e-mail or password.')
+            ));
+            return false;
+        }
+
+        //TODO: Add proper flash message
+        Yii::app()->user->login($credentials);
+        return true;
     }
 
     public function attributeLabels() {

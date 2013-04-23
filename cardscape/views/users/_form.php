@@ -37,7 +37,7 @@ $form = $this->beginWidget('CActiveForm', array(
 <div class="buttonsrow">
     <?php
     echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
-    CHtml::link('Cancel', $this->createUrl('users/index'))
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('users/index'))
     ?>
 </div>
 

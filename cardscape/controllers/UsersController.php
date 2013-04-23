@@ -29,15 +29,24 @@ class UsersController extends CardscapeController {
 
     public function accessRules() {
         return array(
-                //TODO: setup proper access rules.
-//                    array('allow',
-//                        'actions' => array('index', 'create', 'update', 'delete', 'reset'),
-//                        'expression' => '($user->role == 2)'
-//                    ),
-//                    array('allow',
-//                        'actions' => array('account'),
-//                        'users' => array('@')
-//                    )
+            array(
+                'allow',
+                'actions' => array('index', 'create', 'update', 'delete'),
+                'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
+            ),
+            array(
+                'allow',
+                'actions' => array('profile'),
+                'users' => array('@')
+            ),
+            array(
+                'allow',
+                'actions' => array('activate'),
+                'users' => array('?')
+            ),
+            array(
+                'deny'
+            )
         );
     }
 
@@ -135,21 +144,13 @@ class UsersController extends CardscapeController {
         }
     }
 
-    public function actionRegister() {
-        $user = new User();
-        $user->unsetAttributes();
-
-        $this->performAjaxValidation('registration-form', $user);
-        if (isset($_POST['User'])) {
-            if ($user->save()) {
-                //TODO: Add proper flash messages.
-                $this->redirect('users/register');
-            }
-        }
-        $this->render('registration');
+    public function actionActivate($key) {
+        //TODO: Not implemented yet!
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
-    public function actionActivate($key) {
+    public function actionProfile() {
+        $user = $this->loadUserModel(Yii::app()->user->id);
         //TODO: Not implemented yet!
         throw new CHttpException(501, 'Not implemented yet.');
     }

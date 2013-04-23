@@ -117,11 +117,11 @@ class User extends CActiveRecord {
         $criteria->compare('role', $this->role);
 
         return new CActiveDataProvider($this, array(
-                    'criteria' => $criteria,
-                    'sort' => array(
-                        'defaultOrder' => 'username,email,role'
-                    )
-                ));
+            'criteria' => $criteria,
+            'sort' => array(
+                'defaultOrder' => 'username,email,role'
+            )
+        ));
     }
 
     /**
@@ -159,7 +159,7 @@ class User extends CActiveRecord {
     public function getRoleName($role) {
         $roles = self::getRolesArray();
 
-        return isset($roles[$role]) ? $roles[$role] : Yii::t('user', 'Unknown role');
+        return isset($roles[$role]) ? $roles[$role] : Yii::t('cardscape', 'Unknown role');
     }
 
     /**

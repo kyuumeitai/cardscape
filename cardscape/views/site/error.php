@@ -1,6 +1,6 @@
 <?php
 /** @var SiteController $this */
-$this->title = Yii::t('cardscape', ' Error');
+$this->title = Yii::t('cardscape', 'Error');
 ?>
 
 <h1 class="fancy"><?php echo Yii::t('cardscape', 'Error '), '&nbsp;', $code; ?></h1>

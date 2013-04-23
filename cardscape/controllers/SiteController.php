@@ -89,20 +89,19 @@ class SiteController extends CardscapeController {
     public function actionLogin() {
         $login = new LoginForm();
         $registration = new RegistrationForm();
-
         $this->performAjaxValidation('registration-form', $registration);
 
         if (isset($_POST['LoginForm'])) {
             $login->attributes = $_POST['LoginForm'];
             if ($login->login()) {
                 //TODO: Proper redirection
-                $this->redirec('site/index');
+                $this->redirect(Yii::app()->homeUrl);
             }
         } else if (isset($_POST['RegistrationForm'])) {
             $registration->attributes = $_POST['RegistrationForm'];
             if ($registration->register()) {
                 //TODO: Proper redirection and flash messages
-                $this->redirect('site/confirmregistration');
+                $this->redirect(array('site/confirmregistration'));
             }
         }
 
@@ -146,7 +145,7 @@ class SiteController extends CardscapeController {
         if (isset($_POST['ContactForm'])) {
             throw new CHttpException(501, 'Not implemented yet.');
         }
-        
+
         $this->render('contactus', array('contact' => $contact));
     }
 

@@ -83,4 +83,22 @@ class AttributeI18N extends CActiveRecord {
         );
     }
 
+    public function search() {
+        $criteria = new CDbCriteria();
+
+        $criteria->compare('string', $this->string, true);
+        $criteria->compare('isoCode', 'en_US');
+        $attributes = AttributeI18N::model()->with(array(
+                    'attribute' => array('condition' => 'active = 1')
+                ))->findAll($criteria);
+
+        return new CArrayDataProvider($attributes, array(
+            'id' => 'attributei18n',
+            'sort' => array(
+                'attributes' => array('string'),
+                'defaultOrder' => 'string'
+            )
+        ));
+    }
+
 }

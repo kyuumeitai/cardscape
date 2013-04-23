@@ -1,3 +1,14 @@
+/* Header, main menu and user tools */
+.user-options {
+    text-align: right;
+}
+
+.user-options a {
+    color: #CCC;
+    margin-right: .5em;
+    text-decoration: none;
+}
+
 /* Footer menu and items */
 .footer {
     height: 45px;

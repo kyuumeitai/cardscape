@@ -50,11 +50,11 @@ class RegistrationForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'username' => Yii::t('cardspace', 'Username'),
-            'password' => Yii::t('cardspace', 'Password'),
-            'repeatPassword' => Yii::t('cardspace', 'Repeat password'),
-            'email' => Yii::t('cardspace', 'E-mail'),
-            'language' => Yii::t('cardspace', 'Language')
+            'username' => Yii::t('cardscape', 'Username'),
+            'password' => Yii::t('cardscape', 'Password'),
+            'repeatPassword' => Yii::t('cardscape', 'Repeat password'),
+            'email' => Yii::t('cardscape', 'E-mail'),
+            'language' => Yii::t('cardscape', 'Language')
         );
     }
 

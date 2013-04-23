@@ -22,23 +22,29 @@
  */
 
 /**
- * Implements a used identity allowing custom authentication code to be injected 
+ * Implements a user identity allowing custom authentication code to be injected 
  * in the standard Yii's authentication method. 
  */
 class Credentials extends CBaseUserIdentity {
 
-    private $username;
+    private $identifier;
     private $password;
+    //
     private $id;
+    private $name;
 
-    public function __construct($username, $password) {
-        $this->username = $username;
+    public function __construct($identifier, $password) {
+        $this->identifier = $identifier;
         $this->password = $password;
     }
 
     public function authenticate() {
         $this->errorCode = self::ERROR_NONE;
-        $user = User::model()->findByAttributes(array('username' => $this->username));
+        $criteria = new CDbCriteria();
+        $criteria->compare('username', $this->identifier);
+        $criteria->compare('email', $this->identifier, false, 'OR');
+
+        $user = User::model()->find($criteria);
 
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
@@ -46,27 +52,29 @@ class Credentials extends CBaseUserIdentity {
             if ($user->password !== User::hash($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
             } else {
-                $this->id = $user->userId;
-                $this->username = $user->username;
+                $this->id = $user->id;
+                $this->name = $user->username;
 
-                $sd = null;
-                if (($sd = SessionData::model()->findByPk($user->userId)) === null) {
-                    $sd = new SessionData();
-                    $sd->userId = $user->userId;
+                $session = null;
+                if (($session = SessionData::model()->findByPk((int) $this->id)) === null) {
+                    $session = new SessionData();
+                    $session->id = $this->id;
                 }
 
                 $time = time();
-                $token = md5($time . $this->id . $user->username);
+                $token = md5($time . $this->id . $this->name);
 
                 $expires = $time + (3600 * 24 * 7);
 
                 $this->setState('token', $token);
                 $this->setState('role', $user->role);
 
-                $sd->token = $token;
-                $sd->tokenExpires = date('Y-m-d H:i', $expires);
-                $sd->lastActivity = date('Y-m-d H:i', $time);
-                $sd->save();
+                $session->token = $token;
+                $session->tokenExpires = date('Y-m-d H:i', $expires);
+                $session->lastActivity = date('Y-m-d H:i', $time);
+                if (!$session->save()) {
+                    Yii::log('Error while saving session data. Reason: ' + print_r($session->getErrors(), true), CLogger::LEVEL_WARNING, 'cardscape');
+                }
             }
         }
 
@@ -78,7 +86,7 @@ class Credentials extends CBaseUserIdentity {
     }
 
     public function getName() {
-        return $this->username;
+        return $this->name;
     }
 
 }

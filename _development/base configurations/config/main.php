@@ -3,6 +3,8 @@
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Cardscape',
+    //Change the following option if you want to provide a different language for your users
+    //'language' => 'pt',
     //Development setting
     //'preload' => array('log'),
     'import' => array(
@@ -36,7 +38,7 @@ return array(
         'errorHandler' => array(
             'errorAction' => 'site/error',
         ),
-    //Development setting
+    //Development settings
     //'log' => array(
     //    'class' => 'CLogRouter',
     //    'routes' => array(

@@ -93,20 +93,4 @@ class Attribute extends CActiveRecord {
         );
     }
 
-    /**
-     *
-     * @return AttributeI18N 
-     */
-    public function defaultName() {
-        $language = 'en_US';
-        if (($setting = Setting::model()->findByPk('language')) !== null && trim($setting->value) != '') {
-            $language = trim($setting->value);
-        }
-
-        return AttributeI18N::model()->findByAttributes(array(
-                    'attributeId' => $this->id,
-                    'isoCode' => $language
-                ))->string;
-    }
-
 }

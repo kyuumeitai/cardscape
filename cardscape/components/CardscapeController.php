@@ -58,6 +58,8 @@ class CardscapeController extends CController {
 
         $this->layout = '//layouts/main';
         $this->title = 'Cardscape';
+
+        $user = Yii::app()->user;
         $this->menu = array(
             'items' => array(
                 array(
@@ -70,20 +72,24 @@ class CardscapeController extends CController {
                 ),
                 array(
                     'label' => Yii::t('cardscape', 'Projects'),
-                    'url' => array('projects/index')
+                    'url' => array('projects/index'),
+                    'visible' => (!$user->isGuest && $user->role != 'user')
                 ),
                 array(
                     'label' => Yii::t('cardscape', 'Attributes'),
                     'url' => array('attributes/index'),
+                    'visible' => (!$user->isGuest && $user->role == 'administrator')
                 ),
                 array(
                     'label' => Yii::t('cardscape', 'Login/Register'),
-                    'url' => array('site/login')
+                    'url' => array('site/login'),
+                    'visible' => $user->isGuest
                 ),
                 array(
                     'label' => Yii::t('cardscape', 'Users'),
-                    'url' => array('users/index')
-                )
+                    'url' => array('users/index'),
+                    'visible' => (!$user->isGuest && $user->role == 'administrator')
+                ),
             )
         );
 
@@ -134,6 +140,12 @@ class CardscapeController extends CController {
     public function filters() {
         return array(
             'accessControl'
+        );
+    }
+
+    public function accessRules() {
+        return array(
+            array('deny')
         );
     }
 

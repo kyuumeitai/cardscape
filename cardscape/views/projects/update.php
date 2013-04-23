@@ -3,7 +3,7 @@
  * @var ProjectsController $this
  * @var Project $project
  */
-$this->title = Yii::t('cardscape', 'Update Project');
+$this->title = Yii::t('cardscape', 'Update project');
 ?>
 
 <h1 class="fancy"><?php echo Yii::t('cardscape', 'Update project {name}', array('{name}' => $project->name)); ?></h1>
