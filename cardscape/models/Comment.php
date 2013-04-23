@@ -78,11 +78,11 @@ class Comment extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('comment', 'ID'),
-            'userId' => Yii::t('comment', 'User'),
-            'cardId' => Yii::t('comment', 'Card'),
-            'date' => Yii::t('comment', 'Date'),
-            'message' => Yii::t('comment', 'Message'),
+            'id' => Yii::t('cardscape', 'ID'),
+            'userId' => Yii::t('cardscape', 'User'),
+            'cardId' => Yii::t('cardscape', 'Card'),
+            'date' => Yii::t('cardscape', 'Date'),
+            'message' => Yii::t('cardscape', 'Message'),
         );
     }
 
@@ -100,9 +100,6 @@ class Comment extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->params['paginationSize']
-                    ),
                     'sort' => array(
                         'defaultOrder' => 'username,email,role'
                     )

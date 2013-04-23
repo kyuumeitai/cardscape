@@ -33,3 +33,16 @@
 .footer .navigation ul li a:hover {
     color: #AFAEAF;
 }
+
+/* Items lists and forms */
+.stick-right {
+    text-align: right;
+}
+
+.new-project-action {
+    /* //TODO: Not implemented yet.*/
+}
+
+.new-user-action {
+    /* //TODO: Not implemented yet.*/
+}

@@ -1,10 +1,17 @@
 <?php
-/** @var UsersController $this */
+/**
+ * @var UsersController $this
+ * @var User $filter
+ */
 $this->title = Yii::t('cardscape', 'Users');
 ?>
 
-<h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage Users'); ?></h1>
-
+<div class="span-8">
+    <h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage users'); ?></h1>
+</div>
+<div class="span-14 prefix-1 last stick-right">
+    <a class="new-user-action" href="<?php echo $this->createUrl('users/create'); ?>"><?php echo Yii::t('cardscape', 'Add user'); ?></a>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',
@@ -31,7 +38,3 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     ),
 ));
-?>
-<div>
-    <a href="<?php echo $this->createUrl('users/create'); ?>"><?php echo Yii::t('cardscape', 'Add user'); ?></a>
-</div>

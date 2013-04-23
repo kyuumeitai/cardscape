@@ -1,5 +1,11 @@
-<?php $this->title = 'Update User' ?>
+<?php
+/**
+ * @var UsersController $this
+ * @var User $user
+ */
+$this->title = Yii::t('cardscape', 'Update user');
+?>
 
-<h1>Update <?php echo $user->username; ?>'s Information</h1>
+<h1><?php echo Yii::t('cardscape', 'Update {username}\'s information', array('{username}' => $user->username)); ?></h1>
 
 <?php echo $this->renderPartial('_form', array('user' => $user)); ?>

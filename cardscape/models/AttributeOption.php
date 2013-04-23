@@ -78,9 +78,9 @@ class AttributeOption extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeOptionId' => Yii::t('attributeoption', 'ID'),
-            'key' => Yii::t('attributeoption', 'Key'),
-            'attributeId' => Yii::t('attributeoption', 'Attribute'),
+            'attributeOptionId' => Yii::t('cardscape', 'ID'),
+            'key' => Yii::t('cardscape', 'Key'),
+            'attributeId' => Yii::t('cardscape', 'Attribute'),
         );
     }
 

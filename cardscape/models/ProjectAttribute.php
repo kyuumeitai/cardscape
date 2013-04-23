@@ -59,9 +59,9 @@ class ProjectAttribute extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('project', 'Project'),
-            'attributeId' => Yii::t('project', 'Attribute'),
-            'objective' => Yii::t('project', 'Objective'),
+            'id' => Yii::t('cardscape', 'Project'),
+            'attributeId' => Yii::t('cardscape', 'Attribute'),
+            'objective' => Yii::t('cardscape', 'Objective'),
         );
     }
 

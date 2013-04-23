@@ -1,10 +1,17 @@
-<?php $this->title = 'Projects'; ?>
+<?php
+/**
+ * @var ProjectsController $this
+ * @var Project $filter
+ */
+$this->title = Yii::t('cardscape', 'Projects');
+?>
 
-<h1>Manage Projects</h1>
-<div class="tools">
-    <a href="<?php echo $this->createUrl('projects/create'); ?>">Create Project</a>
+<div class="span-8">
+    <h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage projects'); ?></h1>
 </div>
-
+<div class="span-14 prefix-1 last stick-right">
+    <a class="new-project-action" href="<?php echo $this->createUrl('projects/create'); ?>"><?php echo Yii::t('cardscape', 'Add project'); ?></a>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'project-grid',
@@ -14,26 +21,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'cssFile' => false,
     'columns' => array(
         array(
-            'name' => 'projectId',
-            'filter' => false
-        ),
-        array(
             'name' => 'name',
             'type' => 'raw',
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("projects/update", array("id" => $data->projectId)))'
         ),
         array(
-            'name' => 'expires',
-            'type' => 'date',
-            'value' => 'strtotime($data->expires)',
-            'filter' => false
-        ),
-        array(
-            'header' => 'Actions',
-            'class' => 'CButtonColumn',
-            'buttons' => array(
-                'view' => array('visible' => 'false')
-            )
+            'header' => Yii::t('cardscape', 'Actions'),
+            'class' => 'CButtonColumn'
         )
     ),
 ));

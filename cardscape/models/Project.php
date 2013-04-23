@@ -22,13 +22,14 @@
  */
 
 /**
- * A project can be used to focus the development of a group of cards and grant 
- * permissions on those cards.
+ * A project can be used to focus the development of a group of cards, grant specific 
+ * permissions on only that project and related cards. It aims to provide an organization 
+ * feature allowing card developers to focus on a limited pool/scope of cards.
  * 
  * @property integer $id Project database ID
  * @property string $name Project's name
  * @property string $description A description about this project
- * @property string $expires The date when the project
+ * @property string $expires The date when the project is to be finished
  * @property integer $active Flag that marks a project as deleted
  *
  * The following are the available model relations:
@@ -86,10 +87,10 @@ class Project extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('project', 'ID'),
-            'name' => Yii::t('project', 'Name'),
-            'description' => Yii::t('project', 'Description'),
-            'expires' => Yii::t('project', 'Expires'),
+            'id' => Yii::t('cardscape', 'ID'),
+            'name' => Yii::t('cardscape', 'Name'),
+            'description' => Yii::t('cardscape', 'Description'),
+            'expires' => Yii::t('cardscape', 'Expires'),
         );
     }
 
@@ -104,14 +105,11 @@ class Project extends CActiveRecord {
         $criteria->compare('name', $this->name, true);
 
         return new CActiveDataProvider($this, array(
-                    'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->params['paginationSize']
-                    ),
-                    'sort' => array(
-                        'defaultOrder' => 'name,expires'
-                    )
-                ));
+            'criteria' => $criteria,
+            'sort' => array(
+                'defaultOrder' => 'name,expires'
+            )
+        ));
     }
 
 }

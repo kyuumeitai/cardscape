@@ -68,10 +68,18 @@ class CardscapeController extends CController {
                     'label' => Yii::t('cardscape', 'Cards'),
                     'url' => array('cards/index')
                 ),
-                //array(
-                //    'label' => Yii::t('cardscape', 'Projects'),
-                //    'url' => array('projects/index')
-                //),
+                array(
+                    'label' => Yii::t('cardscape', 'Projects'),
+                    'url' => array('projects/index')
+                ),
+                array(
+                    'label' => Yii::t('cardscape', 'Attributes'),
+                    'url' => array('attributes/index'),
+                ),
+                array(
+                    'label' => Yii::t('cardscape', 'Login/Register'),
+                    'url' => array('site/login')
+                ),
                 array(
                     'label' => Yii::t('cardscape', 'Users'),
                     'url' => array('users/index')
@@ -95,45 +103,6 @@ class CardscapeController extends CController {
                 ),
             )
         );
-
-        //TODO: Uncomment menu elements when they became active
-        /* $this->menu = array(
-          //array(
-          //    'label' => 'Statistics',
-          //    //index.php?statistics
-          //    'url' => array('site/statistics')
-          //),
-          //members
-          //array(
-          //    'label' => 'New Card',
-          //    //index.php?new_card
-          //    'url' => array('cards/suggest'),
-          //    'visible' => !Yii::app()->user->isGuest
-          //),
-          //array(
-          //    'label' => 'Recent Activity',
-          //    //index.php?recent_activity
-          //    'url' => array('site/recent'),
-          //    'visible' => !Yii::app()->user->isGuest
-          //),
-
-          array(
-          'label' => 'Account',
-          'url' => array('users/account'),
-          'visible' => !Yii::app()->user->isGuest,
-          'items' => array(
-          array(
-          'label' => 'Logout',
-          'url' => array('site/logout'),
-          )
-          )
-          ),
-          array(
-          'label' => 'Login or Register',
-          'url' => array('site/login'),
-          'visible' => Yii::app()->user->isGuest
-          ),
-          ); */
     }
 
     /**

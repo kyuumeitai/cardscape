@@ -80,10 +80,10 @@ class Revision extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('revision', 'ID'),
-            'date' => Yii::t('revision', 'Date'),
-            'cardId' => Yii::t('revision', 'Card'),
-            'userId' => Yii::t('revision', 'User'),
+            'id' => Yii::t('cardscape', 'ID'),
+            'date' => Yii::t('cardscape', 'Date'),
+            'cardId' => Yii::t('cardscape', 'Card'),
+            'userId' => Yii::t('cardscape', 'User'),
         );
     }
 
@@ -100,9 +100,6 @@ class Revision extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->params['paginationSize']
-                    ),
                     'sort' => array(
                         'defaultOrder' => 'revisionId,date'
                     )

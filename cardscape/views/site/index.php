@@ -1,3 +1,4 @@
+<?php //TODO: get this into a CMS like small feature and internationalizable. */  ?>
 <h1 class="fancy">Welcome to Cardscape!</h1>
 
 <p>Cardscape is a generic tool for creating cards used in Collectible/Trading Card Games.</p>

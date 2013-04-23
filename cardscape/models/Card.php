@@ -89,11 +89,11 @@ class Card extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('card', 'ID'),
-            'status' => Yii::t('card', 'Status'),
-            'active' => Yii::t('card', 'Active'),
-            'userId' => Yii::t('card', 'User'),
-            'ancestorId' => Yii::t('card', 'Ancestor'),
+            'id' => Yii::t('cardscape', 'ID'),
+            'status' => Yii::t('cardscape', 'Status'),
+            'active' => Yii::t('cardscape', 'Active'),
+            'userId' => Yii::t('cardscape', 'User'),
+            'ancestorId' => Yii::t('cardscape', 'Ancestor'),
         );
     }
 
@@ -110,9 +110,6 @@ class Card extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->params['paginationSize']
-                    ),
                     'sort' => array(
                         'defaultOrder' => 'status'
                     )

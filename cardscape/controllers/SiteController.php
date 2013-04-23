@@ -21,6 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Handles most site related actions. Everything from contact forms, login,
+ * registration or any other action that is not directly related to an existing 
+ * AR model.
+ */
 class SiteController extends CardscapeController {
 
     public function __construct($id, $module = null) {
@@ -29,18 +34,24 @@ class SiteController extends CardscapeController {
 
     public function accessRules() {
         return array(
-            array('allow',
+            array(
+                'allow',
                 'actions' => array('index', 'error', 'about', 'contactus'),
                 'users' => array('*'),
             ),
-                /* array('allow',
-                  'actions' => array('login', 'recover'),
-                  'users' => array('?'),
-                  ),
-                  array('allow',
-                  'actions' => array('logout'),
-                  'users' => array('@'),
-                  ) */
+            array(
+                'allow',
+                'actions' => array('login', 'confirmregistration'),
+                'users' => array('?'),
+            ),
+            array(
+                'allow',
+                'actions' => array('logout'),
+                'users' => array('@'),
+            ),
+            array(
+                'deny'
+            )
         );
     }
 
@@ -71,94 +82,67 @@ class SiteController extends CardscapeController {
     }
 
     /**
-     * Shows the login/register view and provides login and register features. 
-      public function actionLogin() {
-      //TODO: add captcha for registration
-      $login = new LoginForm();
-      $register = new RegisterForm();
+     * Shows the login and registration page allowing users to either login with 
+     * an existing account or register a new account if they don't have an account 
+     * yet.
+     */
+    public function actionLogin() {
+        $login = new LoginForm();
+        $registration = new RegistrationForm();
 
-      $this->performAjaxValidation('register-form', $register);
+        $this->performAjaxValidation('registration-form', $registration);
 
-      if (isset($_POST['LoginForm'])) {
-      $login->attributes = $_POST['LoginForm'];
-      if ($login->validate() && $login->login()) {
-      $this->redirect(Yii::app()->user->returnUrl);
-      }
-      } else if (isset($_POST['RegisterForm'])) {
-      $register->attributes = $_POST['RegisterForm'];
-      if ($register->validate() && $register->register()) {
-      //auto login the user
-      $login->unsetAttributes();
-      $login->username = $register->username;
-      $login->password = $register->password;
+        if (isset($_POST['LoginForm'])) {
+            $login->attributes = $_POST['LoginForm'];
+            if ($login->login()) {
+                //TODO: Proper redirection
+                $this->redirec('site/index');
+            }
+        } else if (isset($_POST['RegistrationForm'])) {
+            $registration->attributes = $_POST['RegistrationForm'];
+            if ($registration->register()) {
+                //TODO: Proper redirection and flash messages
+                $this->redirect('site/confirmregistration');
+            }
+        }
 
-      if (Yii::app()->user->returnUrl) {
-      $this->redirect(Yii::app()->user->returnUrl);
-      } else {
-      $this->redirect(array('index'));
-      }
-      }
-      }
+        $this->render('login', array(
+            'login' => $login,
+            'registration' => $registration
+        ));
+    }
 
-      $this->render('login', array(
-      'login' => $login,
-      'register' => $register
-      ));
-      } */
+    /**
+     * After the registration form, if the process is successfull this action 
+     * shows a summary page to the user and informs him that an activation e-mail 
+     * was sent in order to complete the user registration process.
+     */
+    public function actionConfirmRegistration() {
+        throw new CHttpException(501, 'Not implemented yet.');
+        //$this->render('confirm-registration');
+    }
+
     /**
      * Logs a user out of the system and redirects to the home page. 
-      public function actionLogout() {
-      Yii::app()->user->logout();
-      $this->redirect(Yii::app()->homeUrl);
-      } */
-    /**
-     * Allows a user to recover a lost password. 
-      public function actionRecover() {
-      $recover = new RecoverForm();
-
-      if (isset($_POST['RecoverForm'])) {
-      $recover->attributes = $_POST['RecoverForm'];
-      if ($recover->validate() && $recover->recover()) {
-      //TODO: show success message
-      }
-      }
-
-      $this->render('recover', array('recover' => $recover));
-      } */
-    /**
-     * This is the action that changes the password based on the key that was 
-     * sent to the user's email address.
-     * 
-     * @param string $key The reset key used to control password recovery requests.
-     * 
-     * @throws CHttpException 
-      public function actionChangePassword($key) {
-      if (($passwordRecover = PasswordRecover::model()->findByAttributes(array('key' => $key))) !== null) {
-      $change = new ChangeForm();
-      $this->performAjaxValidation('change-form', $change);
-
-      if (isset($_POST['ChangeForm'])) {
-      $change->attributes = $_POST['ChangeForm'];
-      if ($change->validate() && $change->changePassword($passwordRecover->userId)) {
-      //TODO: show success message
-      }
-      }
-
-      $this->render('passwordchange', array('change' => $change));
-      } else {
-      throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-      }
-      } */
+     */
+    public function actionLogout() {
+        if (!Yii::app()->user->isGuest) {
+            Yii::app()->user->logout();
+        }
+        $this->redirect(Yii::app()->homeUrl);
+    }
 
     /**
      * Shows the about page. 
      */
     public function actionAbout() {
-        $this->render('about');
+        throw new CHttpException(501, 'Not implemented yet.');
+        //$this->render('about');
     }
 
     public function actionContactus() {
-        $this->render('contactus');
+        throw new CHttpException(501, 'Not implemented yet.');
+        //$this->render('contactus');
     }
 
 }

@@ -1,0 +1,72 @@
+[abstract]
+Explains what database entities exist, their goals and the rationale behind their cration.
+
+Overview
+--------
+
+Please refer to the Cardscape Design Document to get a background about the project's 
+initial goals and ideas. Though the current implementation does not provide all 
+of the mentioned features, and in some cases may diverge from that document, it is 
+still heavily influenced by it thus reading it will give you a better understanding of 
+the current system.
+
+Revisions
+---------
+
+Card revisions are at the heart of the card management system. Every card that is 
+created has at least one revision describing it's state. A card's history is the sum 
+of all it's revisions with the top revision representing the last state the card is in.
+
+Internationalization
+--------------------
+
+Internationalization, i18n for short, was a considered base feature of Cardscape. But given 
+the undetermined nature of the cards details where the platform does not know, before hand, what 
+attributes a card will have, providing a simple but powerful enough i18n system was not 
+easy and some compromises had to be made.
+
+Each attribute will be devided between the attribute metadata and the actual value. Only 
+the metadata is translated in order to achieve i18n, the value will always be that which was 
+provided by the user developing the card.
+
+Important entities for i18n: Attribute, AttributeOption, AttributeOptionI18N.
+
+Workflow
+--------
+
+Card Statuses
+~~~~~~~~~~~~~
+
+Entities Description
+--------------------
+
+This section describes the most important entities available in _Cardscape_'s database. ...
+
+[horizontal]
+User:: Stores every user that is able to access the platform, from administrators to 
+developers or just simple registered users.
+
+Project:: Groups a set of attributes under a name and a description allowing users 
+to organize the creation of cards based on common goals/objectives. The attributes 
+are the ones available for the cards and define what all cards in the project should 
+contain in order to consider the project complete. A project is also limited by an 
+expiration date after which the project will be considered closed.
+
+Card:: The center element in the all database, the Card entity stores only a basic and 
+very limited set of data about a card: the internal id, the creator's id and the current
+car's status. All other details are stored in the related Attribute entity and their 
+auxiliary tables.
+
+Attribute::
+
+AttributeI18N::
+
+AttributeOption::
+
+AttributeOptionI18N::
+
+ProjectAttribute::
+
+Revision::
+
+RevisionAttribute::

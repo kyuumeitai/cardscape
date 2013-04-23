@@ -131,8 +131,27 @@ class UsersController extends CardscapeController {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
             }
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));
         }
+    }
+
+    public function actionRegister() {
+        $user = new User();
+        $user->unsetAttributes();
+
+        $this->performAjaxValidation('registration-form', $user);
+        if (isset($_POST['User'])) {
+            if ($user->save()) {
+                //TODO: Add proper flash messages.
+                $this->redirect('users/register');
+            }
+        }
+        $this->render('registration');
+    }
+
+    public function actionActivate($key) {
+        //TODO: Not implemented yet!
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
 }

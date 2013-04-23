@@ -95,12 +95,12 @@ class User extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => Yii::t('user', 'ID'),
-            'username' => Yii::t('user', 'Username'),
-            'password' => Yii::t('user', 'Password'),
-            'email' => Yii::t('user', 'E-mail'),
-            'role' => Yii::t('user', 'Role'),
-            'language' => Yii::t('user', 'Language')
+            'id' => Yii::t('cardscape', 'ID'),
+            'username' => Yii::t('cardscape', 'Username'),
+            'password' => Yii::t('cardscape', 'Password'),
+            'email' => Yii::t('cardscape', 'E-mail'),
+            'role' => Yii::t('cardscape', 'Role'),
+            'language' => Yii::t('cardscape', 'Language')
         );
     }
 
@@ -118,9 +118,6 @@ class User extends CActiveRecord {
 
         return new CActiveDataProvider($this, array(
                     'criteria' => $criteria,
-                    'pagination' => array(
-                        'pageSize' => Yii::app()->params['paginationSize']
-                    ),
                     'sort' => array(
                         'defaultOrder' => 'username,email,role'
                     )

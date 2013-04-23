@@ -1,5 +1,8 @@
 <?php
-/** @var UsersController $this */
+/**
+ * @var UsersController $this
+ * @var User $user
+ */
 $this->title = Yii::t('cardscape', 'Create User');
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-/* Projects.php
+/* ProjectsController.php
  * 
  * This file is part of Cardscape.
  * Web based collaborative platform for creating Collectible Card Games.
@@ -23,104 +23,103 @@
 
 class ProjectsController extends CardscapeController {
 
-//    public function __construct($id, $module = null) {
-//        parent::__construct($id, $module);
-//    }
-//
-//    /*public function accessRules() {
-//        //merging with parent rules, though usually the parent just blocks everything
-//        return array_merge(
-//                        array(
-//                    array('allow',
-//                        'actions' => array('index', 'create', 'update', 'delete'),
-//                        'expression' => '($user->role == 2)'
-//                    )
-//                        ), parent::accessRules()
-//        );
-//    }*/
-//
-//    /**
-//     * Lists all available projects.
-//     */
-//    public function actionIndex() {
-//        $filter = new Project('search');
-//        $filter->unsetAttributes();
-//
-//        if (isset($_GET['Project'])) {
-//            $filter->attributes = $_GET['Project'];
-//        }
-//
-//        $this->render('index', array('filter' => $filter));
-//    }
-//
-//    /**
-//     * Allows administrators to create new projects. 
-//     */
-//    public function actionCreate() {
-//        $project = new Project();
-//        $this->performAjaxValidation('project-form', $project);
-//
-//        if (isset($_POST['Project'])) {
-//            $project->attributes = $_POST['Project'];
-//            if ($project->save()) {
-//                $this->redirect(array('update', 'id' => $project->projectId));
-//            }
-//        }
-//
-//        $this->render('create', array('project' => $project,));
-//    }
-//
-//    /**
-//     * Allows administrators to update existing project's information.
-//     * @param intenger $id Database ID for the project.
-//     */
-//    public function actionUpdate($id) {
-//        $project = $this->loadProjectModel($id);
-//        $this->performAjaxValidation('project-form', $project);
-//
-//        if (isset($_POST['Project'])) {
-//            $project->attributes = $_POST['Project'];
-//            if ($project->save()) {
-//                $this->redirect(array('update', 'id' => $project->projectId));
-//            }
-//        }
-//
-//        $this->render('update', array('project' => $project));
-//    }
-//
-//    /**
-//     * Used to delete projects, currently only available in the projects list (index).
-//     * 
-//     * @param integer $id Project's database ID.
-//     * 
-//     * @throws CHttpException 
-//     */
-//    public function actionDelete($id) {
-//        if (Yii::app()->request->isPostRequest && (($project = $this->loadModel($id)) !== null)) {
-//            $project->active = 0;
-//            $project->save();
-//
-//            if (!isset($_GET['ajax'])) {
-//                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-//            }
-//        } else {
-//            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
-//        }
-//    }
-//
-//    /**
-//     * Loads a Project model from the database.
-//     * 
-//     * @param integer $id The project's ID to use when searching for the record.
-//     * @return Project The model if a record is found.
-//     * 
-//     * @throws CHttpException 
-//     */
-//    public function loadProjectModel($id) {
-//        if (($project = Project::model()->findByPk($id)) === null) {
-//            throw new CHttpException(404, 'The requested page does not exist.');
-//        }
-//        return $project;
-//    }
+    public function __construct($id, $module = null) {
+        parent::__construct($id, $module);
+    }
+
+    public function accessRules() {
+
+        return array(
+                //array(
+                //    'allow',
+                //    'actions' => array('index', 'create', 'update', 'delete'),
+                //    'expression' => '($user->role == 2)'
+                //)
+        );
+    }
+
+    /**
+     * Loads a <em>Project</em> model from the database.
+     * 
+     * @param integer $id The project's ID to use when searching for the record.
+     * @return Project The model if a record is found.
+     * 
+     * @throws CHttpException 
+     */
+    private function loadProjectModel($id) {
+        if (($project = Project::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, Yii::t('cardscape', 'Invalid project. You\'re trying to load a project that does not exist.'));
+        }
+        return $project;
+    }
+
+    /**
+     * Lists all available projects.
+     */
+    public function actionIndex() {
+        $filter = new Project('search');
+        $filter->unsetAttributes();
+        $filter->active = 1;
+
+        if (isset($_GET['Project'])) {
+            $filter->attributes = $_GET['Project'];
+        }
+
+        $this->render('index', array('filter' => $filter));
+    }
+
+    /**
+     * Allows administrators to create new projects. 
+     */
+    public function actionCreate() {
+        $project = new Project();
+        $this->performAjaxValidation('project-form', $project);
+
+        if (isset($_POST['Project'])) {
+            $project->attributes = $_POST['Project'];
+            if ($project->save()) {
+                //TODO: Add proper flash messages
+                $this->redirect(array('update', 'id' => $project->id));
+            }
+        }
+
+        $this->render('create', array('project' => $project,));
+    }
+
+    /**
+     * @param intenger $id Database ID for the project.
+     */
+    public function actionUpdate($id) {
+        $project = $this->loadProjectModel($id);
+        $this->performAjaxValidation('project-form', $project);
+
+        if (isset($_POST['Project'])) {
+            $project->attributes = $_POST['Project'];
+            if ($project->save()) {
+                //TODO: Add proper flash messages.
+                $this->redirect(array('update', 'id' => $project->id));
+            }
+        }
+
+        $this->render('update', array('project' => $project));
+    }
+
+    /**
+     * @param integer $id Project's database ID.
+     * @throws CHttpException 
+     */
+    public function actionDelete($id) {
+        if (Yii::app()->request->isPostRequest && (($project = $this->loadModel($id)) !== null)) {
+            $project->active = 0;
+            $project->save();
+            //TODO: Add proper flash messages.
+
+            if (!isset($_GET['ajax'])) {
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            }
+        } else {
+            throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));
+        }
+    }
 
 }

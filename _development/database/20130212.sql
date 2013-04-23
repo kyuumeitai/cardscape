@@ -113,6 +113,8 @@ CONSTRAINT `fkCommentCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Stores card development projects if the admins have activated the feature.
+-- Projects are simple names + description for a set of goals, they aim to provide 
+-- some structure/organization to developing a set of related cards.
 CREATE TABLE `Project` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `name` VARCHAR( 50 ) NOT NULL ,

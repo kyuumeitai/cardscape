@@ -30,7 +30,12 @@
             <div class="clearfix"></div>
 
             <footer class="footer span-24">
-                <div class="left"><?php echo (defined('CSVersion') ? 'v. ' . CSVersion : ''); ?></div>
+                <div class="left">
+                    <?php
+                    echo (defined('CSVersion') ? 'v. ' . CSVersion : ''),
+                    (isset(Yii::app()->params['copyrightHolder']) ? ('&nbsp;&copy;&nbsp;' . Yii::app()->params['copyrightHolder']) : '');
+                    ?>
+                </div>
                 <div class="right navigation">
                     <?php $this->widget('zii.widgets.CMenu', $this->footerMenu); ?>
                 </div>

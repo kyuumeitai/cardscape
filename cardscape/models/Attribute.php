@@ -87,9 +87,9 @@ class Attribute extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeId' => Yii::t('attribute', 'ID'),
-            'multivalue' => Yii::t('attribute', 'Multi-value'),
-            'useCount' => Yii::t('attribute', 'Cards')
+            'attributeId' => Yii::t('cardscape', 'ID'),
+            'multivalue' => Yii::t('cardscape', 'Multi-value'),
+            'useCount' => Yii::t('cardscape', 'Cards')
         );
     }
 

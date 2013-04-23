@@ -76,10 +76,10 @@ class AttributeI18N extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'attributeI18NId' => Yii::t('attributei18n', 'ID'),
-            'string' => Yii::t('attributei18n', 'String'),
-            'isoCode' => Yii::t('attributei18n', 'ISO Code'),
-            'attributeId' => Yii::t('attributei18n', 'Attribute'),
+            'attributeI18NId' => Yii::t('cardscape', 'ID'),
+            'string' => Yii::t('cardscape', 'String'),
+            'isoCode' => Yii::t('cardscape', 'ISO Code'),
+            'attributeId' => Yii::t('cardscape', 'Attribute'),
         );
     }
 

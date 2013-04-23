@@ -1,6 +1,6 @@
 <?php
 /** @var UsersController $this */
-/** @√ar CActiveForm $form */
+/** @var CActiveForm $form */
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'user-form',
     'enableAjaxValidation' => true
