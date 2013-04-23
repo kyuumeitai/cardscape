@@ -1,6 +1,6 @@
 <?php
 
-/* AttributesController.php
+/* ContactForm.php
  * 
  * This file is part of Cardscape.
  * Web based collaborative platform for creating Collectible Card Games.
@@ -21,29 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AttributesController extends CardscapeController {
+class ContactForm extends CFormModel {
 
-    public function __construct($id, $module = null) {
-        parent::__construct($id, $module);
-    }
+    public $name;
+    public $email;
+    public $subject;
+    public $message;
 
-    public function accessRules() {
-
+    public function rules() {
         return array(
-                //array(
-                //    'allow',
-                //    'actions' => array('index', 'create', 'update', 'delete'),
-                //    'expression' => '($user->role == 2)'
-                //)
+            array('name, email, subject, message', 'required'),
+            array('email', 'email')
         );
     }
 
-    private function loadAttributeModel($id) {
-        throw new CHttpException(501, 'Not implemented yet.');
+    public function attributeLabels() {
+        return array(
+            'name' => Yii::t('cardscape', 'Your name'),
+            'email' => Yii::t('cardscape', 'Your e-mail (not shared)'),
+            'subject' => Yii::t('cardscape', 'Reason for contact'),
+            'message' => Yii::t('cardscape', 'Contact message'),
+        );
     }
 
-    public function actionIndex() {
-        $this->render('index');
+    public function send() {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
 }

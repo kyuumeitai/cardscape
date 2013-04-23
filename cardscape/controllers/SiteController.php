@@ -141,8 +141,13 @@ class SiteController extends CardscapeController {
     }
 
     public function actionContactus() {
-        throw new CHttpException(501, 'Not implemented yet.');
-        //$this->render('contactus');
+        $contact = new ContactForm();
+
+        if (isset($_POST['ContactForm'])) {
+            throw new CHttpException(501, 'Not implemented yet.');
+        }
+        
+        $this->render('contactus', array('contact' => $contact));
     }
 
 }

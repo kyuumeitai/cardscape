@@ -31,12 +31,6 @@ provided by the user developing the card.
 
 Important entities for i18n: Attribute, AttributeOption, AttributeOptionI18N.
 
-Workflow
---------
-
-Card Statuses
-~~~~~~~~~~~~~
-
 Entities Description
 --------------------
 
@@ -59,14 +53,27 @@ auxiliary tables.
 
 Attribute::
 
-AttributeI18N::
+AttributeI18N:: Contains the user accessbile name for the attribute translated in any 
+of the supported languages. Each instance is a translation for one given attribute.
 
-AttributeOption::
+AttributeOption:: Contains the system wide keys for attributes that have the _multivalue_ 
+flag active. The keys identify the value that will be used to control UI elements and 
+to store as the corresponding value for the attribute in a card revision.
 
-AttributeOptionI18N::
+AttributeOptionI18N:: Provides user visible translations to be used in the UI elements
+and when showing the various cards' details.
 
 ProjectAttribute::
 
 Revision::
 
 RevisionAttribute::
+
+
+
+Other
+-----
+
+Getting a card's details: Pick the last revision, match the each _RevisionAttribute_ record 
+with a corresponding _Attribute_ for the card being queried based on the control records from 
+_CardAttribute_.

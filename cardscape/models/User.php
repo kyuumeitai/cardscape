@@ -157,7 +157,7 @@ class User extends CActiveRecord {
      * @return string The role name that can be used in views.
      */
     public function getRoleName($role) {
-        $roles = self::roleNames();
+        $roles = self::getRolesArray();
 
         return isset($roles[$role]) ? $roles[$role] : Yii::t('user', 'Unknown role');
     }

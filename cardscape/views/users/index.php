@@ -23,13 +23,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'name' => 'username',
             'type' => 'raw',
-            'value' => 'CHtml::link($data->username, Yii::app()->createUrl("users/update", array("id" => $data->userId)))'
+            'value' => 'CHtml::link($data->username, Yii::app()->createUrl("users/update", array("id" => $data->id)))'
         ),
         'email:email',
         array(
             'name' => 'role',
             'type' => 'raw',
-            'value' => '$data->getRoleName()',
+            'value' => '$data->getRoleName($data->role)',
             'filter' => User::getRolesArray()
         ),
         array(

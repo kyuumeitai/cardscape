@@ -1,5 +1,12 @@
-<?php $this->title = 'Update Project'; ?>
+<?php
+/**
+ * @var ProjectsController $this
+ * @var Project $project
+ */
+$this->title = Yii::t('cardscape', 'Update Project');
+?>
 
-<h1>Update Project "<?php echo $project->name; ?>"</h1>
+<h1 class="fancy"><?php echo Yii::t('cardscape', 'Update project {name}', array('{name}' => $project->name)); ?></h1>
 
-<?php echo $this->renderPartial('_form', array('project' => $project)); ?>
+<?php
+echo $this->renderPartial('_form', array('project' => $project));
