@@ -13,41 +13,39 @@ $form = $this->beginWidget('CActiveForm', array(
 ?>
 
 <div class="formrow">
-<?php
-echo $form->labelEx($attributeI18N, 'string'),
- $form->textField($attributeI18N, 'string');
-?>
+    <?php
+    echo $form->labelEx($attributeI18N, 'string'),
+    $form->textField($attributeI18N, 'string');
+    ?>
 </div>
 
 <div class="formrow">
-<?php
-echo $form->labelEx($attribute, 'multivalue'),
- $form->checkBox($attribute, 'multivalue');
-?>
+    <?php
+    echo $form->labelEx($attribute, 'multivalue'),
+    $form->checkBox($attribute, 'multivalue');
+    ?>
 </div>
 
 <div class="formrow">
     <div class="span-11">
-<?php
-echo $form->labelEx($attributeOption, 'key'),
- $form->textField($attributeOption, 'key');
-?>
+        <?php
+        echo $form->labelEx($attributeOption, 'key'),
+        $form->textField($attributeOption, 'key');
+        ?>
     </div>
     <div class="span-11 prefix-1 last">
-<?php
-echo $form->labelEx($attributeOptionI18N, 'string'),
- $form->textField($attributeOptionI18N, 'string');
-?>
+        <?php
+        echo $form->labelEx($attributeOptionI18N, 'string'),
+        $form->textField($attributeOptionI18N, 'string');
+        ?>
     </div>
 </div>
 
 <div class="clearfix"></div>
 
 <div class="buttonsrow">
-<?php
-echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
- CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('attributes/index'), array('class' => 'cancel'));
-?>
+    <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
+    <a href="<?php echo $this->createUrl('attributes/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
 </div>
 
 <?php
