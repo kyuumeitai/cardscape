@@ -111,13 +111,13 @@ class ProjectsController extends CardscapeController {
      * @throws CHttpException 
      */
     public function actionDelete($id) {
-        if (Yii::app()->request->isPostRequest && (($project = $this->loadModel($id)) !== null)) {
+        if (Yii::app()->request->isPostRequest && (($project = $this->loadProjectModel($id)) !== null)) {
             $project->active = 0;
             $project->save();
             //TODO: Add proper flash messages.
 
             if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
             }
         } else {
             throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));

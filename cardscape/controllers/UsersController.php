@@ -62,7 +62,7 @@ class UsersController extends CardscapeController {
      */
     private function loadUserModel($id) {
         if (($user = User::model()->findByPk((int) $id)) === null) {
-            throw new CHttpException(404, Yii::t('cardscape', 'Invalid user. You\'re trying to load a user that does not exist.'));
+            throw new CHttpException(404, Yii::t('cardscape', 'Invalid user. You\'re trying to load an user that does not exist.'));
         }
 
         return $user;

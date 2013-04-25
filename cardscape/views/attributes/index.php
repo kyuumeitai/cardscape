@@ -24,7 +24,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'name' => 'string',
             'header' => $filter->getAttributeLabel('string'),
             'type' => 'raw',
-            'value' => 'CHtml::link($data->string, Yii::app()->createUrl("attribute/update", array("id" => $data->attributeId)))'
+            'value' => 'CHtml::link($data->string, Yii::app()->createUrl("attributes/update", array("id" => $data->attributeId)))'
         ),
         //TODO: Actions need custom URLs
         //array(

@@ -2,10 +2,10 @@
 /**
  * @var AttributesController $this
  */
-$this->title = Yii::t('cardscape', 'Create attribute')
+$this->title = Yii::t('cardscape', 'Update attribute')
 ?>
 
-<h1 class="fancy"><?php echo Yii::t('cardscape', 'Create new attribute'); ?></h1>
+<h1 class="fancy"><?php echo Yii::t('cardscape', 'Update {name} attribute', array('{name}' => $attributeI18N->string)); ?></h1>
 
 <?php
 echo $this->renderPartial('_form', array(
