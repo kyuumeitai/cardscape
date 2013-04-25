@@ -135,7 +135,76 @@ class AttributesController extends CardscapeController {
         $translations = $attribute->translations(array('condition' => "isoCode = '{$language}'"));
         $attributeI18N = reset($translations);
 
+        if (isset($_POST['Attribute'])) {
+            $allOK = true;
+            $language = Yii::app()->language;
+
+            $attribute->attributes = $_POST['Attribute'];
+            $attributeI18N->attributes = $_POST['AttributeI18N'];
+
+            $transaction = $attribute->dbConnection->beginTransaction();
+            if ($attribute->save()) {
+                if ($attributeI18N->save()) {
+                    //lets just remove every option to make updates simpler, 
+                    //if anything fails just rollback.
+                    foreach ($attribute->options as $option) {
+                        foreach ($option->translations as $translation) {
+                            if (!$translation->delete()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
+                        }
+                        if (!$allOK) {
+                            break;
+                        }
+
+                        if (!$option->delete()) {
+                            $transaction->rollback();
+                            $allOK = false;
+                            break;
+                        }
+                    }
+
+                    if ($allOK && $attribute->multivalue) {
+                        foreach ($_POST['AttributeOption']['key'] as $index => $value) {
+                            $attributeOption = new AttributeOption();
+                            $attributeOption->attributeId = $attribute->id;
+                            $attributeOption->key = trim($value);
+                            if (!$attributeOption->save()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
+
+                            $attributeOptionI18N = new AttributeOptionI18N();
+                            $attributeOptionI18N->attributeOptionId = $attributeOption->id;
+                            $attributeOptionI18N->string = trim($_POST['AttributeOptionI18N']['string'][$index]);
+                            $attributeOptionI18N->isoCode = $language;
+                            if (!$attributeOptionI18N->save()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    $transaction->rollback();
+                    $allOK = false;
+                }
+            } else {
+                $transaction->rollback();
+                $allOK = false;
+            }
+
+            if ($allOK) {
+                $transaction->commit();
+                $this->redirect(array('update', 'id' => $attribute->id));
+            }
+        }
+
         $options = array();
+        $optionsI18N = array();
         if ($attribute->multivalue) {
             foreach ($attribute->options as $option) {
                 $options[] = $option->key;
