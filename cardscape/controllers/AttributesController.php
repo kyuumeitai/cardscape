@@ -67,13 +67,8 @@ class AttributesController extends CardscapeController {
     public function actionCreate() {
         $attribute = new Attribute();
         $attributeI18N = new AttributeI18N();
-        $attributeOption = new AttributeOption();
-        $attributeOptionI18N = new AttributeOptionI18N();
-
-        $this->performAjaxValidation($attribute, 'attribute-form');
-        $this->performAjaxValidation($attributeI18N, 'attribute-form');
-        $this->performAjaxValidation($attributeOption, 'attribute-form');
-        $this->performAjaxValidation($attributeOptionI18N, 'attribute-form');
+        $options = array(0 => '');
+        $optionsI18N = array(0 => '');
 
         if (isset($_POST['Attribute'])) {
             $allOK = true;
@@ -87,10 +82,28 @@ class AttributesController extends CardscapeController {
                 $attributeI18N->attributeId = $attribute->id;
                 $attributeI18N->isoCode = $language;
                 if ($attributeI18N->save()) {
-                    //TODO: Handle multiple values attributes
-                    //if ($attribute->multivalue) {
-                    //    //$attributeOptionI18N->isoCode = 
-                    //}
+                    if ($attribute->multivalue) {
+                        foreach ($_POST['AttributeOption']['key'] as $index => $value) {
+                            $attributeOption = new AttributeOption();
+                            $attributeOption->attributeId = $attribute->id;
+                            $attributeOption->key = trim($value);
+                            if (!$attributeOption->save()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
+
+                            $attributeOptionI18N = new AttributeOptionI18N();
+                            $attributeOptionI18N->attributeOptionId = $attributeOption->id;
+                            $attributeOptionI18N->string = trim($_POST['AttributeOptionI18N']['string'][$index]);
+                            $attributeOptionI18N->isoCode = $language;
+                            if (!$attributeOptionI18N->save()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
+                        }
+                    }
                 } else {
                     $transaction->rollback();
                     $allOK = false;
@@ -106,11 +119,12 @@ class AttributesController extends CardscapeController {
             }
         }
 
+        //TODO: Add proper flash messages.
         $this->render('create', array(
             'attribute' => $attribute,
             'attributeI18N' => $attributeI18N,
-            'attributeOption' => $attributeOption,
-            'attributeOptionI18N' => $attributeOptionI18N
+            'options' => $options,
+            'optionsI18N' => $optionsI18N
         ));
     }
 
@@ -121,16 +135,22 @@ class AttributesController extends CardscapeController {
         $translations = $attribute->translations(array('condition' => "isoCode = '{$language}'"));
         $attributeI18N = reset($translations);
 
-        //TODO: Dummy to comply with the current create method contract, needs to be 
-        //updated once the form interface is fully created.
-        $attributeOption = new AttributeOption();
-        $attributeOptionI18N = new AttributeOptionI18N();
+        $options = array();
+        if ($attribute->multivalue) {
+            foreach ($attribute->options as $option) {
+                $options[] = $option->key;
+                $translations = $option->translations(array('condition' => "isoCode = '{$language}'"));
+                $translation = reset($translations);
+                $optionsI18N[] = $translation->string;
+            }
+        }
 
+        //TODO: Add proper flash messages.
         $this->render('update', array(
             'attribute' => $attribute,
             'attributeI18N' => $attributeI18N,
-            'attributeOption' => $attributeOption,
-            'attributeOptionI18N' => $attributeOptionI18N
+            'options' => $options,
+            'optionsI18N' => $optionsI18N
         ));
     }
 

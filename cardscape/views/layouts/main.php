@@ -6,7 +6,7 @@
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/screen.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/base.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/cardscape.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/grids.css">
 
         <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
 
@@ -27,7 +27,7 @@
                     <?php $this->widget('zii.widgets.CMenu', $this->menu); ?>
                 </nav>
             </div>
-            <div class="clearfix"></div>
+            <div class="clear"></div>
 
             <div id="content-wrapper" class="span-24">
                 <div class="content">
@@ -47,7 +47,7 @@
                     <?php $this->widget('zii.widgets.CMenu', $this->footerMenu); ?>
                 </div>
             </footer>
-            <div class="clearfix"></div>
+            <div class="clear"></div>
         </div>
     </body>
 </html>

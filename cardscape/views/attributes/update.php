@@ -11,6 +11,6 @@ $this->title = Yii::t('cardscape', 'Update attribute')
 echo $this->renderPartial('_form', array(
     'attribute' => $attribute,
     'attributeI18N' => $attributeI18N,
-    'attributeOption' => $attributeOption,
-    'attributeOptionI18N' => $attributeOptionI18N
+    'options' => $options,
+    'optionsI18N' => $optionsI18N
 ));

@@ -1,4 +1,128 @@
+/* All elements */
+body {
+    background-color: #6F605A;
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+    padding: 0;
+    font-size: 12px;
+    margin: 0px auto auto auto;
+    color: #000000;
+    text-align: justify;
+}
+
+a {
+    color:#F8981d;
+}
+
 /* Header, main menu and user tools */
+#header {
+    height: 181px;
+    background: url('../images/header-center.jpg') no-repeat;
+}
+
+#logo {
+    height: 151px;
+}
+
+.navigation {
+    height: 30px;
+    background-color: transparent;
+}
+
+.navigation ul {
+    display: block;
+    list-style: none;
+    margin: 0px;
+}
+
+.navigation ul li {
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    height: 20px;
+}
+
+.navigation ul li a {
+    height: 27px;
+    display: block;
+    padding: 0px 10px 0 10px;
+    margin: 0 4px 0 4px;
+    text-decoration: none;
+    text-align: center;
+    color: #FFF;
+    font-size: 13px;
+    line-height: 25px;
+}
+
+.navigation li.active a {
+    color: #F7A849;
+}
+
+.navigation ul li a:hover {
+    color: #F7A849;
+}
+
+.navigation li ul {
+    position: relative;
+    border-radius: 4px;
+    left: 10px;
+    top: 5px;
+}
+
+.navigation li ul li {
+    display: block;
+}
+
+.navigation li ul li a {
+    margin: 10px 0 10px 10px;
+    text-decoration: none;
+    text-align: left;
+}
+
+
+.navigation li ul {
+    border: 2px solid #c2e1f5;
+}
+
+.navigation li ul:after, .navigation li ul:before {
+    bottom: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.navigation li ul:after {
+    border-width: 8px;
+    left: 25%;
+    margin-left: -8px;
+}
+
+.navigation li ul:before {
+    border-width: 12px;
+    left: 25%;
+    margin-left: -12px;
+}
+
+/* Page center */
+#page {
+    background-color: #FFFFFF;
+}
+
+#content-wrapper {
+    border-top: 1px #B2B2B2 solid;
+    background: url("../images/background.png") repeat ;
+    min-height: 420px;
+}
+
+.content {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0;
+    border: none;
+}
+
 .user-options {
     text-align: right;
 }
@@ -56,4 +180,25 @@
 
 .new-user-action {
     /* //TODO: Not implemented yet.*/
+}
+
+/* Forms */
+.buttonsrow {
+    /*margin: 2ex 0 2ex 0;*/
+}
+
+.buttonsrow .positive {
+    background-image: url("../images/icons/tick.png");
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: 2px 45%;
+    padding-left: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.add-multiline {
+    cursor: pointer;
 }

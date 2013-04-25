@@ -6,47 +6,44 @@
  * @var AttributeOption $attributeOption
  * @var AttributeOptionI18N $attributeOptionI18N
  */
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'attribute-form',
-    'enableAjaxValidation' => true,
-        ));
+echo CHtml::form();
 ?>
-
-<div class="formrow">
-    <?php
-    echo $form->labelEx($attributeI18N, 'string'),
-    $form->textField($attributeI18N, 'string');
-    ?>
+<div class="span-4"><?php echo CHtml::activeLabelEx($attributeI18N, 'string'); ?></div>
+<div class="span-17 last">    
+    <?php echo CHtml::activeTextField($attributeI18N, 'string'); ?>
 </div>
 
-<div class="formrow">
-    <?php
-    echo $form->labelEx($attribute, 'multivalue'),
-    $form->checkBox($attribute, 'multivalue');
-    ?>
+<div class="span-4"><?php echo CHtml::activeLabelEx($attribute, 'multivalue'); ?></div>
+<div class="span-17 last">
+    <?php echo CHtml::activeCheckBox($attribute, 'multivalue'); ?> 
 </div>
 
-<div class="formrow">
-    <div class="span-11">
-        <?php
-        echo $form->labelEx($attributeOption, 'key'),
-        $form->textField($attributeOption, 'key');
-        ?>
-    </div>
-    <div class="span-11 prefix-1 last">
-        <?php
-        echo $form->labelEx($attributeOptionI18N, 'string'),
-        $form->textField($attributeOptionI18N, 'string');
-        ?>
-    </div>
+<div class="multivalue-lines">
+    <?php foreach ($options as $index => $option) { ?>
+        <div class="multivalue-line-<?php echo $index; ?>">
+            <div class="span-3 prefix-1">
+                <?php echo CHtml::label(AttributeOption::model()->getAttributeLabel('key'), "AttributeOption_key_{$index}", array('class' => 'required')); ?>
+                <span class="required">*</span>
+            </div>
+            <div class="span-8"><?php echo CHtml::textField("AttributeOption[key][{$index}]", $option); ?></div>
+            <!-- second column -->
+            <div class="span-3">
+                <?php echo CHtml::label(AttributeOptionI18N::model()->getAttributeLabel('string'), "AttributeOptionI18N_string_{$index}", array('class' => 'required')); ?>
+                <span class="required">*</span>
+            </div>
+            <div class="span-8 last"><?php echo CHtml::textField("AttributeOptionI18N[string][{$index}]", $optionsI18N[$index]); ?></div>
+        </div>
+    <?php } ?>
+</div>
+<div class="span-22 prefix-1">
+    <span class="hidden multiline-count"><?php echo count($options); ?></span>
+    <span class="add-multiline">Add new line</span>
 </div>
 
-<div class="clearfix"></div>
-
-<div class="buttonsrow">
+<div class="buttonsrow span-23">
     <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
     <a href="<?php echo $this->createUrl('attributes/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
 </div>
 
 <?php
-$this->endWidget();
+echo CHtml::endForm();

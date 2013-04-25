@@ -25,11 +25,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'header' => $filter->getAttributeLabel('string'),
             'type' => 'raw',
             'value' => 'CHtml::link($data->string, Yii::app()->createUrl("attributes/update", array("id" => $data->attributeId)))'
-        ),
-        //TODO: Actions need custom URLs
-        //array(
-        //    'header' => Yii::t('cardscape', 'Actions'),
-        //    'class' => 'CButtonColumn'
-        //)
+        )
+    //TODO: Actions need custom URLs
+    //array(
+    //    'header' => Yii::t('cardscape', 'Actions'),
+    //    'class' => 'CButtonColumn'
+    //)
     ),
 ));
