@@ -26,17 +26,20 @@
  *
  * The followings are the available columns in table 'Card':
  * @property string $id
- * @property integer $status
+ * @property string $status
  * @property integer $active
- * @property string $userId
+ * @property integer $userId
+ * @property integer $ancestorId
+ * @property string $image
  *
  * The followings are the available model relations:
  * @property User $user
- * @property Attribute[] $attributes
+ * @property Attribute[] $cardAttributes
  * @property User[] $users
  * @property Comment[] $comments
- * @property ProjectCard $projectCard
+ * @property Project[] $projects
  * @property Revision[] $revisions
+ * @property Card $ancestor
  */
 class Card extends CActiveRecord {
 
@@ -76,11 +79,12 @@ class Card extends CActiveRecord {
     public function relations() {
         return array(
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
-            'attributes' => array(self::MANY_MANY, 'Attribute', 'CardAttribute(cardId, attributeId)'),
+            'cardAttributes' => array(self::MANY_MANY, 'Attribute', 'CardAttribute(cardId, attributeId)'),
             'users' => array(self::MANY_MANY, 'User', 'CardUser(cardId, userId)'),
             'comments' => array(self::HAS_MANY, 'Comment', 'cardId'),
-            'projectCard' => array(self::HAS_ONE, 'ProjectCard', 'cardId'),
+            'projects' => array(self::MANY_MANY, 'Project', 'ProjectCard(cardId, projectId)'),
             'revisions' => array(self::HAS_MANY, 'Revision', 'cardId'),
+            'ancestor' => array(self::BELONGS_TO, 'Card', 'ancestorId')
         );
     }
 
@@ -94,6 +98,7 @@ class Card extends CActiveRecord {
             'active' => Yii::t('cardscape', 'Active'),
             'userId' => Yii::t('cardscape', 'User'),
             'ancestorId' => Yii::t('cardscape', 'Ancestor'),
+            'image' => Yii::t('cardscape', 'Image')
         );
     }
 
@@ -109,11 +114,11 @@ class Card extends CActiveRecord {
         $criteria->compare('ancestorId', $this->ancestorId);
 
         return new CActiveDataProvider($this, array(
-                    'criteria' => $criteria,
-                    'sort' => array(
-                        'defaultOrder' => 'status'
-                    )
-                ));
+            'criteria' => $criteria,
+            'sort' => array(
+                'defaultOrder' => 'status'
+            )
+        ));
     }
 
 }

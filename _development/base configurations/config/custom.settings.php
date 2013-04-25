@@ -7,6 +7,6 @@ return array(
     'copyrightHolder' => 'Cardscape Dev. Team',
     //Available languages, will affect interface and card/attribute texts
     'languages' => include 'languages.php',
-    //not yet being used, it will point to the folder where images will be stored
-    'cardscapeDataDir' => '//cardscapedata'
+    //folder, inside the webroot, where card images will be stored
+    'cardscapeDataDir' => 'cardscapedata'
 );

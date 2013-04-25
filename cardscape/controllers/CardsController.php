@@ -46,13 +46,16 @@ class CardsController extends CardscapeController {
     }
 
     public function actionIndex() {
+
+        $cards = array();
         if (isset($_POST['quicksearch'])) {
             //TODO: Implement quick search options.    
         }
-        $this->render('index');
+        $this->render('index', array('cards' => $cards));
     }
 
     public function actionSuggest() {
+        //TODO: Add proper flash messages
         $language = Yii::app()->language;
 
         $attributes = Attribute::model()->with(array(
@@ -84,9 +87,72 @@ class CardsController extends CardscapeController {
             $cardAttributes[] = (object) $current;
         }
 
-        $card = new Card();
+        if (isset($_POST['Suggestion'])) {
+            $allOK = true;
+
+            $card = new Card();
+            $transaction = $card->dbConnection->beginTransaction();
+
+            $card->userId = Yii::app()->user->id;
+
+            if (isset($_FILES['image'])) {
+                $image = (object) $_FILES['image'];
+                if ($image->error == 0) {
+                    $base = (Yii::getPathOfAlias('webroot') . '/' . Yii::app()->params['cardscapeDataDir']);
+                    if (is_dir($base)) {
+                        $name = (md5($image->name) . strrchr($image->name, '.'));
+                        $file = ($base . '/' . $name);
+                        if (move_uploaded_file($image->tmp_name, $file)) {
+                            $card->image = $name;
+                        } else {
+                            //TODO: Add warning flash message, not error, just warning
+                        }
+                    } else {
+                        //TODO: Add warning flash message, not error, just warning for wrong path setting
+                    }
+                } else {
+                    //TODO: Add warning flash message, not error, just warning with file upload error
+                }
+            }
+
+            if ($card->save()) {
+                $revision = new Revision();
+                $revision->cardId = $card->id;
+                $revision->userId = $card->userId;
+                $revision->date = date('Y-m-d H:i:s');
+                if ($revision->save()) {
+                    foreach ($_POST['AttributeValue'] as $key => $value) {
+                        $cardAttribute = new CardAttribute();
+                        $cardAttribute->cardId = $card->id;
+                        $cardAttribute->attributeId = (int) $key;
+
+                        $revisionAttribute = new RevisionAttribute();
+                        $revisionAttribute->revisionId = $revision->id;
+                        $revisionAttribute->attributeId = (int) $key;
+                        $revisionAttribute->value = $value;
+
+                        if (!$cardAttribute->save() || !$revisionAttribute->save()) {
+                            $transaction->rollback();
+                            $allOK = false;
+                            break;
+                        }
+                    }
+                } else {
+                    $transaction->rollback();
+                    $allOK = false;
+                }
+            } else {
+                $transaction->rollback();
+                $allOK = false;
+            }
+
+            if ($allOK) {
+                $transaction->commit();
+                $this->redirect(array('index'));
+            }
+        }
+
         $this->render('suggest', array(
-            'card' => $card,
             'attributes' => $cardAttributes
         ));
     }

@@ -14,3 +14,8 @@ $this->title = Yii::t('cardscape', 'Cards');
     <?php echo CHtml::textField('quicksearch', null, array('placeholder' => Yii::t('cardscape', 'search ...'))); ?>
     <?php echo CHtml::endForm(); ?>
 </div>
+
+<div class="cardlisting">
+    <?php foreach ($cards as $card) { ?>
+    <?php } ?>
+</div>
