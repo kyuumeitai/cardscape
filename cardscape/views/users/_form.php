@@ -5,22 +5,22 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'user-form'));
 ?>
 
 <div class="span-4"><?php echo $form->labelEx($user, 'username'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->textField($user, 'username', array('size' => 25, 'maxlength' => 25)); ?>
 </div>
 
 <div class="span-4"><?php echo $form->labelEx($user, 'email'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->textField($user, 'email', array('size' => 25, 'maxlength' => 255)); ?>
 </div>
 
 <div class="span-4"><?php echo $form->labelEx($user, 'role'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->dropDownList($user, 'role', User::getRolesArray()); ?>
 </div>
 
 <div class="span-4"><?php echo $form->labelEx($user, 'language'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->textField($user, 'language', array('maxlength' => 5)); ?>
 </div>
 

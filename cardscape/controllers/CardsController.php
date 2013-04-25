@@ -31,8 +31,13 @@ class CardsController extends CardscapeController {
         return array(
             array(
                 'allow',
-                'actions' => array('index'),
+                'actions' => array('index', 'search'),
                 'users' => array('*')
+            ),
+            array(
+                'allow',
+                'actions' => array('suggest'),
+                'users' => array('@')
             ),
             array(
                 'deny'
@@ -45,6 +50,49 @@ class CardsController extends CardscapeController {
             //TODO: Implement quick search options.    
         }
         $this->render('index');
+    }
+
+    public function actionSuggest() {
+        $language = Yii::app()->language;
+
+        $attributes = Attribute::model()->with(array(
+                    'translations' => array('condition' => "isoCode = '{$language}'")
+                ))->findAll('active = 1');
+
+        $cardAttributes = array();
+        foreach ($attributes as $attribute) {
+            $translations = $attribute->translations;
+            $translation = reset($translations);
+            $current = array(
+                'id' => $attribute->id,
+                'name' => $translation->string,
+                'multivalue' => $attribute->multivalue
+            );
+
+            if ($attribute->multivalue) {
+                $optionTranslations = AttributeOptionI18N::model()->with(array(
+                            'attributeOption' => array('condition' => 'attributeId = ' . $attribute->id)
+                        ))->findAll('isoCode = :lang', array(':lang' => $language));
+
+                $current['options'] = array();
+                foreach ($optionTranslations as $optionTranslation) {
+                    $current['options'][$optionTranslation->attributeOption->key] =
+                            $optionTranslation->string;
+                }
+            }
+
+            $cardAttributes[] = (object) $current;
+        }
+
+        $card = new Card();
+        $this->render('suggest', array(
+            'card' => $card,
+            'attributes' => $cardAttributes
+        ));
+    }
+
+    public function actionSearch() {
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
 }

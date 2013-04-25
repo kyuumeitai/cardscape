@@ -21,6 +21,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * A card's attributes will require the use of a minimum of 2 entities but can also
+ * require 4 different entities. The first entity will be the <em>Attribute</em> 
+ * that keeps track on only the control data, the next entity that is visible to 
+ * users is the <em>AttributeI18N</em> that will store the name of the attribute for 
+ * a given language.
+ * 
+ * If attributes allow for multiple values (usually drawn as a drop-down box) the 
+ * <em>AttributeOption</em> and the <em>AttributeOptionI18N</em> will also be 
+ * required. Thus this controller handles mostly the creation of attributes by 
+ * using the 4 entities (and tables) mentioned.
+ * 
+ * Also important to notice, this attribute management is, so far, only for the 
+ * platform language and does not provide translation support.
+ * 
+ * This controller provides features for administrators only.
+ */
 class AttributesController extends CardscapeController {
 
     public function __construct($id, $module = null) {
@@ -42,10 +59,13 @@ class AttributesController extends CardscapeController {
     }
 
     /**
+     * Loads an existing <em>Attribute</em> record that is identified by the provided 
+     * ID.
      * 
-     * @param integer $id
-     * @return Attribute
-     * @throws CHttpException
+     * @param integer $id The database ID for the record we want to load.
+     * @return Attribute The Attribute we loaded.
+     * 
+     * @throws CHttpException If the ID does not identify a valid (existing) record.
      */
     private function loadAttributeModel($id) {
         if (($attribute = Attribute::model()->findByPk((int) $id)) === null) {
@@ -55,6 +75,10 @@ class AttributesController extends CardscapeController {
         return $attribute;
     }
 
+    /**
+     * Lists all existing attributes and filters them by the current platform 
+     * language.
+     */
     public function actionIndex() {
         $filter = new AttributeI18N('search');
         if (isset($_GET['AttributeI18N'])) {
@@ -64,6 +88,9 @@ class AttributesController extends CardscapeController {
         $this->render('index', array('filter' => $filter));
     }
 
+    /**
+     * Handles creation of new <em>Attribute</em> records and their related data.
+     */
     public function actionCreate() {
         $attribute = new Attribute();
         $attributeI18N = new AttributeI18N();

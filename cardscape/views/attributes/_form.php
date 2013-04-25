@@ -7,10 +7,6 @@
  * @var AttributeOptionI18N $attributeOptionI18N
  */
 $baseUrl = Yii::app()->baseUrl;
-$visibilityClass = 'hidden';
-if (!$attribute->isNewRecord && !$attribute->multivalue) {
-    $visibilityClass = '';
-}
 echo CHtml::form();
 ?>
 <div class="span-4"><?php echo CHtml::activeLabelEx($attributeI18N, 'string'); ?></div>
@@ -23,7 +19,7 @@ echo CHtml::form();
     <?php echo CHtml::activeCheckBox($attribute, 'multivalue'); ?> 
 </div>
 
-<div class="multivalue-lines <?php $visibilityClass; ?>">
+<div class="multivalue-lines">
     <!-- hidden template line -->
     <div class="multivalue-line-hidden hidden">
         <div class="span-1"><img class="rm-multiline" src="<?php echo $baseUrl; ?>/images/icons/minus-circle.png"/></div>

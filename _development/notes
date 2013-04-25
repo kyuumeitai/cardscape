@@ -1,0 +1,3 @@
+- translator user group support
+- create a card based on another card (use the ancestor) to derivate a card (on card details)
+- card attribute templates so same platform can be used for more than one game

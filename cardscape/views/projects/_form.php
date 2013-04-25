@@ -2,17 +2,17 @@
 $form = $this->beginWidget('CActiveForm', array('id' => 'project-form'));
 ?>
 <div class="span-4"><?php echo $form->labelEx($project, 'name'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->textField($project, 'name', array('size' => 30, 'maxlength' => 50)); ?>
 </div>
 
 <div class="span-4"><?php echo $form->labelEx($project, 'description'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php echo $form->textField($project, 'description', array('size' => 30, 'maxlength' => 255)); ?>
 </div>
 
 <div class="span-4"><?php echo $form->labelEx($project, 'expires'); ?></div>
-<div class="span-17 last">
+<div class="span-19 last">
     <?php
     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
         'model' => $project,
