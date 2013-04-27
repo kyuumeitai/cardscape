@@ -1,5 +1,15 @@
+# This is an example .htaccess file that can be used in most Apache server's with 
+# mod_rewrite configuration. Please keep in mind that we do not provide instructions 
+# on setting up the server, the extensions, or on how to write this rules. There 
+# are several tutorials online that are a better place to look for help.
+#
+# These rules are provided as a simple example to get you started and are only tested
+# for the servers the development team uses.
+
 RewriteEngine On
-#RewriteBase / #uncomment and update if needed
+# Uncomment and update with you server settings if you've installed Cardscape in 
+# a sub-folder or using Alias directives.
+#RewriteBase /
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -22,9 +22,19 @@
  */
 
 /**
- * @property string $revisionId
- * @property string $attributeId
- * @property string $value
+ * Relation entity, connects a <em>Revision</em> model with the <em>Attribute</em> 
+ * model and stores the value for that connections.
+ * 
+ * This model contains the actual value of an attribute, written by the user,
+ * for the related card revision.
+ * 
+ * @property integer $revisionId ID of the related <em>Revision</em> entity.
+ * @property integer $attributeId ID of the related <em>Attribute</em> entity.
+ * @property string $value Value of the attribute for the revision.
+ * 
+ * Relations:
+ * @property Revision $revision Owner revision.
+ * @property Attribute $attribute Owner attribute.
  */
 class RevisionAttribute extends CActiveRecord {
 
@@ -43,6 +53,15 @@ class RevisionAttribute extends CActiveRecord {
      */
     public function tableName() {
         return '{{RevisionAttribute}}';
+    }
+
+    public function relations() {
+        return array(
+            array(
+                'attribute' => array(self::BELONGS_TO, 'Attribute', 'attributeId'),
+                'revision' => array(self::BELONGS_TO, 'Revision', 'revisionId')
+            )
+        );
     }
 
 }

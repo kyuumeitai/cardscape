@@ -1,0 +1,14 @@
+Cardscape User's Manual
+=======================
+
+Installation and setup
+----------------------
+
+Cardscape for administrators
+----------------------------
+
+Cardscape for card developers
+-----------------------------
+
+Cardscape for users
+-------------------

@@ -21,6 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Registers active sessions in the database, simply stores the user record's ID 
+ * and the last time the user logged in. It is used for cookie based authentication.
+ */
 class SessionData extends CActiveRecord {
 
     /**

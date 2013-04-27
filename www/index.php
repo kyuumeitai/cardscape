@@ -21,15 +21,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// change the following paths if necessary
+// change the following paths if necessary, do not change any other setting, use 
+// files under /cardscape/config/ or the ./debug.php file to customize your 
+// Cardscape system.
 $yii = dirname(__FILE__) . '/../framework/yii.php';
 $config = dirname(__FILE__) . '/../cardscape/config/main.php';
 
+// check for development debug.php file
 $debug = realpath(__DIR__ . '/debug.php');
 if (is_file($debug)) {
     include $debug;
 }
 
+// simple version definition, affects nothing in the system except the footer 
+// text if you're using the default theme.
 define('CSVersion', '0.2');
 
 require_once($yii);

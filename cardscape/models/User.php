@@ -28,16 +28,18 @@
  * for a role, etc.).
  * 
  * @property integer $id User database ID
+ * 
  * @property string $username Username for display and authetication
  * @property string $password The user's password, generally blank
  * @property string $email The email used for registering this user
+ * 
  * @property integer $role A role defines what permissions a user has, can be any 
  * value in 'user', 'moderator', 'administrator' for standard user, moderator or administrator
  * 
  * @property string $language Language used in the system and card data
  * @property integer $active Flag that marks this user as a deleted user
  *
- * The following are the available model relations:
+ * Relations:
  * @property Card[] $cards The cards this user created
  * @property Comment[] $comments The comments this user wrote
  * @property Project[] $projects The projects this user moderates
@@ -49,7 +51,7 @@ class User extends CActiveRecord {
      * Returns the static model of the specified AR class.
      *
      * @param string $className Active record class name.
-     * @return User The static model class
+     * @return User
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

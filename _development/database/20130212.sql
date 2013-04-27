@@ -33,14 +33,17 @@ CONSTRAINT `fkCardUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ,
 CONSTRAINT `fkCardCard` FOREIGN KEY (`ancestorId`) REFERENCES `Card`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- Card attributes.
+-- Card attributes that were created by administratos for the current Cardscape 
+-- system. Except for the name, all card attributes are unknown until an administrator
+-- creates them. From there on all cards will contain those attributes.
 CREATE TABLE `Attribute` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `multivalue` TINYINT NOT NULL DEFAULT 0 ,
 `active` TINYINT NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- Attribute translations.
+-- Stores attribute names' translations providing a way to have attribute names/labels 
+-- in various languages.
 CREATE TABLE `AttributeI18N` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `string` VARCHAR( 150 ) NOT NULL ,
@@ -58,7 +61,8 @@ CREATE TABLE `AttributeOption` (
 CONSTRAINT `fkAOptionAttribute` FOREIGN KEY (`attributeId`) REFERENCES `Attribute`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- Attribute options translations.
+-- Attribute options translations. Does the same thing as the AttributeI18N table 
+-- but this one allows translation of the attribute options for multivalue attributes.
 CREATE TABLE `AttributeOptionI18N` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `string` VARCHAR( 150 ) NOT NULL ,
@@ -67,8 +71,9 @@ CREATE TABLE `AttributeOptionI18N` (
 CONSTRAINT `fkAOI18NAttributeOption` FOREIGN KEY (`attributeOptionId`) REFERENCES `AttributeOption`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- R2
--- Joins a card with its attributes
+-- Relation R2
+-- Connects a card with its attributes. A card only has the attributes that are 
+-- registered in this table, even if other attributes exist in the attribute's table.
 CREATE TABLE `CardAttribute` (
 `cardId` INT UNSIGNED NOT NULL ,
 `attributeId` INT UNSIGNED NOT NULL ,
@@ -89,7 +94,7 @@ CONSTRAINT `fkRevisionCard` FOREIGN KEY (`cardId`) REFERENCES `Card`(`id`) ,
 CONSTRAINT `fkRevisionUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
--- R3
+-- Relation R3
 -- Stores the value for each attribute for the card's revision.
 CREATE TABLE `RevisionAttribute` (
 `revisionId` INT UNSIGNED NOT NULL ,
@@ -101,6 +106,7 @@ CONSTRAINT `fkRevisionAttributeAttribute` FOREIGN KEY (`attributeId`) REFERENCES
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Registers comments made to a card by a user.
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `Comment` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `userId` INT UNSIGNED NOT NULL ,
@@ -127,6 +133,7 @@ CONSTRAINT `fkProjectUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
 
 -- R4
 -- Stores the goals that will mark a project as complete.
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `ProjectAttribute`(
 `projectId` INT UNSIGNED NOT NULL ,
 `attributeId` INT UNSIGNED NOT NULL ,
@@ -138,6 +145,7 @@ CONSTRAINT `fkProjectAttributeAttribute` FOREIGN KEY (`attributeId`) REFERENCES 
 
 -- R1
 -- Stores cards on which a user requested notification
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `CardUser`(
 `cardId` INT UNSIGNED NOT NULL ,
 `userId` INT UNSIGNED NOT NULL ,
@@ -148,6 +156,7 @@ CONSTRAINT `fkCardUserUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
 
 -- R5
 -- Stores local project administrators.
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `ProjectUser` (
 `projectId` INT UNSIGNED NOT NULL ,
 `userId` INT UNSIGNED NOT NULL ,
@@ -158,6 +167,7 @@ CONSTRAINT `fkProjectUserUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
 
 -- R6
 -- Identifies the project from where the card came.
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `ProjectCard` (
 `cardId` INT UNSIGNED NOT NULL PRIMARY KEY ,
 `projectId` INT UNSIGNED NOT NULL ,
@@ -167,6 +177,7 @@ CONSTRAINT `fkProjectCardProject` FOREIGN KEY (`projectId`) REFERENCES `Project`
 
 -- R7
 -- Stores projects a user requested notification on.
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `ProjectUserNotify`(
 `projectId` INT UNSIGNED NOT NULL ,
 `userId` INT UNSIGNED NOT NULL ,
@@ -181,6 +192,7 @@ CONSTRAINT `fkProjectUserNotifyUser` FOREIGN KEY (`userId`) REFERENCES `User`(`i
 -- what he will get is notifications for changes to every card that exists or 
 -- is added to that project or when the card that completes the project is marked as 
 -- complete (this needs to be added in code).
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `Notification` (
 `notificationId` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `message` VARCHAR( 255 ) NOT NULL , -- //NOTE: this value is probably too small
@@ -193,6 +205,7 @@ CONSTRAINT `fkNotificationUser` FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Stores password recovery requests
+-- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `PasswordRecover` (
 `userId` INT UNSIGNED NOT NULL PRIMARY KEY ,
 `key` VARCHAR( 32 ) NOT NULL UNIQUE ,

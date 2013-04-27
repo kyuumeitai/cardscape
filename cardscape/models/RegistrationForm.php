@@ -21,6 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Form model that handles user registraion in site/login (registraion section) 
+ * resource, in the <em>SiteController</em> controller class.
+ */
 class RegistrationForm extends CFormModel {
 
     public $username;
@@ -40,6 +44,13 @@ class RegistrationForm extends CFormModel {
         );
     }
 
+    /**
+     * Validates user's input and registers a new user record in the database if 
+     * the input is valid. Also sends the neecessary e-mails with account activation 
+     * details.
+     * 
+     * @return boolean True if the registration process was successful, false otherwise.
+     */
     public function register() {
         if (!$this->validate()) {
             return false;

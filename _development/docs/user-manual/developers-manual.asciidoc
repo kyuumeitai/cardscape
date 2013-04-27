@@ -1,0 +1,20 @@
+Cardscape Developers Manual
+===========================
+
+How to share your changes
+-------------------------
+
+Tech details
+------------
+
+Setting up development environment
+----------------------------------
+
+Database structure and definitions
+----------------------------------
+
+Designing Themes
+----------------
+
+Translations
+------------
