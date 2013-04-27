@@ -40,6 +40,7 @@
  * @property Project[] $projects
  * @property Revision[] $revisions
  * @property Card $ancestor
+ * @property CardNameI18N[] $names
  */
 class Card extends CActiveRecord {
 
@@ -84,7 +85,8 @@ class Card extends CActiveRecord {
             'comments' => array(self::HAS_MANY, 'Comment', 'cardId'),
             'projects' => array(self::MANY_MANY, 'Project', 'ProjectCard(cardId, projectId)'),
             'revisions' => array(self::HAS_MANY, 'Revision', 'cardId'),
-            'ancestor' => array(self::BELONGS_TO, 'Card', 'ancestorId')
+            'ancestor' => array(self::BELONGS_TO, 'Card', 'ancestorId'),
+            'names' => array(self::HAS_MANY, 'CardNameI18N', 'cardId')
         );
     }
 
@@ -102,23 +104,9 @@ class Card extends CActiveRecord {
         );
     }
 
-    /**
-     * Retrieves a list of models based on the current search/filter conditions.
-     * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-     */
-    public function search() {
-        $criteria = new CDbCriteria();
-
-        $criteria->compare('status', $this->status, true);
-        $criteria->compare('userId', $this->userId);
-        $criteria->compare('ancestorId', $this->ancestorId);
-
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort' => array(
-                'defaultOrder' => 'status'
-            )
-        ));
+    public function listing() {
+        
+        return new CArrayDataProvider(array());
     }
 
 }

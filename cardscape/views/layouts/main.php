@@ -22,6 +22,7 @@
                             <a href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
                         </div>
                     <?php } ?>
+                    <h1 class="name"><?php echo Yii::app()->name; ?></h1>
                 </div>
                 <nav class="navigation">
                     <?php $this->widget('zii.widgets.CMenu', $this->menu); ?>
@@ -39,8 +40,9 @@
             <footer class="footer span-24">
                 <div class="left">
                     <?php
-                    echo (defined('CSVersion') ? 'v. ' . CSVersion : ''),
-                    (isset(Yii::app()->params['copyrightHolder']) ? ('&nbsp;&copy;&nbsp;' . Yii::app()->params['copyrightHolder']) : '');
+                    echo (defined('CSVersion') ? 'v' . CSVersion : ''),
+                    (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') . 
+                            ' ' . Yii::app()->params['copyrightHolder']) : '');
                     ?>
                 </div>
                 <div class="right navigation">

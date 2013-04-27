@@ -16,6 +16,39 @@ $this->title = Yii::t('cardscape', 'Cards');
 </div>
 
 <div class="cardlisting">
-    <?php foreach ($cards as $card) { ?>
-    <?php } ?>
+    <?php
+    $this->widget('zii.widgets.grid.CGridView', array(
+        'id' => 'user-grid',
+        'dataProvider' => $card->listing(),
+        'filter' => $card,
+        'template' => '{items} {pager} {summary}',
+        'cssFile' => false,
+//        'columns' => array(
+//            array(
+//                'name' => 'name',
+//                'type' => 'raw',
+//                'value' => '- none -'
+//            ),
+//            array(
+//                'name' => 'revision',
+//                'type' => 'raw',
+//                'value' => '1'
+//            ),
+//            array(
+//                'name' => 'date',
+//                'type' => 'raw',
+//                'value' => '- now -'
+//            ),
+//            array(
+//                'name' => 'status',
+//                'type' => 'raw',
+//                'value' => '- unchecked -'
+//            ),
+//            array(
+//                'header' => Yii::t('cardscape', 'Actions'),
+//                'class' => 'CButtonColumn'
+//            )
+//        )
+    ));
+    ?>
 </div>

@@ -47,11 +47,11 @@ class CardsController extends CardscapeController {
 
     public function actionIndex() {
 
-        $cards = array();
+        $card = new Card();
         if (isset($_POST['quicksearch'])) {
             //TODO: Implement quick search options.    
         }
-        $this->render('index', array('cards' => $cards));
+        $this->render('index', array('card' => $card));
     }
 
     public function actionSuggest() {
@@ -92,7 +92,6 @@ class CardsController extends CardscapeController {
 
             $card = new Card();
             $transaction = $card->dbConnection->beginTransaction();
-
             $card->userId = Yii::app()->user->id;
 
             if (isset($_FILES['image'])) {
@@ -116,26 +115,35 @@ class CardsController extends CardscapeController {
             }
 
             if ($card->save()) {
-                $revision = new Revision();
-                $revision->cardId = $card->id;
-                $revision->userId = $card->userId;
-                $revision->date = date('Y-m-d H:i:s');
-                if ($revision->save()) {
-                    foreach ($_POST['AttributeValue'] as $key => $value) {
-                        $cardAttribute = new CardAttribute();
-                        $cardAttribute->cardId = $card->id;
-                        $cardAttribute->attributeId = (int) $key;
+                $cardName = new CardNameI18N();
+                $cardName->isoCode = $language;
+                $cardName->string = $_POST['cardname'];
+                $cardName->cardId = $card->id;
+                if ($cardName->save()) {
+                    $revision = new Revision();
+                    $revision->cardId = $card->id;
+                    $revision->userId = $card->userId;
+                    $revision->date = date('Y-m-d H:i:s');
+                    if ($revision->save()) {
+                        foreach ($_POST['AttributeValue'] as $key => $value) {
+                            $cardAttribute = new CardAttribute();
+                            $cardAttribute->cardId = $card->id;
+                            $cardAttribute->attributeId = (int) $key;
 
-                        $revisionAttribute = new RevisionAttribute();
-                        $revisionAttribute->revisionId = $revision->id;
-                        $revisionAttribute->attributeId = (int) $key;
-                        $revisionAttribute->value = $value;
+                            $revisionAttribute = new RevisionAttribute();
+                            $revisionAttribute->revisionId = $revision->id;
+                            $revisionAttribute->attributeId = (int) $key;
+                            $revisionAttribute->value = $value;
 
-                        if (!$cardAttribute->save() || !$revisionAttribute->save()) {
-                            $transaction->rollback();
-                            $allOK = false;
-                            break;
+                            if (!$cardAttribute->save() || !$revisionAttribute->save()) {
+                                $transaction->rollback();
+                                $allOK = false;
+                                break;
+                            }
                         }
+                    } else {
+                        $transaction->rollback();
+                        $allOK = false;
                     }
                 } else {
                     $transaction->rollback();

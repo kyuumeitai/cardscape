@@ -1,3 +1,8 @@
+@font-face {
+    font-family: GenAI102;
+    src: url("../fonts/GenAI102.TTF");
+}
+
 /* All elements */
 body {
     background-color: #6F605A;
@@ -16,11 +21,21 @@ a {
 /* Header, main menu and user tools */
 #header {
     height: 181px;
-    background: url('../images/header-center.jpg') no-repeat;
+    background: url("../images/header-center.jpg") no-repeat;
 }
 
 #logo {
     height: 151px;
+}
+
+#logo .name {
+    font-style: italic;
+    /*font-weight: normal;*/
+    font-weight: bold;
+    font-size: 54px;
+    font-family: GenAI102;
+    color: #FFF;
+
 }
 
 .navigation {
@@ -108,6 +123,8 @@ a {
 /* Page center */
 #page {
     background-color: #FFFFFF;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
 }
 
 #content-wrapper {
@@ -137,6 +154,7 @@ a {
 .footer {
     height: 45px;
     border-top: 1px #B2B2B2 dashed;
+    font-size: 13px;
 }
 
 .footer .left {

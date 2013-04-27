@@ -6,9 +6,13 @@ $this->title = Yii::t('cardscape', 'Suggest new card');
 ?>
 <h1 class = "fancy"><?php echo Yii::t('cardscape', 'Suggest a new card'); ?></h1>
 
-<?php
-echo CHtml::form($this->createUrl('cards/suggest'), 'post', array('enctype' => 'multipart/form-data'));
+<?php echo CHtml::form($this->createUrl('cards/suggest'), 'post', array('enctype' => 'multipart/form-data')); ?>
 
+<div class="span-4"><?php echo CHtml::label(CardNameI18N::model()->getAttributeLabel('string'), 'cardname'); ?></div>
+<div class="span-19 last"><?php echo CHtml::textField('cardname'); ?></div>
+
+<!-- Other attributes -->
+<?php
 foreach ($attributes as $attribute) {
     ?>
     <div class="span-4"><?php echo CHtml::label($attribute->name, 'AttributeValue_' . $attribute->id); ?></div>
@@ -21,9 +25,7 @@ foreach ($attributes as $attribute) {
         }
         ?>
     </div>
-    <?php
-}
-?>
+<?php } ?>
 
 <div class="span-4"><?php echo CHtml::label(Yii::t('cardscape', 'Card image'), 'image'); ?></div>
 <div class="span-19"><?php echo CHtml::fileField('image'); ?></div>
