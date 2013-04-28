@@ -30,22 +30,21 @@ VALUES ('hillary@mailinator.com','en_US','moderator','Kameko',SHA1('asdf'))
 
 -- Example data from old cardscape database, last two attributes are multivalues
 INSERT INTO `Attribute` (`id`, `multivalue`) 
-VALUES (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0), (8, 1), (9, 1) ;
+VALUES (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 1), (8, 1) ;
 
 INSERT INTO `AttributeI18N` (`string`, `isoCode`, `attributeId`)
-VALUES ('Name', 'en_US', 1), ('nome', 'pt', 1)
-, ('Sub-type', 'en_US', 2), ('Sub-tipo', 'pt', 2)
-, ('Cost', 'en_US', 3), ('Custo', 'pt', 3)
-, ('Threshold', 'en_US', 4), ('Limite', 'pt', 4)
-, ('Attack', 'en_US', 5), ('Ataque', 'pt', 5)
-, ('Defense', 'en_US', 6), ('Defesa', 'pt', 6)
-, ('Rules', 'en_US', 7), ('Regras', 'pt', 7)
-, ('Faction', 'en_US', 8), ('Facção', 'pt', 8)
-, ('Type', 'en_US', 9), ('Tipo', 'pt', 9) ;
+VALUES ('Sub-type', 'en_US', 1), ('Sub-tipo', 'pt', 1)
+, ('Cost', 'en_US', 2), ('Custo', 'pt', 2)
+, ('Threshold', 'en_US', 3), ('Limite', 'pt', 3)
+, ('Attack', 'en_US', 4), ('Ataque', 'pt', 4)
+, ('Defense', 'en_US', 5), ('Defesa', 'pt', 5)
+, ('Rules', 'en_US', 6), ('Regras', 'pt', 6)
+, ('Faction', 'en_US', 7), ('Facção', 'pt', 7)
+, ('Type', 'en_US', 8), ('Tipo', 'pt', 8) ;
 
 INSERT INTO `AttributeOption` (`id`, `key`, `attributeId`) 
-VALUES (1, 'gaia', 8), (2, 'nobles', 8), (3, 'undead', 8), (4, 'redbanner', 8), (5, 'empire', 8)
-, (6, 'unit', 9), (7, 'event', 9), (8, 'spell', 9), (9, 'enchantment', 9), (10, 'equipment', 9), (11, 'artifact', 9) ;
+VALUES (1, 'gaia', 7), (2, 'nobles', 7), (3, 'undead', 7), (4, 'redbanner', 7), (5, 'empire', 7)
+, (6, 'unit', 8), (7, 'event', 8), (8, 'spell', 8), (9, 'enchantment', 8), (10, 'equipment', 8), (11, 'artifact', 8) ;
 
 INSERT INTO `AttributeOptionI18N` (`string`, `isoCode`, `attributeOptionId`) 
 VALUES ('Gaia', 'en_US', 1),('Gaia', 'pt', 1)
@@ -60,6 +59,11 @@ VALUES ('Gaia', 'en_US', 1),('Gaia', 'pt', 1)
 , ('Equipment', 'en_US', 10),('Equipamento', 'pt', 10)
 , ('Artifact', 'en_US', 11),('Artefacto', 'pt', 11) ;
 
-  
-  
-  
+--
+-- INSERT INTO Card()
+-- INSERT INTO CardNameI18N()
+-- INSERT INTO Revision()
+-- INSERT INTO RevisionAttribute()
+-- 
+-- INSERT INTO `Project` (`name`, `description`, `expires`, `userId` )
+-- VALUES ('', '', '', 26) ;

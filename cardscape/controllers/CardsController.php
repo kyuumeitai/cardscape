@@ -31,7 +31,7 @@ class CardsController extends CardscapeController {
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'search'),
+                'actions' => array('index', 'search', 'revision', 'details'),
                 'users' => array('*')
             ),
             array(
@@ -47,11 +47,14 @@ class CardsController extends CardscapeController {
 
     public function actionIndex() {
 
-        $card = new Card();
-        if (isset($_POST['quicksearch'])) {
-            //TODO: Implement quick search options.    
+        $filter = new CardListFilterForm();
+        if (isset($_GET['CardListFilterForm'])) {
+            $filter->author = $_GET['CardListFilterForm']['author'];
+            $filter->date = $_GET['CardListFilterForm']['date'];
+            $filter->status = $_GET['CardListFilterForm']['status'];
+            $filter->name = $_GET['CardListFilterForm']['name'];
         }
-        $this->render('index', array('card' => $card));
+        $this->render('index', array('filter' => $filter));
     }
 
     public function actionSuggest() {
@@ -166,6 +169,14 @@ class CardsController extends CardscapeController {
     }
 
     public function actionSearch() {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionRevision($id) {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionDetails($id) {
         throw new CHttpException(501, 'Not implemented yet.');
     }
 

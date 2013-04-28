@@ -10,3 +10,5 @@ CREATE TABLE `CardNameI18N` (
 CONSTRAINT `fkCardCardNameI18N` FOREIGN KEY (`cardId`) REFERENCES `Card`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
+-- Adding revision number to revision table
+ALTER TABLE `Revision` ADD `number` SMALLINT NOT NULL DEFAULT 1 ;

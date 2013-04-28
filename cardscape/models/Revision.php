@@ -41,6 +41,8 @@
  * @property integer $cardId ID for the owner card.
  * @property integer $userId ID for the user that made the change and thus created 
  * the revision.
+ * 
+ * @property integer $number Keeps track of the number of revisions, manually maintained
  *
  * Relations:
  * @property Card $card The owner card.
@@ -103,6 +105,7 @@ class Revision extends CActiveRecord {
             'date' => Yii::t('cardscape', 'Date'),
             'cardId' => Yii::t('cardscape', 'Card'),
             'userId' => Yii::t('cardscape', 'User'),
+            'number' => Yii::t('cardscape', 'Number')
         );
     }
 

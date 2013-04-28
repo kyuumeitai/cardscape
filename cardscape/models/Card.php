@@ -84,7 +84,7 @@ class Card extends CActiveRecord {
             'users' => array(self::MANY_MANY, 'User', 'CardUser(cardId, userId)'),
             'comments' => array(self::HAS_MANY, 'Comment', 'cardId'),
             'projects' => array(self::MANY_MANY, 'Project', 'ProjectCard(cardId, projectId)'),
-            'revisions' => array(self::HAS_MANY, 'Revision', 'cardId'),
+            'revisions' => array(self::HAS_MANY, 'Revision', 'cardId', 'order' => 'number DESC'),
             'ancestor' => array(self::BELONGS_TO, 'Card', 'ancestorId'),
             'names' => array(self::HAS_MANY, 'CardNameI18N', 'cardId')
         );
@@ -104,9 +104,19 @@ class Card extends CActiveRecord {
         );
     }
 
-    public function listing() {
-        
-        return new CArrayDataProvider(array());
+    public static function getStatusName($status) {
+        $statuses = self::getCardStatusesArray();
+        return (isset($statuses[$status]) ? $statuses[$status] : Yii::t('cardscape', 'Unknown status'));
+    }
+
+    public static function getCardStatusesArray() {
+        return array(
+            'concept' => Yii::t('cardscape', 'Concept'),
+            'discussion' => Yii::t('cardscape', 'Discussion'),
+            'playtest' => Yii::t('cardscape', 'Playtes'),
+            'approved' => Yii::t('cardscape', 'Approved'),
+            'rejected' => Yii::t('cardscape', 'Rejected')
+        );
     }
 
 }

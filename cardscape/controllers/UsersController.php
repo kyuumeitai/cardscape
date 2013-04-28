@@ -36,7 +36,7 @@ class UsersController extends CardscapeController {
             ),
             array(
                 'allow',
-                'actions' => array('profile'),
+                'actions' => array('profile', 'details'),
                 'users' => array('@')
             ),
             array(
@@ -152,6 +152,10 @@ class UsersController extends CardscapeController {
     public function actionProfile() {
         $user = $this->loadUserModel(Yii::app()->user->id);
         //TODO: Not implemented yet!
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionDetails($id) {
         throw new CHttpException(501, 'Not implemented yet.');
     }
 
