@@ -70,11 +70,12 @@ class CardscapeController extends CController {
                     'label' => Yii::t('cardscape', 'Cards'),
                     'url' => array('cards/index')
                 ),
-                array(
-                    'label' => Yii::t('cardscape', 'Projects'),
-                    'url' => array('projects/index'),
-                    'visible' => (!$user->isGuest && $user->role != 'user')
-                ),
+                //TODO: Uncomment when projects become stable
+                //array(
+                //    'label' => Yii::t('cardscape', 'Projects'),
+                //    'url' => array('projects/index'),
+                //    'visible' => (!$user->isGuest && $user->role != 'user')
+                //),
                 array(
                     'label' => Yii::t('cardscape', 'Attributes'),
                     'url' => array('attributes/index'),

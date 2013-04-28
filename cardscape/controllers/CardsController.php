@@ -36,13 +36,21 @@ class CardsController extends CardscapeController {
             ),
             array(
                 'allow',
-                'actions' => array('suggest'),
+                'actions' => array('suggest', 'comment'),
                 'users' => array('@')
             ),
             array(
                 'deny'
             )
         );
+    }
+
+    private function loadCardModel($id) {
+        if (($card = Card::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, Yii::t('cardscape', 'Invalid card. You\'re trying to load a card that does not exist.'));
+        }
+
+        return $card;
     }
 
     public function actionIndex() {
@@ -177,7 +185,70 @@ class CardsController extends CardscapeController {
     }
 
     public function actionDetails($id) {
-        throw new CHttpException(501, 'Not implemented yet.');
+        $card = $this->loadCardModel($id);
+        $language = Yii::app()->language;
+
+        $attributes = Attribute::model()->with(array(
+                    'translations' => array(
+                        'condition' => "isoCode = '{$language}'"
+                    )
+                ))->findAll('active = 1');
+
+        $revisions = $card->revisions;
+        $revision = reset($revisions);
+
+        $cardAttributes = array();
+        foreach ($attributes as $attribute) {
+            $translations = $attribute->translations;
+            $translation = reset($translations);
+
+            $current = array(
+                'id' => $attribute->id,
+                'name' => $translation->string,
+            );
+
+            foreach ($revision->values as $value) {
+                if ($value->attributeId == $attribute->id) {
+                    $current['value'] = $value->value;
+                    break;
+                }
+            }
+
+            if ($attribute->multivalue) {
+                $option = AttributeOption::model()->with(array(
+                            'translations' => array('condition' => "isoCode = '{$language}'")
+                        ))->find('attributeId = :attribute', array(':attribute' => $attribute->id));
+
+                $translations = $option->translations;
+                $translation = reset($translations);
+                $current['value'] = $translation->string;
+            }
+
+            $cardAttributes[] = (object) $current;
+        }
+
+        $this->render('details', array(
+            'card' => $card,
+            'attributes' => $cardAttributes
+        ));
+    }
+
+    public function actionComment($id) {
+        $card = $this->loadCardModel($id);
+
+        if (isset($_POST['commentbox']) && ($message = trim($_POST['commentbox'])) != '') {
+            $comment = new Comment();
+            $comment->cardId = $card->id;
+            $comment->message = $message;
+            $comment->date = date('Y-m-d H:i:s');
+            $comment->userId = Yii::app()->user->id;
+            if ($comment->save()) {
+                //TODO: Add proper flash messages
+            } else {
+                //TODO: Add proper flash messages
+            }
+        }
+        $this->redirect(array('details', 'id' => $id));
     }
 
 }

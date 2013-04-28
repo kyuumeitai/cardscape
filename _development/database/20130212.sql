@@ -106,7 +106,6 @@ CONSTRAINT `fkRevisionAttributeAttribute` FOREIGN KEY (`attributeId`) REFERENCES
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- Registers comments made to a card by a user.
--- //TODO: //NOTE: THIS TABLE IS NOT VALIDATED/USED YET.
 CREATE TABLE `Comment` (
 `id` INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 `userId` INT UNSIGNED NOT NULL ,

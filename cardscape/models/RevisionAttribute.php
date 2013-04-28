@@ -57,10 +57,8 @@ class RevisionAttribute extends CActiveRecord {
 
     public function relations() {
         return array(
-            array(
-                'attribute' => array(self::BELONGS_TO, 'Attribute', 'attributeId'),
-                'revision' => array(self::BELONGS_TO, 'Revision', 'revisionId')
-            )
+            'attribute' => array(self::BELONGS_TO, 'Attribute', 'attributeId'),
+            'revision' => array(self::BELONGS_TO, 'Revision', 'revisionId')
         );
     }
 
