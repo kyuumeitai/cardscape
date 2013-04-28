@@ -113,7 +113,7 @@ class Card extends CActiveRecord {
         return array(
             'concept' => Yii::t('cardscape', 'Concept'),
             'discussion' => Yii::t('cardscape', 'Discussion'),
-            'playtest' => Yii::t('cardscape', 'Playtes'),
+            'playtest' => Yii::t('cardscape', 'Playtest'),
             'approved' => Yii::t('cardscape', 'Approved'),
             'rejected' => Yii::t('cardscape', 'Rejected')
         );
