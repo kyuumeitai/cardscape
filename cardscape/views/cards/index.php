@@ -13,6 +13,8 @@ $this->title = Yii::t('cardscape', 'Cards');
 
 <div class="cardlisting">
     <?php
+    $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
+
     $this->widget('zii.widgets.grid.CGridView', array(
         'id' => 'user-grid',
         'dataProvider' => $filter->search(),
@@ -29,8 +31,6 @@ $this->title = Yii::t('cardscape', 'Cards');
             array(
                 'header' => CHtml::encode($filter->getAttributeLabel('revision')),
                 'name' => 'revision',
-                'type' => 'raw',
-                'value' => 'CHtml::link($data->revision, Yii::app()->createUrl("cards/revision", array("id" => $data->revisionId)))',
                 'filter' => false
             ),
             array(
@@ -53,7 +53,24 @@ $this->title = Yii::t('cardscape', 'Cards');
             ),
             array(
                 'header' => Yii::t('cardscape', 'Actions'),
-                'class' => 'CButtonColumn'
+                'class' => 'CButtonColumn',
+                'template' => '{revisions} {update} {delete}',
+                'buttons' => array(
+                    'revisions' => array(
+                        'url' => 'Yii::app()->createUrl("cards/revisions", array("id" => $data->id))',
+                        'imageUrl' => $imageBaseUrl . 'blogs-stack.png',
+                        'label' => Yii::t('cardscape', 'Revisions')
+                    ),
+                    'update' => array(
+                        'imageUrl' => $imageBaseUrl . 'pencil.png',
+                        'label' => Yii::t('cardscape', 'Change card')
+                    ),
+                    'delete' => array(
+                        'imageUrl' => $imageBaseUrl . 'minus-circle.png',
+                        'visible' => '(!Yii::app()->user->isGuest && Yii::app()->user->role == "administrator")'
+                    ),
+                    'view' => array('visible' => 'false')
+                )
             )
         )
     ));

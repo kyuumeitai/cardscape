@@ -1,3 +1,13 @@
 - translator user group support
 - create a card based on another card (use the ancestor) to derivate a card (on card details)
 - card attribute templates so same platform can be used for more than one game
+
+
+ACTIONS:
+Comments: Delete, Edit, Date (balloon minus/pencil, calendar)
+Cards: Search, Details, Suggestion, Change, Delete, Revisions (binocular, 
+Revison: Delete
+Users: Profile, Details, Logout, Delete, Update, Create (.., .., lock arrow
+Attributes: Create, Delete, Update
+Projects: Create, Update, Delete
+General: Save, Cancel

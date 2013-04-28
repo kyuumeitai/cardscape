@@ -14,8 +14,14 @@ body {
     text-align: justify;
 }
 
-a {
-    color:#F8981d;
+a, a:visited, a:active, a:link {
+    color: #36C;;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #F8981d;
+    text-decoration: none;
 }
 
 /* Header, main menu and user tools */

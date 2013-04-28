@@ -31,13 +31,18 @@ class CardsController extends CardscapeController {
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'search', 'revision', 'details'),
+                'actions' => array('index', 'search', 'details'),
                 'users' => array('*')
             ),
             array(
                 'allow',
-                'actions' => array('suggest', 'comment'),
+                'actions' => array('suggest', 'comment', 'revisions', 'update'),
                 'users' => array('@')
+            ),
+            array(
+                'allow',
+                'actions' => array('delete'),
+                'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
             ),
             array(
                 'deny'
@@ -176,14 +181,6 @@ class CardsController extends CardscapeController {
         ));
     }
 
-    public function actionSearch() {
-        throw new CHttpException(501, 'Not implemented yet.');
-    }
-
-    public function actionRevision($id) {
-        throw new CHttpException(501, 'Not implemented yet.');
-    }
-
     public function actionDetails($id) {
         $card = $this->loadCardModel($id);
         $language = Yii::app()->language;
@@ -251,4 +248,21 @@ class CardsController extends CardscapeController {
         $this->redirect(array('details', 'id' => $id));
     }
 
+    public function actionDelete($id) {
+        $comment = $this->loadCardModel($id);
+
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+    
+    public function actionSearch() {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionRevisions($id) {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionUpdate($id) {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
 }

@@ -17,6 +17,8 @@ Yii::app()->clientScript->registerScriptFile('', CClientScript::POS_END);
                                     'id' => $comment->userId)));
                         ?>
                     </span>
+                    <span class="comment-update"><?php echo CHtml::link(Yii::t('cardscape', 'Edit comment'), $this->createUrl('comments/update', array('id' => $comment->id))); ?></span>
+                    <span class="comment-delete"><?php echo CHtml::link(Yii::t('cardscape', 'Delete'), $this->createUrl('comments/delete', array('id' => $comment->id))); ?></span>
                 </div>
             </div>
             <?php

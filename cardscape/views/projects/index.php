@@ -25,9 +25,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'type' => 'raw',
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("projects/update", array("id" => $data->projectId)))'
         ),
-        array(
-            'header' => Yii::t('cardscape', 'Actions'),
-            'class' => 'CButtonColumn'
-        )
+        //TODO: Add proper icons and templates
+        //array(
+        //    'header' => Yii::t('cardscape', 'Actions'),
+        //    'class' => 'CButtonColumn'
+        //)
     ),
 ));

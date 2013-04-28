@@ -18,8 +18,8 @@
                 <div id="logo">
                     <?php if (!Yii::app()->user->isGuest) { ?>
                         <div class="user-options">
-                            <a href="<?php echo $this->createUrl('users/profile'); ?>">[ <?php echo Yii::app()->user->name; ?> ]</a>
-                            <a href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
+                            <a class="user-profile" href="<?php echo $this->createUrl('users/profile'); ?>">[ <?php echo Yii::app()->user->name; ?> ]</a>
+                            <a class="user-logout" href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
                         </div>
                     <?php } ?>
                     <h1 class="name"><?php echo Yii::app()->name; ?></h1>

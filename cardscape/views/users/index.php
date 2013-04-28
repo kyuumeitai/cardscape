@@ -13,6 +13,8 @@ $this->title = Yii::t('cardscape', 'Users');
     <a class="new-user-action" href="<?php echo $this->createUrl('users/create'); ?>"><?php echo Yii::t('cardscape', 'Add user'); ?></a>
 </div>
 <?php
+$imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
+        
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'user-grid',
     'dataProvider' => $filter->search(),
@@ -34,7 +36,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => Yii::t('cardscape', 'Actions'),
-            'class' => 'CButtonColumn'
+            'class' => 'CButtonColumn',
+            'buttons' => array(
+                'update' => array(
+                    'imageUrl' => $imageBaseUrl . 'pencil.png'
+                ),
+                'delete' => array(
+                    'imageUrl' => $imageBaseUrl . 'minus-circle.png'
+                ),
+                'view' => array('visible' => 'false')
+            )
         )
     ),
 ));
