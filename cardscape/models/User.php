@@ -29,21 +29,22 @@
  * 
  * @property integer $id User database ID
  * 
- * @property string $username Username for display and authetication
- * @property string $password The user's password, generally blank
- * @property string $email The email used for registering this user
- * 
+ * @property string $username Username for display and authetication.
+ * @property string $password The user's password, generally blank.
+ * @property string $email The email used for registering this user.
  * @property integer $role A role defines what permissions a user has, can be any 
- * value in 'user', 'moderator', 'administrator' for standard user, moderator or administrator
+ * value in 'user', 'moderator', 'administrator' for standard user, moderator or administrator.
  * 
- * @property string $language Language used in the system and card data
- * @property integer $active Flag that marks this user as a deleted user
+ * @property string $language Language used in the system and card data.
+ * @property integer $active Flag that marks this user as a deleted user.
+ * @property integer $activationCompleted Flag that indicates if this user has finished the 
+ * activation process.
  *
  * Relations:
- * @property Card[] $cards The cards this user created
- * @property Comment[] $comments The comments this user wrote
- * @property Project[] $projects The projects this user moderates
- * @property Revision[] $revisions The this user created
+ * @property Card[] $cards The cards this user created.
+ * @property Comment[] $comments The comments this user wrote.
+ * @property Project[] $projects The projects this user moderates.
+ * @property Revision[] $revisions The list of revisions this user created.
  */
 class User extends CActiveRecord {
 
@@ -75,8 +76,9 @@ class User extends CActiveRecord {
             array('email', 'length', 'max' => 255),
             array('email', 'email'),
             array('role', 'in', 'range' => array('user', 'moderator', 'administrator')),
+            array('$activationCompleted', 'numerical', 'integerOnly' => true),
             // search
-            array('username, email, role', 'safe', 'on' => 'search'),
+            array('username, email, role, activationCompleted', 'safe', 'on' => 'search'),
         );
     }
 
@@ -89,6 +91,7 @@ class User extends CActiveRecord {
             'comments' => array(self::HAS_MANY, 'Comment', 'userId'),
             'projects' => array(self::MANY_MANY, 'Project', 'ProjectUser(userId, projectId)'),
             'revisions' => array(self::HAS_MANY, 'Revision', 'userId'),
+            'activations' => array(self::HAS_MANY, 'Activation', 'userId')
         );
     }
 
@@ -102,7 +105,8 @@ class User extends CActiveRecord {
             'password' => Yii::t('cardscape', 'Password'),
             'email' => Yii::t('cardscape', 'E-mail'),
             'role' => Yii::t('cardscape', 'Role'),
-            'language' => Yii::t('cardscape', 'Language')
+            'language' => Yii::t('cardscape', 'Language'),
+            'activationCompleted' => Yii::t('cardscape', 'Activated')
         );
     }
 
@@ -117,6 +121,7 @@ class User extends CActiveRecord {
         $criteria->compare('username', $this->username, true);
         $criteria->compare('email', $this->email, true);
         $criteria->compare('role', $this->role);
+        $criteria->compare('activationCompleted', $this->activationCompleted);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -162,24 +167,6 @@ class User extends CActiveRecord {
         $roles = self::getRolesArray();
 
         return isset($roles[$role]) ? $roles[$role] : Yii::t('cardscape', 'Unknown role');
-    }
-
-    /**
-     * Offers a very basic random password generation.
-     * 
-     * @param int $size The generated password size.
-     * @return string The new randome string. 
-     */
-    public final static function generateRandomPassword($size = 8) {
-        $password = '';
-        $data = array('aeioubcdfghjklmnpqrstvwxyz', '1234567890', '+#&@');
-        for ($i = 0; $i < $size; $i++) {
-            $password .= $data[$index = rand(0, 2)][($index % 2 == 0) ?
-                            strtoupper(rand(0, strlen($data[$index]))) :
-                            rand(0, strlen($data[$index]))];
-        }
-
-        return $password;
     }
 
 }

@@ -43,6 +43,7 @@ class Credentials extends CBaseUserIdentity {
         $criteria = new CDbCriteria();
         $criteria->compare('username', $this->identifier);
         $criteria->compare('email', $this->identifier, false, 'OR');
+        $criteria->compare('activationCompleted', 1);
 
         $user = User::model()->find($criteria);
 

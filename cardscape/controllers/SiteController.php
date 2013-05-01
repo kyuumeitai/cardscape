@@ -149,4 +149,42 @@ class SiteController extends CardscapeController {
         $this->render('contactus', array('contact' => $contact));
     }
 
+    /**
+     * Processes the activation request and redirects to the site/status action 
+     * with the proper status code.
+     * 
+     * Activating a user requires just loading the activation record based on the 
+     * provided key, loading the related user, changing the user's password and 
+     * status and deleting the activation record.
+     * 
+     * @param string $key The activation token sent to the user by e-mail
+     */
+    public function actionActivate($key) {
+        $form = null;
+        if (($activation = Activation::model()->find('token = :key', array(':key' => $key)))) {
+            if (isset($_POST['ActivationForm'])) {
+                $form = new ActivationForm();
+                $form->attributes = $_POST['ActivationForm'];
+                if ($form->activate()) {
+                    //TODO: growl
+                    $this->redirect(array('login'));
+                } else {
+                    //TODO: growl
+                }
+            }
+
+            if ($activation->administratorRequested) {
+                $form = new ActivationForm();
+            } else {
+                $user = $activation->user;
+                $user->activationCompleted = 1;
+                if ($user->save()) {
+                    $activation->delete();
+                }
+            }
+        }
+
+        $this->render('activate', array('form' => $form));
+    }
+
 }

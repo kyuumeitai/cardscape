@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/grids.css">
 
         <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
+        <script src="<?php echo $baseUrl; ?>/js/cardscape.js"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>
     </head>
@@ -30,18 +31,16 @@
             </div>
             <div class="clear"></div>
 
-            <div id="content-wrapper" class="span-24">
-                <div class="content">
-                    <?php echo $content; ?>
-                </div>
+            <div id="content-wrapper">
+                <?php echo $content; ?>
             </div>
-            <div class="clearfix"></div>
+            <div class="clear"></div>
 
             <footer class="footer span-24">
                 <div class="left">
                     <?php
                     echo (defined('CSVersion') ? 'v' . CSVersion : ''),
-                    (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') . 
+                    (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') .
                             ' ' . Yii::app()->params['copyrightHolder']) : '');
                     ?>
                 </div>

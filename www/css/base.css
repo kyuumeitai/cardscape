@@ -24,6 +24,12 @@ a:hover {
     text-decoration: none;
 }
 
+select {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #CCC;
+}
+
 /* Header, main menu and user tools */
 #header {
     height: 181px;
@@ -134,16 +140,12 @@ a:hover {
 }
 
 #content-wrapper {
+    border: none;
     border-top: 1px #B2B2B2 solid;
     background: url("../images/background.png") repeat ;
     min-height: 420px;
-}
-
-.content {
-    width: 98%;
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
-    border: none;
 }
 
 .user-options {
@@ -207,6 +209,9 @@ a:hover {
 }
 
 /* Forms */
+form div {
+    margin-bottom: 0.1em;
+}
 .buttonsrow {
     /*margin: 2ex 0 2ex 0;*/
 }
@@ -225,4 +230,8 @@ a:hover {
 
 .add-multiline {
     cursor: pointer;
+}
+
+span.required {
+    color: #F00;
 }

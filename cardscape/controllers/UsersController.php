@@ -31,7 +31,7 @@ class UsersController extends CardscapeController {
         return array(
             array(
                 'allow',
-                'actions' => array('index', 'create', 'update', 'delete'),
+                'actions' => array('index', 'create', 'update', 'delete', 'reset'),
                 'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
             ),
             array(
@@ -76,8 +76,8 @@ class UsersController extends CardscapeController {
         $filter->unsetAttributes();
         $filter->active = 1;
 
-        if (isset($_POST['User'])) {
-            $filter->attributes = $_POST['User'];
+        if (isset($_GET['User'])) {
+            $filter->attributes = $_GET['User'];
         }
 
         $this->render('index', array('filter' => $filter));
@@ -93,9 +93,21 @@ class UsersController extends CardscapeController {
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                //TODO: Create random password, send password by e-mail to the 
-                //user if the proper flag was check in the user's creation interface.
-                //Add proper flash messages.
+                $activation = new Activation();
+                $activation->requestedAt = date('Y-m-d H:m:s');
+                $activation->userId = $user->id;
+                $activation->administratorRequested = 1;
+
+                $sent = Yii::app()->mailer->addAddress($user->email)
+                                ->subject(Yii::t('cardscape', 'Account activation for {system}', array('{system}' => Yii::app()->name)))
+                                ->msgHTML($this->render('activation-email', array(
+                                            'user' => $user,
+                                            'activation' => $activation
+                                                ), true)
+                                )->send();
+                if (!$activation->save() || !$sent) {
+                    //TODO: growl
+                }
                 $this->redirect(array('update', 'id' => $user->id));
             }
         }
@@ -144,15 +156,57 @@ class UsersController extends CardscapeController {
         }
     }
 
-    public function actionActivate($key) {
-        //TODO: Not implemented yet!
-        throw new CHttpException(501, 'Not implemented yet.');
+    /**
+     * Forces a password reset by sending a new activation e-mail and setting the 
+     * user's record to be inactive.
+     * 
+     * @param integer $id The user's ID
+     */
+    public function actionReset($id) {
+        $user = $this->loadUserModel($id);
+
+        $user->activationCompleted = 0;
+        if ($user->save()) {
+            // invalidate any previous e-mail and activation record
+            Activation::model()->deleteAll('userId = :id', array(':id' => $user->id));
+
+            $activation = new Activation();
+            $activation->requestedAt = date('Y-m-d H:m:s');
+            $activation->userId = $user->id;
+            $activation->administratorRequested = 1;
+
+            $sent = Yii::app()->mailer->addAddress($user->email)
+                            ->subject(Yii::t('cardscape', 'Account activation for {system}', array('{system}' => Yii::app()->name)))
+                            ->msgHTML($this->render('activation-email', array(
+                                        'user' => $user,
+                                        'activation' => $activation
+                                            ), true)
+                            )->send();
+
+            if (!$activation->save() || !$sent) {
+                //TODO: message
+                Yii::app()->end();
+            }
+        }
+        //TODO: echo a success or something
     }
 
+    /**
+     * Same as update but automatically uses the logged in user's ID and shows 
+     * a different interface.
+     */
     public function actionProfile() {
         $user = $this->loadUserModel(Yii::app()->user->id);
-        //TODO: Not implemented yet!
-        throw new CHttpException(501, 'Not implemented yet.');
+        $this->performAjaxValidation('user-form', $user);
+
+        if (isset($_POST['User'])) {
+            $user->attributes = $_POST['User'];
+            if ($user->save()) {
+                //TODO: Add proper flash messages.
+                $this->redirect(array('profile'));
+            }
+        }
+        $this->render('profile', array('user' => $user));
     }
 
     public function actionDetails($id) {
