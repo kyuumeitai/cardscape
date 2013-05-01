@@ -1,3 +1,17 @@
+<?php
+// Handling all flash messages that may have been sent to the currently authenticated
+// user
+$messages = Yii::app()->user->getFlashes();
+if (count($messages) > 0) {
+    $jsGrowl = '';
+    foreach ($messages as $key => $message) {
+        $jsGrowl .= '$.jGrowl("' . $message . '", {theme: "' . $key . '"})';
+    }
+
+    Yii::app()->clientScript->registerScript('jsgrowl', $jsGrowl, CClientScript::POS_READY);
+}
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,6 +23,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/grids.css">
 
         <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
+        <script src="<?php echo $baseUrl; ?>/js/jquery.jgrowl.min.js"></script>
         <script src="<?php echo $baseUrl; ?>/js/cardscape.js"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>

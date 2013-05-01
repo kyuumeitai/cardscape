@@ -119,8 +119,7 @@ class SiteController extends CardscapeController {
      * was sent in order to complete the user registration process.
      */
     public function actionConfirmRegistration() {
-        throw new CHttpException(501, 'Not implemented yet.');
-        //$this->render('confirm-registration');
+        $this->render('confirm-registration');
     }
 
     /**
@@ -137,8 +136,8 @@ class SiteController extends CardscapeController {
      * Shows the about page. 
      */
     public function actionAbout() {
-        throw new CHttpException(501, 'Not implemented yet.');
         //$this->render('about');
+        throw new CHttpException(501, 'Not implemented yet.');
     }
 
     public function actionContactus() {

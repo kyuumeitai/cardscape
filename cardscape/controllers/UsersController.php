@@ -98,6 +98,7 @@ class UsersController extends CardscapeController {
                 $activation->userId = $user->id;
                 $activation->administratorRequested = 1;
 
+                $this->layout = '//layouts/email';
                 $sent = Yii::app()->mailer->addAddress($user->email)
                                 ->subject(Yii::t('cardscape', 'Account activation for {system}', array('{system}' => Yii::app()->name)))
                                 ->msgHTML($this->render('activation-email', array(
@@ -178,6 +179,7 @@ class UsersController extends CardscapeController {
             $activation->userId = $user->id;
             $activation->administratorRequested = 1;
 
+            $this->layout = '//layouts/email';
             $sent = Yii::app()->mailer->addAddress($user->email)
                             ->subject(Yii::t('cardscape', 'Account activation for {system}', array('{system}' => Yii::app()->name)))
                             ->msgHTML($this->render('activation-email', array(

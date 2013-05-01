@@ -14,75 +14,53 @@ $this->title = Yii::t('cardscape', 'Login/Register');
         'enableAjaxValidation' => false
     ));
     ?>
-    <div class="formrow">
-        <?php
-        echo $loginForm->labelEx($login, 'emailOrUsername'),
-        $loginForm->textField($login, 'emailOrUsername');
-        ?>
-    </div>
-    <div class="formrow">
-        <?php
-        echo $loginForm->labelEx($login, 'password'),
-        $loginForm->passwordField($login, 'password');
-        ?>
-    </div>
+    <div class="span-4"><?php echo $loginForm->labelEx($login, 'emailOrUsername'); ?></div>
+    <div class="span-6"><?php echo $loginForm->textField($login, 'emailOrUsername'); ?></div>
+    <div class="clear"></div>
 
-    <div class="buttonsrow">
-        <?php echo CHtml::submitButton(Yii::t('cardscape', 'Login')); ?>
+    <div class="span-4"><?php echo $loginForm->labelEx($login, 'password'); ?></div>
+    <div class="span-6"><?php echo $loginForm->passwordField($login, 'password'); ?></div>
+    <div class="clear"></div>
+
+    <div class="buttonsrow span-10 last">
+        <button type="submit" class="button"><?php echo Yii::t('cardscape', 'Login'); ?></button>
     </div>
+    <div class="clear"></div>
+
     <?php $this->endWidget(); ?>
 </div>
 
-<div class="span-11 prefix-1 last">
+<div class="span-12 prefix-1 last">
     <h1 class="fancy"><?php echo Yii::t('cardscape', 'Register new account'); ?></h1>
     <?php
     $registrationForm = $this->beginWidget('CActiveForm', array(
         'id' => 'registration-form', 'enableAjaxValidation' => true
     ));
     ?>
-    <div class="formrow">
-        <?php
-        echo $registrationForm->labelEx($registration, 'username'),
-        $registrationForm->textField($registration, 'username', array('size' => 25, 'maxlength' => 25));
-        //$registrationForm->error($registration, 'username');
-        ?> 
-    </div>
+    <div class="span-4"><?php echo $registrationForm->labelEx($registration, 'username'); ?></div>
+    <div class="span-7"><?php echo $registrationForm->textField($registration, 'username', array('size' => 25, 'maxlength' => 25)); ?></div>
+    <div class="clear"></div>
 
-    <div class="formrow">
-        <?php
-        echo $registrationForm->labelEx($registration, 'email'),
-        $registrationForm->textField($registration, 'email', array('size' => 25, 'maxlength' => 255));
-        //$registrationForm->error($registration, 'email');
-        ?> 
-    </div>
+    <div class="span-4"><?php echo $registrationForm->labelEx($registration, 'email'); ?></div>
+    <div class="span-7"><?php echo $registrationForm->textField($registration, 'email', array('size' => 25, 'maxlength' => 255)); ?></div>
+    <div class="clear"></div>
 
-    <div class="formrow">
-        <?php
-        echo $registrationForm->labelEx($registration, 'password'),
-        $registrationForm->passwordField($registration, 'password');
-        //$registrationForm->error($registration, 'password');
-        ?> 
-    </div>
+    <div class="span-4"><?php echo $registrationForm->labelEx($registration, 'password'); ?></div>
+    <div class="span-7"><?php echo $registrationForm->passwordField($registration, 'password'); ?></div>
+    <div class="clear"></div>
 
-    <div class="formrow">
-        <?php
-        echo $registrationForm->labelEx($registration, 'repeatPassword'),
-        $registrationForm->passwordField($registration, 'repeatPassword');
-        //$registrationForm->error($registration, 'repeatPassword');
-        ?> 
-    </div>
+    <div class="span-4"><?php echo $registrationForm->labelEx($registration, 'repeatPassword'); ?></div>
+    <div class="span-7"><?php echo $registrationForm->passwordField($registration, 'repeatPassword'); ?></div>
+    <div class="clear"></div>
 
-    <div class="formrow">
-        <?php
-        echo $registrationForm->labelEx($registration, 'language'),
-        $registrationForm->dropDownList($registration, 'language', Yii::app()->params['languages']);
-        //$registrationForm->error($registration, 'email');
-        ?>
-    </div>
+    <div class="span-4"><?php echo $registrationForm->labelEx($registration, 'language'); ?></div>
+    <div class="span-7"><?php echo $registrationForm->dropDownList($registration, 'language', Yii::app()->params['languages']); ?></div>
+    <div class="clear"></div>
 
-    <div class="buttonsrow">
-        <?php echo CHtml::submitButton(Yii::t('cardscape', 'Register')); ?>
+    <div class="buttonsrow span-12 last">
+        <button type="submit" class="button"><?php echo Yii::t('cardscape', 'Register'); ?></button>
     </div>
+    <div class="clear"></div>
 
     <?php $this->endWidget(); ?>
 </div>
