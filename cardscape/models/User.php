@@ -76,7 +76,7 @@ class User extends CActiveRecord {
             array('email', 'length', 'max' => 255),
             array('email', 'email'),
             array('role', 'in', 'range' => array('user', 'moderator', 'administrator')),
-            array('$activationCompleted', 'numerical', 'integerOnly' => true),
+            array('activationCompleted', 'numerical', 'integerOnly' => true),
             // search
             array('username, email, role, activationCompleted', 'safe', 'on' => 'search'),
         );

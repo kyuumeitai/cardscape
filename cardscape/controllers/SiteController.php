@@ -94,13 +94,15 @@ class SiteController extends CardscapeController {
         if (isset($_POST['LoginForm'])) {
             $login->attributes = $_POST['LoginForm'];
             if ($login->login()) {
-                //TODO: Proper redirection
-                $this->redirect(Yii::app()->homeUrl);
+                if (Yii::app()->user->returnUrl) {
+                    $this->redirect(Yii::app()->user->returnUrl);
+                } else {
+                    $this->redirect(Yii::app()->homeUrl);
+                }
             }
         } else if (isset($_POST['RegistrationForm'])) {
             $registration->attributes = $_POST['RegistrationForm'];
             if ($registration->register()) {
-                //TODO: Proper redirection and flash messages
                 $this->redirect(array('site/confirmregistration'));
             }
         }
@@ -166,10 +168,10 @@ class SiteController extends CardscapeController {
                 $form = new ActivationForm();
                 $form->attributes = $_POST['ActivationForm'];
                 if ($form->activate()) {
-                    //TODO: growl
+                    $this->flash('success', Yii::t('cardscape', 'Your account has been activated, please login.'));
                     $this->redirect(array('login'));
                 } else {
-                    //TODO: growl
+                    $this->flash('success', Yii::t('cardscape', 'Unable to activate your account, please contact an administrator.'));
                 }
             }
 

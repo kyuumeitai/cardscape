@@ -71,7 +71,6 @@ class CardsController extends CardscapeController {
     }
 
     public function actionSuggest() {
-        //TODO: Add proper flash messages
         $language = Yii::app()->language;
 
         $attributes = Attribute::model()->with(array(
@@ -120,13 +119,13 @@ class CardsController extends CardscapeController {
                         if (move_uploaded_file($image->tmp_name, $file)) {
                             $card->image = $name;
                         } else {
-                            //TODO: Add warning flash message, not error, just warning
+                            $this->flash('warning', Yii::t('cardscape', 'Unable to save uploaded image.'));
                         }
                     } else {
-                        //TODO: Add warning flash message, not error, just warning for wrong path setting
+                        $this->flash('success', Yii::t('cardscape', 'Upload path is incorrect, images will not be saved.'));
                     }
                 } else {
-                    //TODO: Add warning flash message, not error, just warning with file upload error
+                    $this->flash('success', Yii::t('cardscape', 'Unable to upload the selected image file.'));
                 }
             }
 
@@ -153,32 +152,40 @@ class CardsController extends CardscapeController {
 
                             if (!$cardAttribute->save() || !$revisionAttribute->save()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Unable to save card\'s attributes.'));
                                 $allOK = false;
                                 break;
                             }
                         }
                     } else {
                         $transaction->rollback();
+
+                        $this->flash('error', Yii::t('cardscape', 'Could not save the card\'s revision.'));
                         $allOK = false;
                     }
                 } else {
                     $transaction->rollback();
+
+                    $this->flash('error', Yii::t('cardscape', 'Could not save the card\'s translation.'));
                     $allOK = false;
                 }
             } else {
                 $transaction->rollback();
+
+                $this->flash('error', Yii::t('cardscape', 'Unable to save the new card suggestion.'));
                 $allOK = false;
             }
 
             if ($allOK) {
                 $transaction->commit();
+
+                $this->flash('success', Yii::t('cardscape', 'New suggestion registered.'));
                 $this->redirect(array('index'));
             }
         }
 
-        $this->render('suggest', array(
-            'attributes' => $cardAttributes
-        ));
+        $this->render('suggest', array('attributes' => $cardAttributes));
     }
 
     public function actionDetails($id) {
@@ -240,9 +247,9 @@ class CardsController extends CardscapeController {
             $comment->date = date('Y-m-d H:i:s');
             $comment->userId = Yii::app()->user->id;
             if ($comment->save()) {
-                //TODO: Add proper flash messages
+                $this->flash('success', Yii::t('cardscape', 'Comment registered.'));
             } else {
-                //TODO: Add proper flash messages
+                $this->flash('success', Yii::t('cardscape', 'Unable to save comment.'));
             }
         }
         $this->redirect(array('details', 'id' => $id));
@@ -253,7 +260,7 @@ class CardsController extends CardscapeController {
 
         throw new CHttpException(501, 'Not implemented yet.');
     }
-    
+
     public function actionSearch() {
         throw new CHttpException(501, 'Not implemented yet.');
     }
@@ -265,4 +272,5 @@ class CardsController extends CardscapeController {
     public function actionUpdate($id) {
         throw new CHttpException(501, 'Not implemented yet.');
     }
+
 }

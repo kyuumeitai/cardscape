@@ -28,15 +28,17 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'user-form'));
 </div>
 <div class="clear"></div>
 
-<div class="span-4"><?php echo $form->labelEx($user, 'activationCompleted'); ?></div>
-<div class="span-20 last">
-    <?php
-    echo $form->dropDownList($user, 'activationCompleted', array(
-        0 => Yii::t('cardscape', 'No'), 1 => Yii::t('cardscape', 'Yes')
-    ));
-    ?>
-</div>
-<div class="clear"></div>
+<?php if (!$user->isNewRecord) { ?>
+    <div class="span-4"><?php echo $form->labelEx($user, 'activationCompleted'); ?></div>
+    <div class="span-20 last">
+        <?php
+        echo $form->dropDownList($user, 'activationCompleted', array(
+            0 => Yii::t('cardscape', 'No'), 1 => Yii::t('cardscape', 'Yes')
+        ));
+        ?>
+    </div>
+    <div class="clear"></div>
+<?php } ?>
 
 <div class="buttonsrow span-24">
     <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>

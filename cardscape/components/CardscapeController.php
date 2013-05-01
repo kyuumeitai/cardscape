@@ -144,10 +144,27 @@ class CardscapeController extends CController {
         );
     }
 
+    /**
+     * Prevents access to any and all actions, regardless of the current user's 
+     * role. This is the default access rule that must be redefined in child classes.
+     * 
+     * @return array
+     */
     public function accessRules() {
         return array(
             array('deny')
         );
+    }
+
+    /**
+     * Utility wrapper around <strong>Yii::app()->user->setFlash</strong>, allowing controllers to 
+     * add <em>flash</em> messages to the current user' session.
+     * 
+     * @param string $name
+     * @param string $message
+     */
+    public function flash($name, $message) {
+        Yii::app()->user->setFlash($name, $message);
     }
 
 }

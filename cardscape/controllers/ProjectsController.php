@@ -80,7 +80,7 @@ class ProjectsController extends CardscapeController {
         if (isset($_POST['Project'])) {
             $project->attributes = $_POST['Project'];
             if ($project->save()) {
-                //TODO: Add proper flash messages
+                $this->flash('success', Yii::t('cardscape', 'New project created.'));
                 $this->redirect(array('update', 'id' => $project->id));
             }
         }
@@ -98,7 +98,7 @@ class ProjectsController extends CardscapeController {
         if (isset($_POST['Project'])) {
             $project->attributes = $_POST['Project'];
             if ($project->save()) {
-                //TODO: Add proper flash messages.
+                $this->flash('error', Yii::t('cardscape', 'Project updated.'));
                 $this->redirect(array('update', 'id' => $project->id));
             }
         }
@@ -113,11 +113,10 @@ class ProjectsController extends CardscapeController {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && (($project = $this->loadProjectModel($id)) !== null)) {
             $project->active = 0;
-            $project->save();
-            //TODO: Add proper flash messages.
-
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            if ($project->save()) {
+                echo json_encode(array('success' => true));
+            } else {
+                echo json_encode(array('success' => false));
             }
         } else {
             throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));

@@ -1,6 +1,7 @@
 .grid-view table {
     width: 100%;
     border: none;
+    margin-bottom: .6em;
 }
 
 .button-column {

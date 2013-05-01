@@ -3,7 +3,7 @@
 $this->title = Yii::t('cardscape', 'Cards');
 ?>
 
-<div class="span-8">
+<div class="span-9">
     <h1 class="fancy"><?php echo Yii::t('cardscape', 'Browse cards list'); ?></h1>
 </div>
 <div class="span-14 prefix-1 last stick-right">
@@ -19,7 +19,7 @@ $this->title = Yii::t('cardscape', 'Cards');
         'id' => 'user-grid',
         'dataProvider' => $filter->search(),
         'filter' => $filter,
-        'template' => '{items} {pager} {summary}',
+        'template' => '{items} {summary} {pager}',
         'cssFile' => false,
         'columns' => array(
             array(

@@ -116,6 +116,8 @@ class AttributesController extends CardscapeController {
                             $attributeOption->key = trim($value);
                             if (!$attributeOption->save()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Unable to save attribute options.'));
                                 $allOK = false;
                                 break;
                             }
@@ -126,6 +128,8 @@ class AttributesController extends CardscapeController {
                             $attributeOptionI18N->isoCode = $language;
                             if (!$attributeOptionI18N->save()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Unable to save one of the options\' translation.'));
                                 $allOK = false;
                                 break;
                             }
@@ -133,20 +137,24 @@ class AttributesController extends CardscapeController {
                     }
                 } else {
                     $transaction->rollback();
+                    $this->flash('error', Yii::t('cardscape', 'Unable to save attribute translation.'));
                     $allOK = false;
                 }
             } else {
                 $transaction->rollback();
+
+                $this->flash('error', Yii::t('cardscape', 'Unable to save attribute.'));
                 $allOK = false;
             }
 
             if ($allOK) {
                 $transaction->commit();
+
+                $this->flash('success', Yii::t('cardscape', 'New attribute created.'));
                 $this->redirect(array('update', 'id' => $attribute->id));
             }
         }
 
-        //TODO: Add proper flash messages.
         $this->render('create', array(
             'attribute' => $attribute,
             'attributeI18N' => $attributeI18N,
@@ -178,6 +186,8 @@ class AttributesController extends CardscapeController {
                         foreach ($option->translations as $translation) {
                             if (!$translation->delete()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Could not delete old translation.'));
                                 $allOK = false;
                                 break;
                             }
@@ -188,6 +198,8 @@ class AttributesController extends CardscapeController {
 
                         if (!$option->delete()) {
                             $transaction->rollback();
+
+                            $this->flash('error', Yii::t('cardscape', 'Could not delete old attribute option.'));
                             $allOK = false;
                             break;
                         }
@@ -200,6 +212,8 @@ class AttributesController extends CardscapeController {
                             $attributeOption->key = trim($value);
                             if (!$attributeOption->save()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Unable to save attribute options.'));
                                 $allOK = false;
                                 break;
                             }
@@ -210,6 +224,8 @@ class AttributesController extends CardscapeController {
                             $attributeOptionI18N->isoCode = $language;
                             if (!$attributeOptionI18N->save()) {
                                 $transaction->rollback();
+
+                                $this->flash('error', Yii::t('cardscape', 'Unable to save one of the options\' translation.'));
                                 $allOK = false;
                                 break;
                             }
@@ -217,15 +233,21 @@ class AttributesController extends CardscapeController {
                     }
                 } else {
                     $transaction->rollback();
+
+                    $this->flash('error', Yii::t('cardscape', 'Unable to save attribute\'s translation.'));
                     $allOK = false;
                 }
             } else {
                 $transaction->rollback();
+
+                $this->flash('error', Yii::t('cardscape', 'Unable to save attribute.'));
                 $allOK = false;
             }
 
             if ($allOK) {
                 $transaction->commit();
+
+                $this->flash('success', Yii::t('cardscape', 'New attribute created.'));
                 $this->redirect(array('update', 'id' => $attribute->id));
             }
         }
@@ -241,7 +263,6 @@ class AttributesController extends CardscapeController {
             }
         }
 
-        //TODO: Add proper flash messages.
         $this->render('update', array(
             'attribute' => $attribute,
             'attributeI18N' => $attributeI18N,
@@ -253,11 +274,11 @@ class AttributesController extends CardscapeController {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && (($attribute = $this->loadAttributeModel($id)) !== null)) {
             $attribute->active = 0;
-            $attribute->save();
-            //TODO: Add proper flash messages.
 
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            if ($attribute->save()) {
+                echo json_encode(array('success' => true));
+            } else {
+                echo json_encode(array('success' => false));
             }
         } else {
             throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));

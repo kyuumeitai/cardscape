@@ -10,14 +10,16 @@ $baseUrl = Yii::app()->baseUrl;
 echo CHtml::form();
 ?>
 <div class="span-4"><?php echo CHtml::activeLabelEx($attributeI18N, 'string'); ?></div>
-<div class="span-19 last">    
+<div class="span-20 last">    
     <?php echo CHtml::activeTextField($attributeI18N, 'string'); ?>
 </div>
+<div class="clear"></div>
 
 <div class="span-4"><?php echo CHtml::activeLabelEx($attribute, 'multivalue'); ?></div>
-<div class="span-19 last">
+<div class="span-20 last">
     <?php echo CHtml::activeCheckBox($attribute, 'multivalue'); ?> 
 </div>
+<div class="clear"></div>
 
 <div class="multivalue-lines">
     <!-- hidden template line -->
@@ -29,11 +31,12 @@ echo CHtml::form();
         </div>
         <div class="span-8"><?php echo CHtml::textField('templateOption'); ?></div>
         <!-- second column -->
-        <div class="span-3">
+        <div class="span-4">
             <?php echo CHtml::label(AttributeOptionI18N::model()->getAttributeLabel('string'), 'templateTranslation', array('class' => 'required translation')); ?>
             <span class="required">*</span>
         </div>
         <div class="span-8 last"><?php echo CHtml::textField('templateTranslation'); ?></div>
+        <div class="clear"></div>
     </div>
 
     <?php foreach ($options as $index => $option) { ?>
@@ -50,15 +53,18 @@ echo CHtml::form();
                 <span class="required">*</span>
             </div>
             <div class="span-8 last"><?php echo CHtml::textField("AttributeOptionI18N[string][{$index}]", $optionsI18N[$index]); ?></div>
+            <div class="clear"></div>
         </div>
     <?php } ?>
 </div>
-<div class="span-22 prefix-1">
+
+<div class="span-23 prefix-1">
     <span class="hidden multiline-count"><?php echo count($options); ?></span>
     <span class="add-multiline">Add new line</span>
 </div>
+<div class="clear"></div>
 
-<div class="buttonsrow span-23">
+<div class="buttonsrow span-24">
     <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
     <a href="<?php echo $this->createUrl('attributes/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
 </div>

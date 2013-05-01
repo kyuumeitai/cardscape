@@ -106,8 +106,10 @@ class UsersController extends CardscapeController {
                                                 ), true)
                                 )->send();
                 if (!$activation->save() || !$sent) {
-                    //TODO: growl
+                    $this->flash('warning', Yii::t('cardscape', 'Could not send activation e-mail.'));
                 }
+
+                $this->flash('success', Yii::t('cardscape', 'New user created successfully.'));
                 $this->redirect(array('update', 'id' => $user->id));
             }
         }
@@ -127,7 +129,7 @@ class UsersController extends CardscapeController {
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                //TODO: Add proper flash messages.
+                $this->flash('success', Yii::t('cardscape', '{username}\'s details updated.', array('{username}' => $user->username)));
                 $this->redirect(array('update', 'id' => $user->id));
             }
         }
@@ -145,12 +147,13 @@ class UsersController extends CardscapeController {
     public function actionDelete($id) {
         if (Yii::app()->request->isPostRequest && (($user = $this->loadUserModel($id)) !== null)) {
             $user->active = 0;
-            $user->save();
-            //TODO: Add proper flash messages.
 
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+            if ($user->save()) {
+                echo json_encode(array('success' => true));
+            } else {
+                echo json_encode(array('success' => false));
             }
+            Yii::app()->end();
         } else {
             throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));
         }
@@ -184,11 +187,11 @@ class UsersController extends CardscapeController {
                             )->send();
 
             if (!$activation->save() || !$sent) {
-                //TODO: message
+                echo json_encode(array('success' => false));
                 Yii::app()->end();
             }
         }
-        //TODO: echo a success or something
+        echo json_encode(array('success' => true));
     }
 
     /**
@@ -202,7 +205,7 @@ class UsersController extends CardscapeController {
         if (isset($_POST['User'])) {
             $user->attributes = $_POST['User'];
             if ($user->save()) {
-                //TODO: Add proper flash messages.
+                $this->flash('success', Yii::t('cardscape', 'Profile updated.'));
                 $this->redirect(array('profile'));
             }
         }

@@ -6,7 +6,7 @@
 $this->title = Yii::t('cardscape', 'Projects');
 ?>
 
-<div class="span-8">
+<div class="span-9">
     <h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage projects'); ?></h1>
 </div>
 <div class="span-14 prefix-1 last stick-right">
@@ -17,7 +17,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'project-grid',
     'dataProvider' => $filter->search(),
     'filter' => $filter,
-    'template' => '{items} {pager} {summary}',
+    'template' => '{items} {summary} {pager}',
     'cssFile' => false,
     'columns' => array(
         array(
@@ -25,10 +25,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'type' => 'raw',
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("projects/update", array("id" => $data->projectId)))'
         ),
-        //TODO: Add proper icons and templates
-        //array(
-        //    'header' => Yii::t('cardscape', 'Actions'),
-        //    'class' => 'CButtonColumn'
-        //)
+        array(
+            'header' => Yii::t('cardscape', 'Actions'),
+            'class' => 'CButtonColumn',
+            'buttons' => array(
+                'update' => array(
+                    'imageUrl' => $imageBaseUrl . 'pencil.png'
+                ),
+                'delete' => array(
+                    'imageUrl' => $imageBaseUrl . 'minus-circle.png'
+                ),
+                'view' => array('visible' => 'false')
+            )
+        )
     ),
 ));
