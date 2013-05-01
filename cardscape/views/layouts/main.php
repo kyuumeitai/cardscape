@@ -22,6 +22,8 @@ if (count($messages) > 0) {
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/base.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/grids.css">
 
+        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/jquery.jgrowl.min.css">
+
         <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
         <script src="<?php echo $baseUrl; ?>/js/jquery.jgrowl.min.js"></script>
         <script src="<?php echo $baseUrl; ?>/js/cardscape.js"></script>
