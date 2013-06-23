@@ -12,9 +12,7 @@ $this->title = Yii::t('cardscape', 'Suggest new card');
 <div class="span-19 last"><?php echo CHtml::textField('cardname'); ?></div>
 
 <!-- Other attributes -->
-<?php
-foreach ($attributes as $attribute) {
-    ?>
+<?php foreach ($attributes as $attribute) { ?>
     <div class="span-4"><?php echo CHtml::label($attribute->name, 'AttributeValue_' . $attribute->id); ?></div>
     <div class="span-19 last">
         <?php
@@ -26,6 +24,9 @@ foreach ($attributes as $attribute) {
         ?>
     </div>
 <?php } ?>
+
+<div class="span-4"><?php echo CHtml::label(Yii::t('cardscape', 'Description'), 'description'); ?></div>
+<div class="span-19"><?php echo CHtml::textArea('description'); ?></div>
 
 <div class="span-4"><?php echo CHtml::label(Yii::t('cardscape', 'Card image'), 'image'); ?></div>
 <div class="span-19"><?php echo CHtml::fileField('image'); ?></div>
