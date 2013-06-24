@@ -6,7 +6,7 @@
 $this->title = Yii::t('cardscape', 'Create project');
 ?>
 
-<h1 class="fancy"><?php echo Yii::t('cardscape', 'Create new project'); ?></h1>
+<h1><?php echo Yii::t('cardscape', 'Create new project'); ?></h1>
 
 <?php
 echo $this->renderPartial('_form', array('project' => $project));

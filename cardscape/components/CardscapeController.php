@@ -82,11 +82,6 @@ class CardscapeController extends CController {
                     'visible' => (!$user->isGuest && $user->role == 'administrator')
                 ),
                 array(
-                    'label' => Yii::t('cardscape', 'Login/Register'),
-                    'url' => array('site/login'),
-                    'visible' => $user->isGuest
-                ),
-                array(
                     'label' => Yii::t('cardscape', 'Users'),
                     'url' => array('users/index'),
                     'visible' => (!$user->isGuest && $user->role == 'administrator')
@@ -107,6 +102,11 @@ class CardscapeController extends CController {
                 array(
                     'label' => Yii::t('cardscape', 'Contact us'),
                     'url' => array('site/contactus')
+                ),
+                array(
+                    'label' => Yii::t('cardscape', 'Login/Register'),
+                    'url' => array('site/login'),
+                    'visible' => $user->isGuest
                 ),
             )
         );

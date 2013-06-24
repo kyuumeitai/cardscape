@@ -1,21 +1,24 @@
 <?php
 $form = $this->beginWidget('CActiveForm', array('id' => 'project-form'));
 ?>
-<div class="span-4"><?php echo $form->labelEx($project, 'name'); ?></div>
-<div class="span-20 last">
-    <?php echo $form->textField($project, 'name', array('size' => 30, 'maxlength' => 50)); ?>
-</div>
-<div class="clear"></div>
-
-<div class="span-4"><?php echo $form->labelEx($project, 'description'); ?></div>
-<div class="span-20 last">
-    <?php echo $form->textField($project, 'description', array('size' => 30, 'maxlength' => 255)); ?>
-</div>
-<div class="clear"></div>
-
-<div class="span-4"><?php echo $form->labelEx($project, 'expires'); ?></div>
-<div class="span-20 last">
+<div class="row">
     <?php
+    echo $form->labelEx($project, 'name'),
+    $form->textField($project, 'name', array('size' => 30, 'maxlength' => 50));
+    ?>
+</div>
+
+<div class="row">
+    <?php
+    echo $form->labelEx($project, 'description'),
+    $form->textField($project, 'description', array('size' => 30, 'maxlength' => 255));
+    ?>
+</div>
+
+<div class="row">
+    <?php
+    echo $form->labelEx($project, 'expires');
+
     $this->widget('zii.widgets.jui.CJuiDatePicker', array(
         'model' => $project,
         'attribute' => 'expires',
@@ -25,9 +28,8 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'project-form'));
     ));
     ?>
 </div>
-<div class="clear"></div>
 
-<div class="buttonsrow span-24">
+<div class="row">
     <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
     <a href="<?php echo $this->createUrl('projects/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
 </div>

@@ -1,0 +1,242 @@
+@font-face {
+    font-family: GenAI102;
+    src: url("../fonts/GenAI102.TTF");
+}
+
+/*COLOR SCHEME DESIGNER 3: BDD2E5 95A1AC 3D6C95 D2E3F2 DBE7F2*/
+
+/*** MEYER RESET v1.0 ***/
+/*
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-align: justify;
+    color: #000;
+    font-family: "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif;
+    background-color: #95A1AC;
+}
+
+.clear {
+    clear: both;
+}
+
+a {
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 1.9em;
+}
+
+h2 {
+    font-size: 1.7em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+h4 {
+    font-size: 1.3em;
+}
+
+h5 {
+    font-size: 1.2em;
+}
+
+h6 {
+    font-size: 1em;
+}
+
+#header {
+    margin: 0;
+    padding: 0;
+    height: 128px;
+    background-color: #BDD2E5;
+}
+
+#header #session-tools {
+    margin: 0;
+    padding: 0;
+    height: 35px;
+    width: 100%;
+    background: #323232 url("../images/session-tools-bg.png") repeat-x;
+    color: #FFF;
+}
+
+#header #session-tools a, #header #session-tools a:visited, #header #session-tools a:hover {
+    color: #FFF;
+}
+
+.navigation {
+    margin: 0;
+    padding: 0;
+    height: 32px;
+    width: 100%;
+    background-color: #3D6C95;
+    color: #D2E3F2;
+}
+
+.navigation ul {
+    width: 90%;
+    display: block;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.navigation ul li {
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.navigation ul li a {
+    display: block;
+    padding: 0 10px 0 10px;
+    margin: 0 4px 0 4px;
+    text-decoration: none;
+    text-align: center;
+    color: #FFF;
+}
+
+.navigation li.active a {
+    /*color: #F7A849;*/
+}
+
+.navigation ul li a:hover {
+    /*color: #F7A849;*/
+}
+
+#page {
+    padding: 0;
+    /*background-color: #DBE7F2;*/
+    background-color: #FFF;
+    border-top: none;
+    width: 90%;
+    min-height: 60%;
+    margin: 0 auto;
+    padding: 0;
+    box-shadow: 2px 2px 8px 2px #3D6C95;
+}
+
+.content {
+    margin: 0;
+    padding: 0 .2em 0 .2em;
+}
+
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    margin-top: 0;
+    padding: 0;
+}
+
+.footer {
+    margin: 0;
+    padding: 0;
+    color: #BDD2E5;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.footer a, .footer a:visited {
+    color: #BDD2E5;
+}
+
+.footer ul {
+    display: inline-block;
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.footer ul li {
+    display: inline-block;
+    padding: 0px;
+    margin: 0px;
+}
+
+.footer ul li a {
+    display: block;
+    padding: 0 5px 0 5px;
+    margin: 0 4px 0 4px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.footer ul li.active a {
+}
+
+.footer ul li a:hover {
+}
+
+.half-block {
+    float: left;
+    display: inline-block;
+    width: 50%;
+}
+
+/* FORMS */
+form .row label {
+    display: block;
+}
+
+span.required {
+    color: #F00;
+}
+
+form .row {
+
+}
+
+form .row select, input, textarea {
+
+}
+
+/* GRIDS */
+.grid-view table {
+    width: 100%;
+    border: none;
+    margin-bottom: .6em;
+}
+
+.grid-view .summary, .grid-view .pager {
+    display:inline-block
+}
+
+.grid-view .pager {
+    float: right;
+}
+
+.grid-view .filters td {
+    padding: 0;
+    text-align: center;
+}
+.grid-view .filters input, .grid-view .filters select {
+    padding: 0.1em;
+    width: 90%;
+}
+
+.grid-view thead tr:last-child {
+    border-bottom: solid 5px #FFF;
+}
+
+.grid-view thead tr:first-child {
+    border: solid 1px #FFF;
+    background-color: rgba(170, 170, 170, .2);
+}
+
+.button-column {
+    width: 80px;
+    text-align: center;
+}
+
+.grid-header-tools {
+    text-align: right;
+}

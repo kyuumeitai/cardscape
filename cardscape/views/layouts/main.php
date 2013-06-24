@@ -18,54 +18,46 @@ if (count($messages) > 0) {
         <?php $baseUrl = Yii::app()->baseUrl; ?>
 
         <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/bluetrip/screen.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/base.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/grids.css">
-
+        <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl, '/css/cardscape', (YII_DEBUG ? '' : '.min'), '.css'; ?>">
         <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl; ?>/css/jquery.jgrowl.min.css">
 
         <script src="<?php echo $baseUrl; ?>/js/jquery-2.0.0.min.js"></script>
         <script src="<?php echo $baseUrl; ?>/js/jquery.jgrowl.min.js"></script>
-        <script src="<?php echo $baseUrl; ?>/js/cardscape.js"></script>
+        <script src="<?php echo $baseUrl, '/js/cardscape', (YII_DEBUG ? '' : '.min'), '.js'; ?>"></script>
 
         <title><?php echo CHtml::encode($this->title); ?></title>
     </head>
     <body>
-        <div id="page" class="container">
-            <div id="header" class="span-24">
-                <div id="logo">
-                    <?php if (!Yii::app()->user->isGuest) { ?>
-                        <div class="user-options">
-                            <a class="user-profile" href="<?php echo $this->createUrl('users/profile'); ?>">[ <?php echo Yii::app()->user->name; ?> ]</a>
-                            <a class="user-logout" href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
-                        </div>
-                    <?php } ?>
-                    <h1 class="name"><?php echo Yii::app()->name; ?></h1>
-                </div>
-                <nav class="navigation">
-                    <?php $this->widget('zii.widgets.CMenu', $this->menu); ?>
-                </nav>
+        <div id="header">
+            <div id="session-tools">
+                <?php if (!Yii::app()->user->isGuest) { ?>
+                    <a class="user-profile" href="<?php echo $this->createUrl('users/profile'); ?>"><?php echo Yii::app()->user->name; ?></a>
+                    <a class="user-logout" href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
+                <?php } else { ?>
+                    <a class="login-register" href="<?php echo $this->createUrl('site/login'); ?>"><?php echo Yii::t('cardscape', 'Login/Register'); ?></a>
+                <?php } ?>
             </div>
-            <div class="clear"></div>
+            <?php echo CHtml::encode(Yii::app()->name); ?>
+        </div>
+        <nav class="navigation"><?php $this->widget('zii.widgets.CMenu', $this->menu); ?></nav>
+        <div id="page">
+            <!-- DESC: Contains the center page with the main content, it is placed 
+            just below the menu strip. -->
 
-            <div id="content-wrapper">
+            <div class="content">
                 <?php echo $content; ?>
             </div>
-            <div class="clear"></div>
 
-            <footer class="footer span-24">
-                <div class="left">
-                    <?php
-                    echo (defined('CSVersion') ? 'v' . CSVersion : ''),
-                    (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') .
-                            ' ' . Yii::app()->params['copyrightHolder']) : '');
-                    ?>
-                </div>
-                <div class="right navigation">
-                    <?php $this->widget('zii.widgets.CMenu', $this->footerMenu); ?>
-                </div>
-            </footer>
             <div class="clear"></div>
         </div>
+        <footer class="footer">
+            <?php
+            echo (defined('CSVersion') ? 'v' . CSVersion : ''),
+            (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') .
+                    ' ' . Yii::app()->params['copyrightHolder']) : '');
+
+            $this->widget('zii.widgets.CMenu', $this->footerMenu);
+            ?>
+        </footer>
     </body>
 </html>

@@ -6,10 +6,8 @@
 $this->title = Yii::t('cardscape', 'Card attributes');
 ?>
 
-<div class="span-9">
-    <h1 class="fancy"><?php echo Yii::t('cardscape', 'Manage card attributes'); ?></h1>
-</div>
-<div class="span-14 prefix-1 last stick-right">
+<h1><?php echo Yii::t('cardscape', 'Manage card attributes'); ?></h1>
+<div class="grid-header-tools">
     <a class="new-attribute-action" href="<?php echo $this->createUrl('attributes/create'); ?>"><?php echo Yii::t('cardscape', 'Add attribute'); ?></a>
 </div>
 <?php

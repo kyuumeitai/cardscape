@@ -122,6 +122,7 @@ class User extends CActiveRecord {
         $criteria->compare('email', $this->email, true);
         $criteria->compare('role', $this->role);
         $criteria->compare('activationCompleted', $this->activationCompleted);
+        $criteria->compare('active', 1);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

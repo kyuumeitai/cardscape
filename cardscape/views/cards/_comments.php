@@ -1,8 +1,8 @@
 <?php
 Yii::app()->clientScript->registerScriptFile('', CClientScript::POS_END);
 ?>
-<div class="span-23 card-comments last">
-    <h2 class="fancy"><?php echo Yii::t('cardscape', 'User comments'); ?></h2>
+<div class="card-comments">
+    <h2><?php echo Yii::t('cardscape', 'User comments'); ?></h2>
     <?php
     if (count($comments) > 0) {
         foreach ($comments as $comment) {

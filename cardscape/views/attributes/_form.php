@@ -9,8 +9,8 @@
 $baseUrl = Yii::app()->baseUrl;
 echo CHtml::form();
 ?>
-<div class="span-4"><?php echo CHtml::activeLabelEx($attributeI18N, 'string'); ?></div>
-<div class="span-20 last">    
+<div><?php echo CHtml::activeLabelEx($attributeI18N, 'string'); ?></div>
+<div>    
     <?php echo CHtml::activeTextField($attributeI18N, 'string'); ?>
 </div>
 <div class="clear"></div>
