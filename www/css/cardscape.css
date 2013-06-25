@@ -1,14 +1,48 @@
+/** MEYER RESET v1.0 **/
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,
+acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,
+strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td {margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+body{line-height:1}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,
+q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}
+del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+/** CSS REBOOT BASED ON BLUESTRIP SCREEN **/
+strong, th, thead td, h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+cite, em, dfn { font-style: italic; }
+code, kbd, samp, pre, tt, var { font-size: 92%; font-family: monaco, "Lucida Console", courier, monospace; }
+del { text-decoration: line-through; color: #666; }
+small, sup, sub { font-size: 85%; }
+abbr, acronym { text-transform: uppercase; font-size: 85%; letter-spacing: .1em; }
+a abbr, a acronym { border: none; }
+abbr[title], acronym[title], dfn[title] { cursor: help; border-bottom: 1px solid #ccc; }
+sup { vertical-align: super; }
+sub { vertical-align: sub; }
+
+h1 { font-size: 1.6em; margin: 1em 0 .5em; }
+h2 { font-size: 1.5em; margin: 1.07em 0 .535em; }
+h3 { font-size: 1.3em; margin: 1.14em 0 .57em; }
+h4 { font-size: 1.2em; margin: 1.23em 0 .615em; }
+h5 { font-size: 1em; margin: 1.33em 0 .67em; }
+h6 { font-size: .9em; margin: 1.6em 0 .8em; }
+
+a { text-decoration: none; }
+
+.error, .notice, .success {padding:.8em;margin-bottom:1.6em;border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11; background:none; padding:0; margin:0; }
+.notice a {color:#514721; background:none; padding:0; margin:0; }
+.success a {color:#264409; background:none; padding:0; margin:0; }
+
+/** CARDSCAPE CSS **/
+/*COLOR SCHEME DESIGNER 3: BDD2E5 95A1AC 3D6C95 D2E3F2 DBE7F2*/
+
 @font-face {
     font-family: GenAI102;
     src: url("../fonts/GenAI102.TTF");
 }
-
-/*COLOR SCHEME DESIGNER 3: BDD2E5 95A1AC 3D6C95 D2E3F2 DBE7F2*/
-
-/*** MEYER RESET v1.0 ***/
-/*
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
-*/
 
 html, body {
     height: 100%;
@@ -23,34 +57,6 @@ html, body {
 
 .clear {
     clear: both;
-}
-
-a {
-    text-decoration: none;
-}
-
-h1 {
-    font-size: 1.9em;
-}
-
-h2 {
-    font-size: 1.7em;
-}
-
-h3 {
-    font-size: 1.5em;
-}
-
-h4 {
-    font-size: 1.3em;
-}
-
-h5 {
-    font-size: 1.2em;
-}
-
-h6 {
-    font-size: 1em;
 }
 
 #header {
@@ -139,6 +145,8 @@ h6 {
 }
 
 .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    font-family: GenAI102;
+    font-weight: normal;
     margin-top: 0;
     padding: 0;
 }
@@ -147,7 +155,7 @@ h6 {
     margin: 0;
     padding: 0;
     color: #BDD2E5;
-    margin: 0 auto;
+    margin: .7em auto;
     width: 90%;
 }
 
@@ -188,7 +196,15 @@ h6 {
     width: 50%;
 }
 
-/* FORMS */
+/** FORM ELEMENTS **/
+input, select {
+    padding: .3em;
+}
+
+form .row {
+    margin-bottom: .5em;
+}
+
 form .row label {
     display: block;
 }
@@ -197,15 +213,16 @@ span.required {
     color: #F00;
 }
 
-form .row {
-
+form .row select, form .row input, form .row textarea {
+    border: solid 1px #3D6C95;
+    margin-left: .5em;
 }
 
-form .row select, input, textarea {
-
+form .row select:focus, form .row input:focus, form .row textarea:focus {
+    border: solid 1px #BDD2E5;
 }
 
-/* GRIDS */
+/** GRIDVIEWS **/
 .grid-view table {
     width: 100%;
     border: none;
@@ -245,4 +262,12 @@ form .row select, input, textarea {
 
 .grid-header-tools {
     text-align: right;
+}
+
+.grid-view .odd {
+
+}
+
+.grid-view .even {
+    /*background-color: rgba(170, 170, 170, 0.2) */
 }

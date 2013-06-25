@@ -30,8 +30,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => Attribute::model()->getAttributeLabel('identity'),
-            'type' => 'raw',
-            'value' => '$data->attribute->isIdentity() ? "//TODO:" : ""',
+            'type' => 'html',
+            'value' => ('$data->attribute->isIdentity() ? CHtml::image("' . ($imageBaseUrl . 'tick.png') . '") : ""'),
         ),
         array(
             'header' => Attribute::model()->getAttributeLabel('order'),
