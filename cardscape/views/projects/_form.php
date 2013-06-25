@@ -30,8 +30,11 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'project-form'));
 </div>
 
 <div class="row">
-    <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
-    <a href="<?php echo $this->createUrl('projects/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
+    <?php
+    echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('projects/index'));
+    ?>
 </div>
+
 <?php
 $this->endWidget();

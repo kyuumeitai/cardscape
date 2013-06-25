@@ -69,6 +69,12 @@ h6 {
     color: #FFF;
 }
 
+#header .title {
+    font-family: GenAI102;
+    font-size: 3.6em;
+    margin-left: 2.5em;
+}
+
 #header #session-tools a, #header #session-tools a:visited, #header #session-tools a:hover {
     color: #FFF;
 }

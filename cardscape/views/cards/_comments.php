@@ -27,11 +27,18 @@ Yii::app()->clientScript->registerScriptFile('', CClientScript::POS_END);
         ?>
         <div class="empty-comments"><?php echo Yii::t('cardscape', 'Be the first to comment this card.'); ?></div>
     <?php } ?>
+
     <div class="comment-options">
+
         <?php echo CHtml::form($this->createUrl('cards/comment', array('id' => $card->id))); ?>
-        <div class="span-3"><?php echo CHtml::label(Yii::t('cardscape', 'Comment'), 'commentbox'); ?></div>
-        <div class="span-20 last"><?php echo CHtml::textArea('commentbox', null, array('cols' => 50, 'rows' => 3)); ?></div>
-        <div class="buttonsrow span-20 prefix-3 last"><button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Post comment'); ?></button></div>
-            <?php echo CHtml::endForm(); ?>
+        <div class="row">
+            <?php
+            echo CHtml::label(Yii::t('cardscape', 'Comment'), 'commentbox'),
+            CHtml::textArea('commentbox', null, array('cols' => 50, 'rows' => 3));
+            ?>
+        </div>
+        <div class="row"><?php echo CHtml::submitButton(Yii::t('cardscape', 'Post comment')); ?></div>
+        <?php echo CHtml::endForm(); ?>
+
     </div>
 </div>

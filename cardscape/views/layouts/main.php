@@ -1,6 +1,6 @@
 <?php
-// Handling all flash messages that may have been sent to the currently authenticated
-// user
+// Handling all flash messages that may have been sent to the currently 
+// authenticated user
 $messages = Yii::app()->user->getFlashes();
 if (count($messages) > 0) {
     $jsGrowl = '';
@@ -30,32 +30,39 @@ if (count($messages) > 0) {
     <body>
         <div id="header">
             <div id="session-tools">
-                <?php if (!Yii::app()->user->isGuest) { ?>
-                    <a class="user-profile" href="<?php echo $this->createUrl('users/profile'); ?>"><?php echo Yii::app()->user->name; ?></a>
-                    <a class="user-logout" href="<?php echo $this->createUrl('site/logout'); ?>"><?php echo Yii::t('cardscape', 'Logout'); ?></a>
-                <?php } else { ?>
-                    <a class="login-register" href="<?php echo $this->createUrl('site/login'); ?>"><?php echo Yii::t('cardscape', 'Login/Register'); ?></a>
-                <?php } ?>
+                <?php
+                if (!Yii::app()->user->isGuest) {
+                    echo CHtml::link(Yii::app()->user->name, $this->createUrl('users/profile')),
+                    CHtml::link(Yii::t('cardscape', 'Logout'), $this->createUrl('site/logout'));
+                } else {
+                    echo CHtml::link(Yii::t('cardscape', 'Login/Register'), $this->createUrl('site/login'));
+                }
+                ?>
             </div>
-            <?php echo CHtml::encode(Yii::app()->name); ?>
+            <span class="title"><?php echo CHtml::encode(Yii::app()->name); ?></span>
         </div>
+
         <nav class="navigation"><?php $this->widget('zii.widgets.CMenu', $this->menu); ?></nav>
+
         <div id="page">
             <!-- DESC: Contains the center page with the main content, it is placed 
             just below the menu strip. -->
 
             <div class="content">
                 <?php echo $content; ?>
-            </div>
 
-            <div class="clear"></div>
+                <div class="clear"></div>
+            </div>
         </div>
+
         <footer class="footer">
             <?php
-            echo (defined('CSVersion') ? 'v' . CSVersion : ''),
-            (isset(Yii::app()->params['copyrightHolder']) ? (' - &copy;' . date('Y') .
-                    ' ' . Yii::app()->params['copyrightHolder']) : '');
+            $footerInfo = (defined('CSVersion') ? 'v' . CSVersion : '');
+            if (isset(Yii::app()->params['copyrightHolder'])) {
+                $footerInfo .= ' - &copy; ' . date('Y') . ' ' . Yii::app()->params['copyrightHolder'];
+            }
 
+            echo $footerInfo;
             $this->widget('zii.widgets.CMenu', $this->footerMenu);
             ?>
         </footer>

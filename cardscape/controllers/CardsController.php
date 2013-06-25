@@ -50,6 +50,13 @@ class CardsController extends CardscapeController {
         );
     }
 
+    /**
+     * 
+     * @param integer $id
+     * @return Card
+     * 
+     * @throws CHttpException
+     */
     private function loadCardModel($id) {
         if (($card = Card::model()->findByPk((int) $id)) === null) {
             throw new CHttpException(404, Yii::t('cardscape', 'Invalid card. You\'re trying to load a card that does not exist.'));
@@ -65,7 +72,6 @@ class CardsController extends CardscapeController {
             $filter->author = $_GET['CardListFilterForm']['author'];
             $filter->date = $_GET['CardListFilterForm']['date'];
             $filter->status = $_GET['CardListFilterForm']['status'];
-            $filter->name = $_GET['CardListFilterForm']['name'];
         }
         $this->render('index', array('filter' => $filter));
     }
@@ -130,44 +136,33 @@ class CardsController extends CardscapeController {
             }
 
             if ($card->save()) {
-                $cardName = new CardNameI18N();
-                $cardName->isoCode = $language;
-                $cardName->string = $_POST['cardname'];
-                $cardName->cardId = $card->id;
-                if ($cardName->save()) {
-                    $revision = new Revision();
-                    $revision->cardId = $card->id;
-                    $revision->userId = $card->userId;
-                    $revision->date = date('Y-m-d H:i:s');
-                    if ($revision->save()) {
-                        foreach ($_POST['AttributeValue'] as $key => $value) {
-                            $cardAttribute = new CardAttribute();
-                            $cardAttribute->cardId = $card->id;
-                            $cardAttribute->attributeId = (int) $key;
+                $revision = new Revision();
+                $revision->cardId = $card->id;
+                $revision->userId = $card->userId;
+                $revision->date = date('Y-m-d H:i:s');
+                if ($revision->save()) {
+                    foreach ($_POST['AttributeValue'] as $key => $value) {
+                        $cardAttribute = new CardAttribute();
+                        $cardAttribute->cardId = $card->id;
+                        $cardAttribute->attributeId = (int) $key;
 
-                            $revisionAttribute = new RevisionAttribute();
-                            $revisionAttribute->revisionId = $revision->id;
-                            $revisionAttribute->attributeId = (int) $key;
-                            $revisionAttribute->value = $value;
+                        $revisionAttribute = new RevisionAttribute();
+                        $revisionAttribute->revisionId = $revision->id;
+                        $revisionAttribute->attributeId = (int) $key;
+                        $revisionAttribute->value = $value;
 
-                            if (!$cardAttribute->save() || !$revisionAttribute->save()) {
-                                $transaction->rollback();
+                        if (!$cardAttribute->save() || !$revisionAttribute->save()) {
+                            $transaction->rollback();
 
-                                $this->flash('error', Yii::t('cardscape', 'Unable to save card\'s attributes.'));
-                                $allOK = false;
-                                break;
-                            }
+                            $this->flash('error', Yii::t('cardscape', 'Unable to save card\'s attributes.'));
+                            $allOK = false;
+                            break;
                         }
-                    } else {
-                        $transaction->rollback();
-
-                        $this->flash('error', Yii::t('cardscape', 'Could not save the card\'s revision.'));
-                        $allOK = false;
                     }
                 } else {
                     $transaction->rollback();
 
-                    $this->flash('error', Yii::t('cardscape', 'Could not save the card\'s translation.'));
+                    $this->flash('error', Yii::t('cardscape', 'Could not save the card\'s revision.'));
                     $allOK = false;
                 }
             } else {
@@ -194,7 +189,7 @@ class CardsController extends CardscapeController {
 
         $attributes = Attribute::model()->with(array(
                     'translations' => array(
-                        'condition' => "isoCode = '{$language}'"
+                        'condition' => "translations.isoCode = '{$language}'"
                     )
                 ))->findAll('active = 1');
 
@@ -220,7 +215,7 @@ class CardsController extends CardscapeController {
 
             if ($attribute->multivalue) {
                 $option = AttributeOption::model()->with(array(
-                            'translations' => array('condition' => "isoCode = '{$language}'")
+                            'translations' => array('condition' => "translations.isoCode = '{$language}'")
                         ))->find('attributeId = :attribute', array(':attribute' => $attribute->id));
 
                 $translations = $option->translations;
@@ -230,7 +225,6 @@ class CardsController extends CardscapeController {
 
             $cardAttributes[] = (object) $current;
         }
-
         $this->render('details', array(
             'card' => $card,
             'attributes' => $cardAttributes

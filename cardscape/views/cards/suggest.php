@@ -44,8 +44,10 @@ $this->title = Yii::t('cardscape', 'Suggest new card');
 </div>
 
 <div class="row">
-    <button type="submit" name="Suggestion" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
-    <a href="<?php echo $this->createUrl('cards/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
+    <?php
+    echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('cards/index'));
+    ?>
 </div>
 
 <?php

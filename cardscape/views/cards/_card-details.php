@@ -1,5 +1,5 @@
 <?php
-$imageRowSpan = 2 + count($attributes);
+$imageRowSpan = 1 + count($attributes);
 
 $image = (Yii::app()->baseUrl . '/images/default-no-image.png');
 if ($card->image) {
@@ -12,8 +12,6 @@ if ($card->image) {
         <tr>
             <td rowspan="<?php echo $imageRowSpan; ?>"><img src="<?php echo $image; ?>" /></td>
             <td rowspan="<?php echo $imageRowSpan; ?>" class="spacer-column"></td>
-            <td><?php echo Yii::t('cardscape', 'Name'); ?></td>
-            <td></td>
         </tr>
 
         <?php foreach ($attributes as $attribute) { ?>
@@ -22,10 +20,5 @@ if ($card->image) {
                 <td><?php echo $attribute->value; ?></td>
             </tr>
         <?php } ?>
-
-        <tr>
-            <td><?php echo Yii::t('cardscape', 'Description'); ?></td>
-            <td></td>
-        </tr>
     </tbody>
 </table>

@@ -32,6 +32,9 @@
  * @property integer $id The attribute's database ID
  * @property integer $multivalue Flag that identifies this attribute as having multiple values
  * @property integer $active Flag that marks this attribute as deleted
+ * @property integer $searchable Flag that marks this attribute as one that can be used on grid filters
+  @property integer $identity If true (1), this attribute identifies the card
+ * @property integer $order Sorting order for the attribute
  *
  * The followings are the available model relations:
  * @property AttributeI18N[] $translations An array of attribute i18n records with the translations for this attribute
@@ -63,7 +66,7 @@ class Attribute extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('multivalue', 'numerical', 'integerOnly' => true)
+            array('multivalue, searchable, identity, order', 'numerical', 'integerOnly' => true)
         );
     }
 

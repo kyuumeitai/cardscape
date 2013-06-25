@@ -43,8 +43,10 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'user-form'));
 <?php } ?>
 
 <div class="row">
-    <button type="submit" class="button positive"><?php echo Yii::t('cardscape', 'Save'); ?></button>
-    <a href="<?php echo $this->createUrl('users/index'); ?>"><?php echo Yii::t('cardscape', 'Cancel'); ?></a>
+    <?php
+    echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('users/index'));
+    ?>
 </div>
 
 <?php

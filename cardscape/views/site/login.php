@@ -14,6 +14,7 @@ $this->title = Yii::t('cardscape', 'Login/Register');
         'enableAjaxValidation' => false
     ));
     ?>
+
     <div class="row">
         <?php
         echo $loginForm->labelEx($login, 'emailOrUsername'),
@@ -28,9 +29,8 @@ $this->title = Yii::t('cardscape', 'Login/Register');
         ?>
     </div>
 
-    <div class="row">
-        <button type="submit" class="button"><?php echo Yii::t('cardscape', 'Login'); ?></button>
-    </div>
+    <div class="row"><?php echo CHtml::submitButton(Yii::t('cardscape', 'Login')); ?></div>
+
     <?php $this->endWidget(); ?>
 </div>
 
@@ -74,9 +74,7 @@ $this->title = Yii::t('cardscape', 'Login/Register');
         ?>
     </div>
 
-    <div class="row">
-        <button type="submit" class="button"><?php echo Yii::t('cardscape', 'Register'); ?></button>
-    </div>
+    <div class="row"><?php echo CHtml::submitButton(Yii::t('cardscape', 'Register')); ?></div>
 
     <?php $this->endWidget(); ?>
 </div>

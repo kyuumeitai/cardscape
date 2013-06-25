@@ -9,8 +9,9 @@ $this->title = Yii::t('cardscape', 'Users');
 <h1><?php echo Yii::t('cardscape', 'Manage users'); ?></h1>
 
 <div class="grid-header-tools">
-    <a class="new-user-action" href="<?php echo $this->createUrl('users/create'); ?>"><?php echo Yii::t('cardscape', 'Add user'); ?></a>
+    <?php echo CHtml::link(Yii::t('cardscape', 'Add user'), $this->createUrl('users/create')); ?>
 </div>
+
 <?php
 $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
 

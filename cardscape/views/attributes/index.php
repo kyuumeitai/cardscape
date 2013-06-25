@@ -7,9 +7,11 @@ $this->title = Yii::t('cardscape', 'Card attributes');
 ?>
 
 <h1><?php echo Yii::t('cardscape', 'Manage card attributes'); ?></h1>
+
 <div class="grid-header-tools">
-    <a class="new-attribute-action" href="<?php echo $this->createUrl('attributes/create'); ?>"><?php echo Yii::t('cardscape', 'Add attribute'); ?></a>
+    <?php echo CHtml::link(Yii::t('cardscape', 'Add attribute'), $this->createUrl('attributes/create')); ?>
 </div>
+
 <?php
 $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
 

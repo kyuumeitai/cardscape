@@ -41,3 +41,66 @@ $((function(cardscape, $, undefined) {
         }
     });
 })(window.cardscape = window.cardscape || {}, jQuery));
+
+/**
+ * Attributes form object
+ * @param {type} $
+ * @param {type} undefined
+ */
+$((function($, undefined) {
+    var multiLinesCount = 0;
+
+    /**
+     * Removes the option line where the user clicked, it will be used in click 
+     * events for the remove icon when the attribute is a multi-line attribute.
+     * 
+     * @param {object} event
+     */
+    function removeLine(event) {
+        $('.multivalue-line-' + $(this).data('line')).fadeOut(function() {
+            $(this).remove();
+        });
+        multiLinesCount -= 1;
+    }
+    /**
+     * Adds event handlers and detects initial variable values like the amount 
+     * of existing multi-value lines.
+     */
+    function init() {
+        $('.add-multiline').click(function(event) {
+            //cloning the first line that should always exist, updating clone's details
+            var $lineClone = $('.multivalue-line-hidden').clone();
+            $lineClone.removeClass('multivalue-line-hidden')
+                    .removeClass('hidden')
+                    .addClass('multivalue-line-' + multiLinesCount);
+
+            //getting child elements that need updating
+            $lineClone.find('label.option')
+                    .removeClass('option')
+                    .attr('for', 'AttributeOption_key_' + multiLinesCount);
+            $lineClone.find('input#templateOption')
+                    .attr('id', 'AttributeOption_key_' + multiLinesCount)
+                    .attr('name', 'AttributeOption[key][' + multiLinesCount + ']');
+
+            $lineClone.find('label.translation')
+                    .removeClass('translation')
+                    .attr('for', 'AttributeOptionI18N_string_' + multiLinesCount);
+            $lineClone.find('input#templateTranslation')
+                    .attr('id', 'AttributeOptionI18N_string_' + multiLinesCount)
+                    .attr('name', 'AttributeOptionI18N[string][' + multiLinesCount + ']');
+
+            $lineClone.find('img')
+                    .data('line', multiLinesCount)
+                    .click(removeLine);
+
+            $lineClone.hide().appendTo($('.multivalue-lines')).fadeIn();
+            multiLinesCount += 1;
+        });
+
+        multiLinesCount = parseInt($('.multiline-count').text(), 10);
+        $('.rm-multiline').click(removeLine);
+    }
+
+    //auto-load/execution
+    init();
+})(jQuery));

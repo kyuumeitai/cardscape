@@ -15,7 +15,7 @@ class CardListFilterForm extends CFormModel {
 
     public function attributeLabels() {
         return array(
-            'name' => Yii::t('cardscape', 'Name'),
+            //'name' => Yii::t('cardscape', 'Name'),
             'revision' => Yii::t('cardscape', 'Revision'),
             'status' => Yii::t('cardscape', 'Status'),
             'author' => Yii::t('cardscape', 'Author'),
@@ -31,13 +31,9 @@ class CardListFilterForm extends CFormModel {
         $criteria->compare('revisions.date', $this->date, true);
         $criteria->compare('status', $this->status);
 
-        $language = Yii::app()->language;
         $cards = Card::model()->with(array(
                     'revisions',
-                    'user',
-                    'names' => array(
-                        'condition' => "isoCode = '{$language}'"
-                    )
+                    'user'
                 ))->findAll($criteria);
 
         $filtered = array();
@@ -54,10 +50,6 @@ class CardListFilterForm extends CFormModel {
             $filter->date = strtotime($revision->date);
             $filter->revision = $revision->number;
             $filter->revisionId = $revision->id;
-
-            $names = $card->names;
-            $name = reset($names);
-            $filter->name = $name->string;
 
             $filtered[] = $filter;
         }

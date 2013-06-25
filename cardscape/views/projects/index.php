@@ -7,9 +7,11 @@ $this->title = Yii::t('cardscape', 'Projects');
 ?>
 
 <h1><?php echo Yii::t('cardscape', 'Manage projects'); ?></h1>
+
 <div class="grid-header-tools">
-    <a class="new-project-action" href="<?php echo $this->createUrl('projects/create'); ?>"><?php echo Yii::t('cardscape', 'Add project'); ?></a>
+    <?php echo CHtml::link(Yii::t('cardscape', 'Add project'), $this->createUrl('projects/create')); ?>
 </div>
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
     'id' => 'project-grid',
