@@ -10,10 +10,31 @@ $baseUrl = Yii::app()->baseUrl;
 echo CHtml::form();
 ?>
 
-<div>
+<div class="row">
     <?php
     echo CHtml::activeLabelEx($attributeI18N, 'string'),
     CHtml::activeTextField($attributeI18N, 'string');
+    ?>
+</div>
+
+<div class="row">
+    <?php
+    echo CHtml::activeLabelEx($attribute, 'identity'),
+    CHtml::activeCheckBox($attribute, 'identity');
+    ?>
+</div>
+
+<div class="row">
+    <?php
+    echo CHtml::activeLabelEx($attribute, 'searchable'),
+    CHtml::activeCheckBox($attribute, 'searchable');
+    ?>
+</div>
+
+<div class="row">
+    <?php
+    echo CHtml::activeLabelEx($attribute, 'order'),
+    CHtml::activeTextField($attribute, 'order');
     ?>
 </div>
 

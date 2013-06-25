@@ -20,12 +20,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'template' => '{items} {summary} {pager}',
     'cssFile' => false,
     'columns' => array(
-        //array(
-        //    'header' => CHtml::encode($filter->getAttributeLabel('name')),
-        //    'name' => 'name',
-        //    'type' => 'raw',
-        //    'value' => 'CHtml::link($data->name, Yii::app()->createUrl("cards/details", array("id" => $data->id)))'
-        //),
+        array(
+            'header' => CHtml::encode($filter->getAttributeLabel('name')),
+            'name' => 'name',
+            'type' => 'raw',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("cards/details", array("id" => $data->id)))'
+        ),
         array(
             'header' => CHtml::encode($filter->getAttributeLabel('revision')),
             'name' => 'revision',

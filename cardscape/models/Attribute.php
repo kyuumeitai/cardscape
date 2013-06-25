@@ -92,8 +92,15 @@ class Attribute extends CActiveRecord {
         return array(
             'id' => Yii::t('cardscape', 'ID'),
             'multivalue' => Yii::t('cardscape', 'Multi-value'),
-            'useCount' => Yii::t('cardscape', 'Cards')
+            'useCount' => Yii::t('cardscape', 'Cards'),
+            'identity' => Yii::t('cardscape', 'Identity'),
+            'order' => Yii::t('cardscape', 'Order'),
+            'searchable' => Yii::t('cardscape', 'Searchable')
         );
+    }
+
+    public function isIdentity() {
+        return $this->identity != 0;
     }
 
 }

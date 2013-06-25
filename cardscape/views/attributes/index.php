@@ -29,6 +29,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'value' => 'CHtml::link($data->string, Yii::app()->createUrl("attributes/update", array("id" => $data->attributeId)))'
         ),
         array(
+            'header' => Attribute::model()->getAttributeLabel('identity'),
+            'type' => 'raw',
+            'value' => '$data->attribute->isIdentity() ? "//TODO:" : ""',
+        ),
+        array(
+            'header' => Attribute::model()->getAttributeLabel('order'),
+            'type' => 'raw',
+            'value' => '$data->attribute->order',
+        ),
+        array(
             'header' => Yii::t('cardscape', 'Actions'),
             'class' => 'CButtonColumn',
             'buttons' => array(
