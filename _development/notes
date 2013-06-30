@@ -1,16 +1,17 @@
 - translator user group support
-- create a card based on another card (use the ancestor) to derivate a card (on card details)
 - card attribute templates so same platform can be used for more than one game
 
 
 ACTIONS:
 Comments: Delete, Edit, Date (balloon minus/pencil, calendar)
-Cards: Search, Details, Suggestion, Change, Delete, Revisions (binocular, 
-Revison: Delete
-Users: Profile, Details, Logout, Delete, Update, Create (.., .., lock arrow
-General: Save, Cancel
+Cards: Search
+Users: Details
 
 OTHER:
 
 Refactor cards/update, cards/suggestion and cards/newbased that have the same save 
 code and most of the same UI.
+
+Add return url whenever we have an exception, probably using a flash message
+
+Remove the role editing from the profile when the user is updating his profile

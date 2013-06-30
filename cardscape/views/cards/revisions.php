@@ -25,12 +25,17 @@ $this->title = Yii::t('cardscape', 'Card Revisions');
             <?php } ?>
         </tbody>
     </table>
+
     <div class="revision-author">
         <?php
         echo Yii::t('cardscape', 'Revision at {date} by {author}.', array(
             '{date}' => $revision->date,
             '{author}' => CHtml::link($revision->author, $this->createUrl('users/details', array('id' => $revision->authorId)))
         ));
+
+        if (!Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator') {
+            echo CHtml::link(Yii::t('cardscape', 'Delete this revision'), $this->createUrl('cards/deleterevision', array('id' => $revision->id)));
+        }
         ?>
     </div>
     <?php

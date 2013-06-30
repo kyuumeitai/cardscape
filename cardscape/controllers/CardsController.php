@@ -41,7 +41,7 @@ class CardsController extends CardscapeController {
             ),
             array(
                 'allow',
-                'actions' => array('delete'),
+                'actions' => array('delete', 'deleterevision'),
                 'expression' => '(!Yii::app()->user->isGuest && $user->role == "administrator")'
             ),
             array(
@@ -63,6 +63,21 @@ class CardsController extends CardscapeController {
         }
 
         return $card;
+    }
+
+    /**
+     * 
+     * @param integer $id
+     * @return Revision
+     * 
+     * @throws CHttpException
+     */
+    private function loadRevisionModel($id) {
+        if (($revision = Revision::model()->findByPk((int) $id)) === null) {
+            throw new CHttpException(404, Yii::t('cardscape', 'Invalid revision. You\'re trying to load a revision that does not exist.'));
+        }
+
+        return $revision;
     }
 
     public function actionIndex() {
@@ -426,6 +441,7 @@ class CardsController extends CardscapeController {
             }
 
             $revisions[] = (object) array(
+                        'id' => $revision->id,
                         'number' => $revision->number,
                         'date' => $revision->date,
                         'author' => $revision->user->username,
@@ -595,6 +611,22 @@ class CardsController extends CardscapeController {
             'card' => $card,
             'attributes' => $cardAttributes
         ));
+    }
+
+    public function actionDeleteRevision($id) {
+        $revision = $this->loadRevisionModel($id);
+        $card = $revision->card;
+
+        if (count($card->revisions) == 1) {
+            throw new CHttpException(400, 'This is the only revision in for the owner card, you cannot delete this revision.');
+        }
+
+        $revision->active = 0;
+        if (!$revision->save()) {
+            //TODO: show error flash message
+        }
+
+        $this->redirect(array('revisions', 'id' => $card->id));
     }
 
     public function actionDelete($id) {
