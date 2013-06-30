@@ -78,6 +78,7 @@ class Card extends CActiveRecord {
      */
     public function relations() {
         return array(
+            //TODO: add loading conditions to the various relations
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
             'cardAttributes' => array(self::MANY_MANY, 'Attribute', 'CardAttribute(cardId, attributeId)', 'order' => 'cardAttributes.order ASC'),
             'users' => array(self::MANY_MANY, 'User', 'CardUser(cardId, userId)'),

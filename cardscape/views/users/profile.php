@@ -1,4 +1,4 @@
-s<?php
+<?php
 /**
  * @var UsersController $this
  * @var User $user

@@ -13,7 +13,7 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'user-form'));
 
 <div class="row"><?php
     echo $form->labelEx($user, 'email'),
-    $form->textField($user, 'email', array('size' => 25, 'maxlength' => 255));
+    $form->textField($user, 'email', array('size' => 50, 'maxlength' => 255));
     ?>
 </div>
 
@@ -42,10 +42,10 @@ $form = $this->beginWidget('CActiveForm', array('id' => 'user-form'));
     </div>
 <?php } ?>
 
-<div class="row">
+<div class="row last">
     <?php
     echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
-    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('users/index'));
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('users/index'), array('class' => 'cancel'));
     ?>
 </div>
 

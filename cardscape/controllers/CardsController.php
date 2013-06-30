@@ -36,7 +36,7 @@ class CardsController extends CardscapeController {
             ),
             array(
                 'allow',
-                'actions' => array('suggest', 'comment', 'revisions', 'update'),
+                'actions' => array('suggest', 'comment', 'revisions', 'update', 'newbased'),
                 'users' => array('@')
             ),
             array(
@@ -69,6 +69,7 @@ class CardsController extends CardscapeController {
 
         $filter = new CardListFilterForm();
         if (isset($_GET['CardListFilterForm'])) {
+            $filter->name = $_GET['CardListFilterForm']['name'];
             $filter->author = $_GET['CardListFilterForm']['author'];
             $filter->date = $_GET['CardListFilterForm']['date'];
             $filter->status = $_GET['CardListFilterForm']['status'];
@@ -80,7 +81,10 @@ class CardsController extends CardscapeController {
         $language = Yii::app()->language;
 
         $attributes = Attribute::model()->with(array(
-                    'translations' => array('condition' => "isoCode = '{$language}'")
+                    'translations' => array(
+                        'condition' => "translations.isoCode = '{$language}'",
+                        'order' => '`t`.`order` ASC'
+                    )
                 ))->findAll('active = 1');
 
         $cardAttributes = array();
@@ -90,7 +94,8 @@ class CardsController extends CardscapeController {
             $current = array(
                 'id' => $attribute->id,
                 'name' => $translation->string,
-                'multivalue' => $attribute->multivalue
+                'multivalue' => $attribute->multivalue,
+                'large' => $attribute->large
             );
 
             if ($attribute->multivalue) {
@@ -187,11 +192,15 @@ class CardsController extends CardscapeController {
         $card = $this->loadCardModel($id);
         $language = Yii::app()->language;
 
+        $criteria = new CDbCriteria();
+        $criteria->order = '`t`.`order` ASC';
+        $criteria->compare('active', 1);
+
         $attributes = Attribute::model()->with(array(
                     'translations' => array(
                         'condition' => "translations.isoCode = '{$language}'"
                     )
-                ))->findAll('active = 1');
+                ))->findAll($criteria);
 
         $revisions = $card->revisions;
         $revision = reset($revisions);
@@ -249,22 +258,120 @@ class CardsController extends CardscapeController {
         $this->redirect(array('details', 'id' => $id));
     }
 
+    public function actionUpdate($id) {
+        /* $card = $this->loadCardModel($id);
+          $language = Yii::app()->language;
+
+          $attributes = Attribute::model()->with(array(
+          'translations' => array(
+          'condition' => "translations.isoCode = '{$language}'"
+          )
+          ))->findAll('active = 1');
+
+          $revisions = $card->revisions;
+          $revision = reset($revisions);
+
+          $cardAttributes = array();
+          foreach ($attributes as $attribute) {
+          $translations = $attribute->translations;
+          $translation = reset($translations);
+
+          $current = array(
+          'id' => $attribute->id,
+          'name' => $translation->string,
+          );
+
+          foreach ($revision->values as $value) {
+          if ($value->attributeId == $attribute->id) {
+          $current['value'] = $value->value;
+          break;
+          }
+          }
+
+          if ($attribute->multivalue) {
+          $option = AttributeOption::model()->with(array(
+          'translations' => array('condition' => "translations.isoCode = '{$language}'")
+          ))->find('attributeId = :attribute', array(':attribute' => $attribute->id));
+
+          $translations = $option->translations;
+          $translation = reset($translations);
+          $current['value'] = $translation->string;
+          }
+
+          $cardAttributes[] = (object) $current;
+          }
+          $this->render('details', array(
+          'card' => $card,
+          'attributes' => $cardAttributes
+          )); */
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
+    public function actionNewBased($id) {
+        throw new CHttpException(501, 'Not implemented yet.');
+    }
+
     public function actionDelete($id) {
         $comment = $this->loadCardModel($id);
 
         throw new CHttpException(501, 'Not implemented yet.');
     }
 
-    public function actionSearch() {
-        throw new CHttpException(501, 'Not implemented yet.');
-    }
-
     public function actionRevisions($id) {
-        throw new CHttpException(501, 'Not implemented yet.');
-    }
+        $card = $this->loadCardModel($id);
+        $language = Yii::app()->language;
+        $revisions = array();
+        $firstRevisionId = null;
 
-    public function actionUpdate($id) {
-        throw new CHttpException(501, 'Not implemented yet.');
+        foreach ($card->revisions as $revision) {
+            if (!$firstRevisionId) {
+                $firstRevisionId = $revision->id;
+            }
+            $attributes = array();
+            foreach ($revision->attributes as $attribute) {
+                $relation = RevisionAttribute::model()->find('revisionId = :rev AND attributeId = :attr', array(
+                    ':rev' => $revision->id,
+                    ':attr' => $attribute->id
+                ));
+
+                if ($relation != null) {
+                    $translations = $attribute->translations(array('condition' => "translations.isoCode = '{$language}'"));
+                    $translation = reset($translations);
+
+                    $attributes[] = (object) array(
+                                'name' => $translation->string,
+                                'value' => $relation->value
+                    );
+                }
+            }
+
+            $revisions[] = (object) array(
+                        'number' => $revision->number,
+                        'date' => $revision->date,
+                        'author' => $revision->user->username,
+                        'authorId' => $revision->userId,
+                        'attributes' => $attributes
+            );
+        }
+
+        // get the current card's name
+        $names = $card->cardAttributes(array('condition' => 'cardAttributes.identity = 1'));
+        if (count($names)) {
+            $nameAttribute = reset($names);
+            $nameValue = RevisionAttribute::model()->find('revisionId = :rev AND attributeId = :attr', array(
+                ':rev' => $firstRevisionId,
+                ':attr' => $nameAttribute->id));
+            
+            if ($nameValue) {
+                $name = $nameValue->value;
+            }
+        }
+
+        $this->render('revisions', array(
+            'card' => $card,
+            'cardName' => $name,
+            'revisions' => $revisions
+        ));
     }
 
 }

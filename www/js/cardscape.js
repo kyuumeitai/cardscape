@@ -18,9 +18,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * 
+ * @param {Object} cardscape
+ * @param {Object} $
+ * @param {undefined} undefined
+ */
 $((function(cardscape, $, undefined) {
 
     $.extend(cardscape, {
+        attributes: {},
         resetUserActivation: function() {
             if (!confirm("Are you sure you want to reset this user's password?")) {
                 return false;
@@ -44,63 +52,68 @@ $((function(cardscape, $, undefined) {
 
 /**
  * Attributes form object
- * @param {type} $
- * @param {type} undefined
+ * @param {Object} cardscape
+ * @param {Object} $
+ * @param {undefined} undefined
  */
-$((function($, undefined) {
+$((function(cardscape, $, undefined) {
     var multiLinesCount = 0;
 
-    /**
-     * Removes the option line where the user clicked, it will be used in click 
-     * events for the remove icon when the attribute is a multi-line attribute.
-     * 
-     * @param {object} event
-     */
-    function removeLine(event) {
-        $('.multivalue-line-' + $(this).data('line')).fadeOut(function() {
-            $(this).remove();
-        });
-        multiLinesCount -= 1;
-    }
-    /**
-     * Adds event handlers and detects initial variable values like the amount 
-     * of existing multi-value lines.
-     */
-    function init() {
-        $('.add-multiline').click(function(event) {
-            //cloning the first line that should always exist, updating clone's details
-            var $lineClone = $('.multivalue-line-hidden').clone();
-            $lineClone.removeClass('multivalue-line-hidden')
-                    .removeClass('hidden')
-                    .addClass('multivalue-line-' + multiLinesCount);
-
-            //getting child elements that need updating
-            $lineClone.find('label.option')
-                    .removeClass('option')
-                    .attr('for', 'AttributeOption_key_' + multiLinesCount);
-            $lineClone.find('input#templateOption')
-                    .attr('id', 'AttributeOption_key_' + multiLinesCount)
-                    .attr('name', 'AttributeOption[key][' + multiLinesCount + ']');
-
-            $lineClone.find('label.translation')
-                    .removeClass('translation')
-                    .attr('for', 'AttributeOptionI18N_string_' + multiLinesCount);
-            $lineClone.find('input#templateTranslation')
-                    .attr('id', 'AttributeOptionI18N_string_' + multiLinesCount)
-                    .attr('name', 'AttributeOptionI18N[string][' + multiLinesCount + ']');
-
-            $lineClone.find('img')
-                    .data('line', multiLinesCount)
-                    .click(removeLine);
-
-            $lineClone.hide().appendTo($('.multivalue-lines')).fadeIn();
-            multiLinesCount += 1;
-        });
-
-        multiLinesCount = parseInt($('.multiline-count').text(), 10);
-        $('.rm-multiline').click(removeLine);
+    if (!cardscape.attributes) {
+        cardscape.attributes = {};
     }
 
-    //auto-load/execution
-    init();
-})(jQuery));
+    $.extend(cardscape.attributes, {
+        /**
+         * Removes the option line where the user clicked, it will be used in click 
+         * events for the remove icon when the attribute is a multi-line attribute.
+         * 
+         * @param {object} event
+         */
+        removeLine: function(event) {
+            $('.multivalue-line-' + $(this).data('line')).fadeOut(function() {
+                $(this).remove();
+            });
+            multiLinesCount -= 1;
+        },
+        /**
+         * Adds event handlers and detects initial variable values like the amount 
+         * of existing multi-value lines.
+         */
+        init: function() {
+            $('.add-multiline').click(function(event) {
+                //cloning the first line that should always exist, updating clone's details
+                var $lineClone = $('.multivalue-line-hidden').clone();
+                $lineClone.removeClass('multivalue-line-hidden')
+                        .removeClass('hidden')
+                        .addClass('multivalue-line-' + multiLinesCount);
+
+                //getting child elements that need updating
+                $lineClone.find('label.option')
+                        .removeClass('option')
+                        .attr('for', 'AttributeOption_key_' + multiLinesCount);
+                $lineClone.find('input#templateOption')
+                        .attr('id', 'AttributeOption_key_' + multiLinesCount)
+                        .attr('name', 'AttributeOption[key][' + multiLinesCount + ']');
+
+                $lineClone.find('label.translation')
+                        .removeClass('translation')
+                        .attr('for', 'AttributeOptionI18N_string_' + multiLinesCount);
+                $lineClone.find('input#templateTranslation')
+                        .attr('id', 'AttributeOptionI18N_string_' + multiLinesCount)
+                        .attr('name', 'AttributeOptionI18N[string][' + multiLinesCount + ']');
+
+                $lineClone.find('img')
+                        .data('line', multiLinesCount)
+                        .click(cardscape.attributes.removeLine);
+
+                $lineClone.hide().appendTo($('.multivalue-lines')).fadeIn();
+                multiLinesCount += 1;
+                return false;
+            });
+
+            //multiLinesCount = parseInt($('.multiline-count').text(), 10);
+            //$('.rm-multiline').click(cardscape.attributes.removeLine);
+        }
+    });
+})(window.cardscape = window.cardscape || {}, jQuery));

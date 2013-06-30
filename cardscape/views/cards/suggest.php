@@ -16,8 +16,10 @@ foreach ($attributes as $attribute) {
         echo CHtml::label($attribute->name, 'AttributeValue_' . $attribute->id);
         if ($attribute->multivalue) {
             echo CHtml::dropDownList('AttributeValue[' . $attribute->id . ']', null, $attribute->options);
+        } else if ($attribute->large) {
+            echo CHtml::textArea('AttributeValue[' . $attribute->id . ']', null, array('cols' => 80, 'rows' => 3));
         } else {
-            echo CHtml::textField('AttributeValue[' . $attribute->id . ']');
+            echo CHtml::textField('AttributeValue[' . $attribute->id . ']', null, array('size' => 50));
         }
         ?>
     </div>
@@ -30,10 +32,10 @@ foreach ($attributes as $attribute) {
     ?>
 </div>
 
-<div class="row">
+<div class="row last">
     <?php
     echo CHtml::submitButton(Yii::t('cardscape', 'Save')),
-    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('cards/index'));
+    CHtml::link(Yii::t('cardscape', 'Cancel'), $this->createUrl('cards/index'), array('class' => 'cancel'));
     ?>
 </div>
 

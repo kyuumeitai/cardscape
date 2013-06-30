@@ -5,10 +5,7 @@ $this->title = Yii::t('cardscape', 'Cards');
 
 <h1><?php echo Yii::t('cardscape', 'Browse cards list'); ?></h1>
 <div class="grid-header-tools">
-    <?php
-    echo CHtml::link(Yii::t('cardscape', 'Suggest a card'), $this->createUrl('cards/suggest')),
-    CHtml::link(Yii::t('cardscape', 'Advanced search'), $this->createUrl('cards/search'));
-    ?>
+    <?php echo CHtml::link(Yii::t('cardscape', 'Suggest a card'), $this->createUrl('cards/suggest')); ?>
 </div>
 <?php
 $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
@@ -61,7 +58,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 ),
                 'update' => array(
                     'imageUrl' => $imageBaseUrl . 'pencil.png',
-                    'label' => Yii::t('cardscape', 'Change card')
+                    'label' => Yii::t('cardscape', 'Change card'),
+                    //'visible' => '(!Yii::app()->user->isGuest && Yii::app()->user->role == "administrator")'
                 ),
                 'delete' => array(
                     'imageUrl' => $imageBaseUrl . 'minus-circle.png',

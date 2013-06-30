@@ -50,9 +50,9 @@ if (count($messages) > 0) {
 
             <div class="content">
                 <?php echo $content; ?>
-
+                
                 <div class="clear"></div>
-            </div>
+            </div>           
         </div>
 
         <footer class="footer">

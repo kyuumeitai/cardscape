@@ -1,0 +1,1 @@
+ALTER TABLE `Attribute` ADD `large` TINYINT NOT NULL DEFAULT 0 ;

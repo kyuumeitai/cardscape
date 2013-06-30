@@ -73,6 +73,8 @@ html, body {
     width: 100%;
     background: #323232 url("../images/session-tools-bg.png") repeat-x;
     color: #FFF;
+    text-align: right;
+    line-height: 35px;
 }
 
 #header .title {
@@ -137,18 +139,20 @@ html, body {
     margin: 0 auto;
     padding: 0;
     box-shadow: 2px 2px 8px 2px #3D6C95;
+    /*overflow: auto;*/
 }
 
 .content {
     margin: 0;
-    padding: 0 .2em 0 .2em;
+    padding: 0;
+    /* HACK margin collapse issue */
+    display: inline-block;
+    width: 100%;
 }
 
 .content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
     font-family: GenAI102;
     font-weight: normal;
-    margin-top: 0;
-    padding: 0;
 }
 
 .footer {
@@ -190,11 +194,17 @@ html, body {
 .footer ul li a:hover {
 }
 
+/** MISC **/
 .half-block {
     float: left;
     display: inline-block;
     width: 50%;
 }
+
+.grid-header-tools a {
+    margin-right: .5em;
+}
+
 
 /** FORM ELEMENTS **/
 input, select {
@@ -205,21 +215,46 @@ form .row {
     margin-bottom: .5em;
 }
 
-form .row label {
-    display: block;
+.row label {
+    display: inline-block;
+    width: 100px;
 }
 
 span.required {
     color: #F00;
 }
 
-form .row select, form .row input, form .row textarea {
+.row a.cancel, .row a.cancel:hover, .row a.cancel:visited, .row a.cancel:active {
+    color: #AA0F10
+}
+
+.row select, .row input, .row textarea {
     border: solid 1px #3D6C95;
     margin-left: .5em;
 }
 
-form .row select:focus, form .row input:focus, form .row textarea:focus {
+.row select:focus, .row input:focus, .row textarea:focus {
     border: solid 1px #BDD2E5;
+}
+
+.row input[type="submit"] {
+    padding: 5px 10px 5px 10px;
+    border: 1px solid #DEDEDE;
+    background-color: #F5F5F5;
+    text-decoration: none;
+    color: #565656;
+    cursor: pointer;
+    margin-right: 1.3em;
+}
+
+.row input[type="submit"]:hover {
+    background-color: #E6EFC2;
+    border: 1px solid #C6D880;
+    color: #529214;
+}
+
+.row.last {
+    margin-top: 2em;
 }
 
 /** GRIDVIEWS **/
@@ -251,8 +286,8 @@ form .row select:focus, form .row input:focus, form .row textarea:focus {
 }
 
 .grid-view thead tr:first-child {
-    border: solid 1px #FFF;
-    background-color: rgba(170, 170, 170, .2);
+    /*border: solid 1px #FFF;*/
+    /*background-color: rgba(170, 170, 170, .2);*/
 }
 
 .button-column {
@@ -270,4 +305,43 @@ form .row select:focus, form .row input:focus, form .row textarea:focus {
 
 .grid-view .even {
     /*background-color: rgba(170, 170, 170, 0.2) */
+}
+
+/** ATTRIBUTES FORM **/
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+/** CARDS FORMS AND LISTINGS **/
+.card-data {
+    width: 100%;
+}
+
+.card-image {
+    display: inline-block;
+    float: left;
+    width: 329px;
+    text-align: center;
+}
+
+.card-image img {
+    max-width: 309px;
+}
+
+.card-detais .card-data {
+    display: inline-block;
+    float: left;
+    width: 50%;
+    margin-left: .3em;
+}
+
+.card-detais .card-data tr td:first-child {
+    width: 200px;
+}
+
+.revision-author {
+    text-align: right;
+    width: 100%;
+    margin-top: .5em;
 }

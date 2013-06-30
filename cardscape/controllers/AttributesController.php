@@ -23,9 +23,9 @@
 
 /**
  * A card's attributes will require the use of a minimum of 2 entities but can also
- * require 4 different entities. The first entity will be the <em>Attribute</em> 
- * that keeps track on only the control data, the next entity that is visible to 
- * users is the <em>AttributeI18N</em> that will store the name of the attribute for 
+ * require as much as 4. The first entity will be the <em>Attribute</em> that 
+ * keeps track on only the control data, the next entity that is visible to users 
+ * is the <em>AttributeI18N</em> that will store the name of the attribute for 
  * a given language.
  * 
  * If attributes allow for multiple values (usually drawn as a drop-down box) the 
@@ -275,11 +275,7 @@ class AttributesController extends CardscapeController {
         if (Yii::app()->request->isPostRequest && (($attribute = $this->loadAttributeModel($id)) !== null)) {
             $attribute->active = 0;
 
-            if ($attribute->save()) {
-                echo json_encode(array('success' => true));
-            } else {
-                echo json_encode(array('success' => false));
-            }
+            echo json_encode(array('success' => $attribute->save()));
         } else {
             throw new CHttpException(400, Yii::t('cardscape', 'Invalid request. Please do not repeat this request again.'));
         }

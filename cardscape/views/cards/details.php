@@ -10,9 +10,13 @@ $this->title = Yii::t('cardscape', 'Card\'s detais');
 
 <div class="grid-header-tools">
     <?php
-    echo CHtml::link(Yii::t('cardscape', 'Revision list'), $this->createUrl('cards/revisions', array('id' => $card->id))),
-    CHtml::link(Yii::t('cardscape', 'Change card'), $this->createUrl('cards/update', array('id' => $card->id))),
-    CHtml::link(Yii::t('cardscape', 'Delete'), $this->createUrl('cards/delete', array('id' => $card->id)));
+    echo CHtml::link(Yii::t('cardscape', 'Revisions'), $this->createUrl('cards/revisions', array('id' => $card->id))),
+    CHtml::link(Yii::t('cardscape', 'Change'), $this->createUrl('cards/update', array('id' => $card->id))),
+    CHtml::link(Yii::t('cardscape', 'New based'), $this->createUrl('cards/newbased', array('id' => $card->id)));
+
+    if (!Yii::app()->user->isGuest && Yii::app()->user->role == 'administrator') {
+        echo CHtml::link(Yii::t('cardscape', 'Delete'), $this->createUrl('cards/delete', array('id' => $card->id)));
+    }
     ?>
 </div>
 

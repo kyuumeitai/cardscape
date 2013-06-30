@@ -91,7 +91,7 @@ class Revision extends CActiveRecord {
         return array(
             'card' => array(self::BELONGS_TO, 'Card', 'cardId'),
             'user' => array(self::BELONGS_TO, 'User', 'userId'),
-            'attributes' => array(self::MANY_MANY, 'Attribute', 'RevisionAttribute(revisionId, attributeId)'),
+            'attributes' => array(self::MANY_MANY, 'Attribute', 'RevisionAttribute(revisionId, attributeId)', 'order' => 'attributes.order'),
             'values' => array(self::HAS_MANY, 'RevisionAttribute', 'revisionId')
         );
     }
