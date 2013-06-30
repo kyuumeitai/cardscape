@@ -9,3 +9,8 @@ Cards: Search, Details, Suggestion, Change, Delete, Revisions (binocular,
 Revison: Delete
 Users: Profile, Details, Logout, Delete, Update, Create (.., .., lock arrow
 General: Save, Cancel
+
+OTHER:
+
+Refactor cards/update, cards/suggestion and cards/newbased that have the same save 
+code and most of the same UI.
