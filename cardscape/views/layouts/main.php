@@ -39,7 +39,7 @@ if (count($messages) > 0) {
                 }
                 ?>
             </div>
-            <span class="title"><?php echo CHtml::encode(Yii::app()->name); ?></span>
+            <div class="title"><?php echo CHtml::encode(Yii::app()->name); ?></div>
         </div>
 
         <nav class="navigation"><?php $this->widget('zii.widgets.CMenu', $this->menu); ?></nav>

@@ -77,10 +77,16 @@ html, body {
     line-height: 35px;
 }
 
+#header #session-tools a {
+    margin-right: 1em;
+}
+
 #header .title {
     font-family: GenAI102;
     font-size: 3.6em;
     margin-left: 2.5em;
+    margin-top: .2em;
+    color: #FFF;
 }
 
 #header #session-tools a, #header #session-tools a:visited, #header #session-tools a:hover {
@@ -122,7 +128,8 @@ html, body {
 }
 
 .navigation li.active a {
-    /*color: #F7A849;*/
+    color: #3D6C95;
+    background-color: #FFF;
 }
 
 .navigation ul li a:hover {
@@ -131,7 +138,6 @@ html, body {
 
 #page {
     padding: 0;
-    /*background-color: #DBE7F2;*/
     background-color: #FFF;
     border-top: none;
     width: 90%;

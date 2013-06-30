@@ -48,6 +48,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ),
         array(
             'header' => Yii::t('cardscape', 'Actions'),
+            'visible' => !Yii::app()->user->isGuest,
             'class' => 'CButtonColumn',
             'template' => '{revisions} {update} {delete}',
             'buttons' => array(
@@ -59,7 +60,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'update' => array(
                     'imageUrl' => $imageBaseUrl . 'pencil.png',
                     'label' => Yii::t('cardscape', 'Change card'),
-                    //'visible' => '(!Yii::app()->user->isGuest && Yii::app()->user->role == "administrator")'
                 ),
                 'delete' => array(
                     'imageUrl' => $imageBaseUrl . 'minus-circle.png',

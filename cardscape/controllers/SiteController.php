@@ -136,8 +136,7 @@ class SiteController extends CardscapeController {
      * Shows the about page. 
      */
     public function actionAbout() {
-        //$this->render('about');
-        throw new CHttpException(501, 'Not implemented yet.');
+        $this->render('about');
     }
 
     public function actionContactus() {
