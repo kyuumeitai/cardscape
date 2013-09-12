@@ -38,7 +38,7 @@
  * 
  * This controller provides features for administrators only.
  */
-class AttributesController extends CardscapeController {
+class AttributesController extends CSController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module);

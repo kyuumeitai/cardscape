@@ -1,6 +1,6 @@
 <?php
 
-/* CardscapeController.php
+/* CSController.php
  * 
  * This file is part of Cardscape.
  * Web based collaborative platform for creating Collectible Card Games.
@@ -29,7 +29,7 @@
  * Any variable that should be available to the layout needs to be placed here, 
  * also any data that is common to all controllers is also part of this class. 
  */
-class CardscapeController extends CController {
+class CSController extends CController {
 
     /**
      * @var string The name of the layout used by the controller. Defaults to 
@@ -62,10 +62,10 @@ class CardscapeController extends CController {
         $user = Yii::app()->user;
         $this->menu = array(
             'items' => array(
-                array(
-                    'label' => Yii::t('cardscape', 'Home'),
-                    'url' => array('site/index')
-                ),
+                //array(
+                //    'label' => Yii::t('cardscape', 'Home'),
+                //    'url' => array('site/index')
+                //),
                 array(
                     'label' => Yii::t('cardscape', 'Cards'),
                     'url' => array('cards/index')
@@ -79,12 +79,12 @@ class CardscapeController extends CController {
                 array(
                     'label' => Yii::t('cardscape', 'Attributes'),
                     'url' => array('attributes/index'),
-                    'visible' => (!$user->isGuest && $user->role == 'administrator')
+                    //'visible' => (!$user->isGuest && $user->role == 'administrator')
                 ),
                 array(
                     'label' => Yii::t('cardscape', 'Users'),
                     'url' => array('users/index'),
-                    'visible' => (!$user->isGuest && $user->role == 'administrator')
+                    //'visible' => (!$user->isGuest && $user->role == 'administrator')
                 ),
             )
         );
@@ -138,11 +138,11 @@ class CardscapeController extends CController {
      * 
      * @return array Default action filters.
      */
-    public function filters() {
+    /*/*public function filters() {
         return array(
             'accessControl'
         );
-    }
+    } */
 
     /**
      * Prevents access to any and all actions, regardless of the current user's 

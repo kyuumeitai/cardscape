@@ -8,9 +8,6 @@ $this->title = Yii::t('cardscape', 'Projects');
 
 <h1><?php echo Yii::t('cardscape', 'Manage projects'); ?></h1>
 
-<div class="grid-header-tools">
-    <?php echo CHtml::link(Yii::t('cardscape', 'Add project'), $this->createUrl('projects/create')); ?>
-</div>
 
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -40,3 +37,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     ),
 ));
+?>
+<div class="clear"></div>
+<!-- <?php echo CHtml::link(Yii::t('cardscape', 'Add project'), $this->createUrl('projects/create')); ?> -->

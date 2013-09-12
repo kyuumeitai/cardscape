@@ -35,7 +35,7 @@ if (is_file($debug)) {
 
 // simple version definition, affects nothing in the system except the footer 
 // text if you're using the default theme.
-define('CSVersion', 'M0.3');
+define('CSVersion', '1.0&beta;');
 
 require_once($yii);
 Yii::createWebApplication($config)->run();

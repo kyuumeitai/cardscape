@@ -2,6 +2,4 @@ nbproject
 .DS_Store
 ._.*
 *~
-/www/debug.php
-/www/.htaccess
-/cardscape/config/*.php
+Thumbs.db

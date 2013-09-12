@@ -8,10 +8,6 @@ $this->title = Yii::t('cardscape', 'Card attributes');
 
 <h1><?php echo Yii::t('cardscape', 'Manage card attributes'); ?></h1>
 
-<div class="grid-header-tools">
-    <?php echo CHtml::link(Yii::t('cardscape', 'Add attribute'), $this->createUrl('attributes/create')); ?>
-</div>
-
 <?php
 $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
 
@@ -55,3 +51,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         )
     ),
 ));
+?>
+
+<div class="clear"></div>
+<!-- <?php echo CHtml::link(Yii::t('cardscape', 'Add attribute'), $this->createUrl('attributes/create')); ?> -->

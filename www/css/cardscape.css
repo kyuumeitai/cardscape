@@ -1,5 +1,56 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.clear {
+    clear: both;
+}
+
+a, a:hover, a:visited {
+    text-decoration: none;
+}
+
+input, select, textarea {
+}
+
+input:focus, select:focus, textarea:focus {
+    outline-width: 1px;
+    /*outline-color: #FF8;*/
+}
+
+.container {
+    width: 960px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.logo {
+    height: 120px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.content {
+
+}
+
+footer {
+    font-size:  12px;
+}
+
+/* ========================================================================== */
 /** MEYER RESET v1.0 **/
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,
+/*html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,
 acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,
 strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
 table,caption,tbody,tfoot,thead,tr,th,td {margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
@@ -8,7 +59,7 @@ q:after{content:'';content:none}:focus{outline:0}ins{text-decoration:none}
 del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 /** CSS REBOOT BASED ON BLUESTRIP SCREEN **/
-strong, th, thead td, h1, h2, h3, h4, h5, h6 { font-weight: bold; }
+/*strong, th, thead td, h1, h2, h3, h4, h5, h6 { font-weight: bold; }
 cite, em, dfn { font-style: italic; }
 code, kbd, samp, pre, tt, var { font-size: 92%; font-family: monaco, "Lucida Console", courier, monospace; }
 del { text-decoration: line-through; color: #666; }
@@ -39,7 +90,7 @@ a { text-decoration: none; }
 /** CARDSCAPE CSS **/
 /*COLOR SCHEME DESIGNER 3: BDD2E5 95A1AC 3D6C95 D2E3F2 DBE7F2*/
 
-@font-face {
+/*@font-face {
     font-family: GenAI102;
     src: url("../fonts/GenAI102.TTF");
 }
@@ -133,7 +184,7 @@ html, body {
 }
 
 .navigation ul li a:hover {
-    /*color: #F7A849;*/
+    _color: #F7A849;
 }
 
 #page {
@@ -145,13 +196,11 @@ html, body {
     margin: 0 auto;
     padding: 0;
     box-shadow: 2px 2px 8px 2px #3D6C95;
-    /*overflow: auto;*/
 }
 
 .content {
     margin: 0;
     padding: 0;
-    /* HACK margin collapse issue */
     display: inline-block;
     width: 100%;
 }
@@ -201,7 +250,7 @@ html, body {
 }
 
 /** MISC **/
-.half-block {
+/*.half-block {
     float: left;
     display: inline-block;
     width: 50%;
@@ -213,7 +262,7 @@ html, body {
 
 
 /** FORM ELEMENTS **/
-input, select {
+/*input, select {
     padding: .3em;
 }
 
@@ -264,7 +313,7 @@ span.required {
 }
 
 /** GRIDVIEWS **/
-.grid-view table {
+/*.grid-view table {
     width: 100%;
     border: none;
     margin-bottom: .6em;
@@ -292,8 +341,6 @@ span.required {
 }
 
 .grid-view thead tr:first-child {
-    /*border: solid 1px #FFF;*/
-    /*background-color: rgba(170, 170, 170, .2);*/
 }
 
 .button-column {
@@ -310,17 +357,16 @@ span.required {
 }
 
 .grid-view .even {
-    /*background-color: rgba(170, 170, 170, 0.2) */
 }
 
 /** ATTRIBUTES FORM **/
-.hidden {
+/*.hidden {
     display: none;
     visibility: hidden;
 }
 
 /** CARDS FORMS AND LISTINGS **/
-.card-data {
+/*.card-data {
     width: 100%;
 }
 
@@ -351,3 +397,4 @@ span.required {
     width: 100%;
     margin-top: .5em;
 }
+*/

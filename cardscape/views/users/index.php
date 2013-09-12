@@ -8,10 +8,6 @@ $this->title = Yii::t('cardscape', 'Users');
 
 <h1><?php echo Yii::t('cardscape', 'Manage users'); ?></h1>
 
-<div class="grid-header-tools">
-    <?php echo CHtml::link(Yii::t('cardscape', 'Add user'), $this->createUrl('users/create')); ?>
-</div>
-
 <?php
 $imageBaseUrl = (Yii::app()->baseUrl . '/images/icons/');
 
@@ -43,22 +39,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
         array(
             'header' => Yii::t('cardscape', 'Actions'),
             'class' => 'CButtonColumn',
-            'template' => '{reset} {update} {delete}',
             'buttons' => array(
-                'reset' => array(
-                    'label' => Yii::t('cardscape', 'Reset password/activation'),
-                    'url' => 'Yii::app()->createUrl("users/reset", array("id" => $data->id))',
-                    'imageUrl' => $imageBaseUrl . 'key--arrow.png',
-                    'click' => 'js:cardscape.resetUserActivation'
-                ),
-                'update' => array(
-                    'imageUrl' => $imageBaseUrl . 'pencil.png'
-                ),
-                'delete' => array(
-                    'imageUrl' => $imageBaseUrl . 'minus-circle.png'
-                ),
                 'view' => array('visible' => 'false')
             )
         )
     ),
 ));
+
+?>
+
+<div class="clear"></div>
+<!-- <?php echo CHtml::link(Yii::t('cardscape', 'Add user'), $this->createUrl('users/create')); ?> -->

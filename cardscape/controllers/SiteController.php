@@ -26,7 +26,7 @@
  * registration or any other action that is not directly related to an existing 
  * AR model.
  */
-class SiteController extends CardscapeController {
+class SiteController extends CSController {
 
     public function __construct($id, $module = null) {
         parent::__construct($id, $module = null);

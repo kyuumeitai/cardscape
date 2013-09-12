@@ -29,23 +29,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
             'filter' => false
         ),
         array(
-            'header' => CHtml::encode($filter->getAttributeLabel('date')),
-            'name' => 'date',
-            'type' => 'date'
-        ),
-        array(
             'header' => CHtml::encode($filter->getAttributeLabel('status')),
             'name' => 'status',
             'type' => 'raw',
             'value' => 'Card::getStatusName($data->status)',
             'filter' => Card::getCardStatusesArray()
         ),
-        array(
-            'header' => CHtml::encode($filter->getAttributeLabel('author')),
-            'name' => 'author',
-            'type' => 'raw',
-            'value' => 'CHtml::link($data->author, Yii::app()->createUrl("users/details", array("id" => $data->authorId)))'
-        ),
+        //array(
+        //    'header' => CHtml::encode($filter->getAttributeLabel('author')),
+        //    'name' => 'author',
+        //    'type' => 'raw',
+        //    'value' => 'CHtml::link($data->author, Yii::app()->createUrl("users/details", array("id" => $data->authorId)))'
+        //),
         array(
             'header' => Yii::t('cardscape', 'Actions'),
             'visible' => !Yii::app()->user->isGuest,
